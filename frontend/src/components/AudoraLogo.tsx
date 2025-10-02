@@ -11,7 +11,7 @@ const AudoraLogo = ({
   size = "md",
   className,
   showText = true,
-  premium = true,
+  premium = false,
 }: AudoraLogoProps) => {
   const sizeClasses = {
     sm: "size-6",
@@ -28,12 +28,12 @@ const AudoraLogo = ({
   };
 
   const logoSrc = premium
-    ? size === "sm"
-      ? "/audora-logo-premium.svg"
-      : "/audora-logo-premium-large.svg"
-    : size === "sm"
-    ? "/audora-logo.svg"
-    : "/audora-logo-large.svg";
+    ? size === "sm" || size === "md"
+      ? "/audora-vinyl-logo-premium.svg"
+      : "/audora-vinyl-logo-premium-large.svg"
+    : size === "sm" || size === "md"
+    ? "/audora-vinyl-logo.svg"
+    : "/audora-vinyl-logo-large.svg";
 
   return (
     <div className={cn("flex gap-2 items-center", className)}>
