@@ -28,13 +28,13 @@ const DebugPanel = () => {
     <div className="fixed bottom-4 right-4 z-50">
       <button
         onClick={() => setIsVisible(!isVisible)}
-        className="bg-purple-600 text-white px-3 py-1 rounded text-xs font-mono hover:bg-purple-700 transition-colors"
+        className="bg-red-600 text-white px-3 py-1 rounded text-xs font-mono hover:bg-red-700 transition-colors"
       >
         DEBUG {isVisible ? "▼" : "▲"}
       </button>
 
       {isVisible && (
-        <div className="mt-2 bg-black/90 text-green-400 p-4 rounded-lg shadow-xl border border-purple-500/30 font-mono text-xs max-w-sm overflow-auto max-h-96">
+        <div className="mt-2 bg-black/90 text-green-400 p-4 rounded-lg shadow-xl border border-red-500/30 font-mono text-xs max-w-sm overflow-auto max-h-96">
           <div className="space-y-2">
             <div>
               <strong>User:</strong> {user?.firstName || "Not logged in"}
@@ -84,7 +84,7 @@ const DebugPanel = () => {
               </div>
             )}
 
-            <div className="pt-2 border-t border-purple-500/30">
+            <div className="pt-2 border-t border-red-500/30">
               <strong>Backend Status:</strong>
               <div className="text-xs text-yellow-300">
                 Server: localhost:8000

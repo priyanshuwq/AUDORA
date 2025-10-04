@@ -21,16 +21,16 @@ const MobileActivityDialog = () => {
         <Button
           size="sm"
           variant="ghost"
-          className="md:hidden fixed top-4 right-4 z-50 bg-black/20 backdrop-blur-sm border border-white/10 text-white hover:bg-purple-500/20"
+          className="md:hidden fixed top-4 right-4 z-50 bg-black/20 backdrop-blur-sm border border-white/10 text-white hover:bg-red-500/15"
         >
           <Users className="w-4 h-4 mr-2" />
           {joinedUsers.length}
         </Button>
       </DialogTrigger>
-      <DialogContent className="bg-gradient-to-br from-[#1C1B29] to-[#0D0C1D] border border-white/20 rounded-2xl backdrop-blur-xl max-w-full h-[90vh] w-full p-0">
+      <DialogContent className="bg-zinc-950 border border-white/10 rounded-2xl backdrop-blur-xl max-w-full h-[90vh] w-full p-0">
         <DialogHeader className="p-4 border-b border-white/10">
           <DialogTitle className="text-white text-xl font-bold flex items-center gap-2">
-            <Users className="w-6 h-6 text-purple-400" />
+            <Users className="w-6 h-6 text-red-400" />
             Live Activity
           </DialogTitle>
         </DialogHeader>

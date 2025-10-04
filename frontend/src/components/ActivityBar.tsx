@@ -1,13 +1,24 @@
 import { useEffect, useState } from "react";
 import { useEnhancedRoomStore } from "@/stores/useEnhancedRoomStore";
-import { Music, Play, Pause, Users, Headphones, Wifi } from "lucide-react";
+import {
+  Music,
+  Play,
+  Pause,
+  Users,
+  Headphones,
+  Wifi,
+  Copy,
+  LogOut,
+} from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import toast from "react-hot-toast";
 
 interface UserActivity {
   id: string;
   name: string;
-  avatar: string;
+  avatar?: string; // Make avatar optional since we're not using it
   currentSong: {
     title: string;
     artist: string;
@@ -42,7 +53,7 @@ const ActivityBar = () => {
       const roomActivities = joinedUsers.map((user) => ({
         id: user.user._id,
         name: user.user.fullName,
-        avatar: user.user.imageUrl || "/default-avatar.png",
+        avatar: "", // Remove avatar since we can't fetch from Clerk
         currentSong: user.currentSong,
         isPlaying: user.isPlaying,
         timestamp: user.timestamp,
@@ -69,7 +80,7 @@ const ActivityBar = () => {
         <div className="p-4 border-b border-white/10">
           <div className="flex items-center justify-between">
             <h2 className="text-white font-semibold text-lg flex items-center gap-3">
-              <Users className="w-5 h-5 text-purple-400" />
+              <Users className="w-5 h-5 text-red-400" />
               <span>Activity</span>
             </h2>
             <div
@@ -100,8 +111,8 @@ const ActivityBar = () => {
         </div>
         <div className="flex-1 flex items-center justify-center p-6 min-h-0">
           <div className="text-center space-y-6 animate-fadeInUp max-w-xs">
-            <div className="w-16 h-16 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-full flex items-center justify-center mx-auto animate-float">
-              <Headphones className="w-8 h-8 text-purple-400" />
+            <div className="w-16 h-16 bg-red-500/10 rounded-full flex items-center justify-center mx-auto animate-float">
+              <Headphones className="w-8 h-8 text-red-400" />
             </div>
             <div className="space-y-3">
               <p className="text-white font-medium text-base">
@@ -115,7 +126,7 @@ const ActivityBar = () => {
                   : "Connection lost. Check your internet."}
               </p>
               {connectionStatus === "connected" && (
-                <div className="text-xs text-purple-300 bg-purple-500/10 rounded-lg p-3 border border-purple-500/20 text-left">
+                <div className="text-xs text-red-300 bg-red-500/10 rounded-lg p-3 border border-red-500/20 text-left">
                   <span className="block">
                     💡 <strong>Tip:</strong>
                   </span>
@@ -137,7 +148,7 @@ const ActivityBar = () => {
         <div className="p-4 border-b border-white/10">
           <div className="flex items-center justify-between">
             <h2 className="text-white font-semibold text-lg flex items-center gap-3">
-              <Users className="w-5 h-5 text-purple-400" />
+              <Users className="w-5 h-5 text-red-400" />
               <span>Activity</span>
             </h2>
             <div className="flex items-center gap-2 text-green-400">
@@ -150,10 +161,10 @@ const ActivityBar = () => {
         {/* Room Info */}
         {currentRoom && (
           <div className="p-4 border-b border-white/10 animate-fadeInUp">
-            <div className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-xl p-4 border border-purple-500/30 animate-glow">
+            <div className="bg-zinc-900/60 rounded-xl p-4 border border-white/6 shadow-sm">
               <div className="flex items-center gap-3 mb-3">
-                <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse"></div>
-                <span className="text-purple-300 font-medium text-sm">
+                <div className="w-2 h-2 bg-red-400 rounded-full animate-pulse"></div>
+                <span className="text-red-300 font-medium text-sm">
                   {currentRoom.isJamSession ? "JAM ROOM" : "MUSIC ROOM"}
                 </span>
               </div>
@@ -172,8 +183,8 @@ const ActivityBar = () => {
 
         <div className="flex-1 flex items-center justify-center p-6 min-h-0">
           <div className="text-center space-y-6 animate-fadeInUp max-w-xs">
-            <div className="w-16 h-16 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-full flex items-center justify-center mx-auto animate-float">
-              <Users className="w-8 h-8 text-purple-400" />
+            <div className="w-16 h-16 bg-red-500/10 rounded-full flex items-center justify-center mx-auto animate-float">
+              <Users className="w-8 h-8 text-red-400" />
             </div>
             <div className="space-y-3">
               <p className="text-white font-medium text-base">
@@ -183,7 +194,7 @@ const ActivityBar = () => {
                 You're alone in this room. Share the room code with friends to
                 see their activity!
               </p>
-              <div className="text-xs text-purple-300 bg-purple-500/10 rounded-lg p-3 border border-purple-500/20 text-left">
+              <div className="text-xs text-red-300 bg-red-500/10 rounded-lg p-3 border border-red-500/20 text-left">
                 <span className="block">
                   🎵 <strong>Share:</strong>
                 </span>
@@ -204,7 +215,7 @@ const ActivityBar = () => {
       <div className="p-3 md:p-4 border-b border-white/10">
         <div className="flex items-center justify-between">
           <h2 className="text-white font-semibold text-base md:text-lg flex items-center gap-2">
-            <Users className="w-4 h-4 md:w-5 md:h-5 text-purple-400" />
+            <Users className="w-4 h-4 md:w-5 md:h-5 text-red-400" />
             <span className="hidden sm:inline">Activity</span>
           </h2>
           <div className="flex items-center gap-2">
@@ -234,25 +245,56 @@ const ActivityBar = () => {
         </div>
       </div>
 
-      {/* Room Info */}
+      {/* Room Info & Controls */}
       {currentRoom && (
         <div className="p-4 border-b border-white/10 animate-fadeInUp">
-          <div className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-xl p-4 border border-purple-500/30 animate-glow">
+          <div className="bg-zinc-900/60 rounded-xl p-4 border border-white/6 shadow-sm">
             <div className="flex items-center gap-3 mb-3">
-              <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse"></div>
-              <span className="text-purple-300 font-medium text-sm">
+              <div className="w-2 h-2 bg-red-400 rounded-full animate-pulse"></div>
+              <span className="text-red-300 font-medium text-sm">
                 {currentRoom.isJamSession ? "JAM ROOM" : "MUSIC ROOM"}
               </span>
             </div>
-            <p className="text-white font-semibold text-base truncate mb-2">
+            <p className="text-white font-semibold text-base truncate mb-3">
               {currentRoom.name}
             </p>
-            <p className="text-zinc-300 text-sm flex items-center gap-2">
-              <span>Code:</span>
-              <span className="font-mono bg-black/30 px-2 py-1 rounded text-xs">
-                {currentRoom.code}
-              </span>
-            </p>
+
+            {/* Room Controls */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span className="text-zinc-300 text-xs">Room Code:</span>
+                <span className="font-mono bg-black/30 px-2 py-1 rounded text-xs text-white">
+                  {currentRoom.code}
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => {
+                    navigator.clipboard.writeText(currentRoom.code);
+                    toast.success("Room code copied!");
+                  }}
+                  className="hover:bg-white/6 rounded-lg p-2"
+                  title="Copy room code"
+                >
+                  <Copy className="w-3 h-3 text-zinc-200" />
+                </Button>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => {
+                    // Get leaveRoom function from store
+                    const { leaveRoom } = useEnhancedRoomStore.getState();
+                    leaveRoom();
+                  }}
+                  className="text-zinc-200 hover:text-zinc-100 hover:bg-white/6 rounded-lg p-2"
+                  title="Leave room"
+                >
+                  <LogOut className="w-3 h-3 text-zinc-200" />
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
       )}
@@ -269,18 +311,17 @@ const ActivityBar = () => {
                 animationFillMode: "forwards",
               }}
             >
-              <div className="bg-black/30 rounded-xl p-4 border border-white/5 hover:border-purple-500/30 transition-all duration-300">
+              <div className="bg-zinc-900/50 rounded-xl p-4 border border-white/6 hover:border-white/10 transition-all duration-300 shadow-sm">
                 {/* User Info */}
                 <div className="flex items-center gap-3 mb-4">
                   <div className="relative flex-shrink-0">
-                    <img
-                      src={activity.avatar || "/default-avatar.png"}
-                      alt={activity.name}
-                      className="w-10 h-10 rounded-full border-2 border-purple-500/30 hover:border-purple-500/50 transition-colors"
-                      onError={(e) => {
-                        e.currentTarget.src = "/default-avatar.png";
-                      }}
-                    />
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-red-500 to-red-600 flex items-center justify-center text-white text-sm font-bold border-2 border-red-500/30 hover:border-red-500/50 transition-colors">
+                      {activity.name
+                        ?.split(" ")
+                        .map((n) => n[0])
+                        .join("")
+                        .slice(0, 2) || "U"}
+                    </div>
                     <div
                       className={cn(
                         "absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-[#1C1B29]",
@@ -295,7 +336,7 @@ const ActivityBar = () => {
                       {activity.name}
                     </p>
                     <div className="flex items-center gap-2 text-xs">
-                      <span className="text-purple-300">In your room</span>
+                      <span className="text-red-300">In your room</span>
                       <span className="text-zinc-500">•</span>
                       <span className="text-zinc-500">
                         {formatTimeAgo(activity.timestamp)}
@@ -306,7 +347,7 @@ const ActivityBar = () => {
                 {/* Current Song */}
                 {activity.currentSong ? (
                   <div
-                    className={`bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded-lg p-4 border border-purple-500/20 ${
+                    className={`bg-zinc-900/60 rounded-lg p-4 border border-white/6 ${
                       activity.isPlaying ? "animate-pulseSubtle" : ""
                     }`}
                   >
@@ -325,7 +366,7 @@ const ActivityBar = () => {
                           ) : (
                             <Pause className="w-3 h-3 text-zinc-400" />
                           )}
-                          <Music className="w-3 h-3 text-purple-400" />
+                          <Music className="w-3 h-3 text-red-400" />
                         </div>
                         <p className="text-white text-sm font-medium truncate leading-tight">
                           {activity.currentSong.title}
@@ -342,7 +383,7 @@ const ActivityBar = () => {
                           {[...Array(5)].map((_, i) => (
                             <div
                               key={i}
-                              className="w-1 h-4 bg-gradient-to-t from-purple-500 to-pink-400 rounded-full animate-musicBar"
+                              className="w-1 h-4 bg-gradient-to-t from-zinc-500 to-zinc-300 rounded-full animate-musicBar"
                               style={{ animationDelay: `${i * 100}ms` }}
                             />
                           ))}
@@ -351,7 +392,7 @@ const ActivityBar = () => {
                     )}
                   </div>
                 ) : (
-                  <div className="bg-black/20 rounded-lg p-4 border border-white/10">
+                  <div className="bg-zinc-900/50 rounded-lg p-4 border border-white/10">
                     <div className="flex items-center gap-3 text-zinc-500">
                       <Music className="w-4 h-4 flex-shrink-0" />
                       <span className="text-sm">Not playing anything</span>

@@ -135,10 +135,10 @@ export const PlaybackControls = () => {
   };
 
   return (
-    <footer className="h-20 sm:h-24 bg-gradient-to-r from-black/80 via-black/70 to-black/80 backdrop-blur-xl border-t border-white/10 px-4 shadow-lg">
+    <footer className="h-16 sm:h-20 md:h-24 bg-zinc-950/95 backdrop-blur-xl border-t border-white/10 px-2 sm:px-4 shadow-lg md:relative fixed bottom-16 md:bottom-0 left-0 right-0 z-30">
       <div className="flex justify-between items-center h-full max-w-[1800px] mx-auto">
         {/* currently playing song */}
-        <div className="hidden sm:flex items-center gap-4 min-w-[180px] w-[30%]">
+        <div className="hidden lg:flex items-center gap-3 min-w-[180px] w-[30%]">
           {currentSong && (
             <>
               <div className="relative">
@@ -148,11 +148,11 @@ export const PlaybackControls = () => {
                   className="w-14 h-14 object-cover rounded-xl shadow-lg transition-transform duration-300 hover:scale-105"
                 />
                 {isPlaying && (
-                  <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-xl animate-pulse" />
+                  <div className="absolute inset-0 bg-red-500/15 rounded-xl animate-pulse" />
                 )}
               </div>
               <div className="flex-1 min-w-0">
-                <div className="font-semibold truncate hover:underline cursor-pointer text-white hover:text-purple-300 transition-colors">
+                <div className="font-semibold tracking-widest truncate hover:underline cursor-pointer text-white hover:text-red-300 transition-colors">
                   {currentSong.title}
                 </div>
                 <div className="text-sm text-zinc-400 truncate hover:underline cursor-pointer hover:text-zinc-300 transition-colors">
@@ -163,7 +163,7 @@ export const PlaybackControls = () => {
                     {[...Array(4)].map((_, i) => (
                       <div
                         key={i}
-                        className="w-0.5 h-2 bg-gradient-to-t from-purple-500 to-pink-400 rounded-full animate-musicBar"
+                        className="w-0.5 h-2 bg-red-500 rounded-full animate-musicBar"
                         style={{ animationDelay: `${i * 150}ms` }}
                       />
                     ))}
@@ -175,12 +175,12 @@ export const PlaybackControls = () => {
         </div>
 
         {/* player controls*/}
-        <div className="flex flex-col items-center gap-3 flex-1 max-w-full sm:max-w-[45%]">
-          <div className="flex items-center gap-4 sm:gap-6">
+        <div className="flex flex-col items-center gap-2 sm:gap-3 flex-1 max-w-full">
+          <div className="flex items-center gap-3 sm:gap-4 md:gap-6 text-red-400">
             <Button
               size="icon"
               variant="ghost"
-              className="hidden sm:inline-flex hover:text-white text-zinc-500 hover:bg-white/10 rounded-full transition-all duration-200"
+              className="hidden sm:inline-flex hover:text-white text-red-400 hover:bg-red-500/10 rounded-md transition-all duration-200"
             >
               <Shuffle className="h-4 w-4" />
             </Button>
@@ -188,7 +188,7 @@ export const PlaybackControls = () => {
             <Button
               size="icon"
               variant="ghost"
-              className="hover:text-white text-zinc-500 hover:bg-white/10 rounded-full transition-all duration-200"
+              className="hover:text-white text-red-400 hover:bg-red-500/10 rounded-md transition-all duration-200"
               onClick={playPrevious}
               disabled={!currentSong}
             >
@@ -197,7 +197,7 @@ export const PlaybackControls = () => {
 
             <Button
               size="icon"
-              className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-400 hover:to-pink-400 text-white rounded-full h-10 w-10 shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200"
+              className="bg-red-600 hover:bg-red-500 text-white rounded-full h-10 w-10 shadow-[0_0_10px_rgba(255,0,51,0.35)] hover:shadow-[0_0_16px_rgba(255,0,51,0.6)] hover:scale-105 transition-all duration-200"
               onClick={togglePlay}
               disabled={!currentSong}
             >
@@ -210,7 +210,7 @@ export const PlaybackControls = () => {
             <Button
               size="icon"
               variant="ghost"
-              className="hover:text-white text-zinc-500 hover:bg-white/10 rounded-full transition-all duration-200"
+              className="hover:text-white text-red-400 hover:bg-red-500/10 rounded-md transition-all duration-200"
               onClick={playNext}
               disabled={!currentSong}
             >
@@ -219,13 +219,13 @@ export const PlaybackControls = () => {
             <Button
               size="icon"
               variant="ghost"
-              className="hidden sm:inline-flex hover:text-white text-zinc-500 hover:bg-white/10 rounded-full transition-all duration-200"
+              className="hidden sm:inline-flex hover:text-white text-red-400 hover:bg-red-500/10 rounded-md transition-all duration-200"
             >
               <Repeat className="h-4 w-4" />
             </Button>
           </div>
 
-          <div className="hidden sm:flex items-center gap-3 w-full">
+          <div className="hidden md:flex items-center gap-3 w-full">
             <div className="text-xs text-zinc-400 font-medium tabular-nums min-w-[35px]">
               {formatTime(currentTime)}
             </div>
@@ -233,10 +233,8 @@ export const PlaybackControls = () => {
               value={[currentTime]}
               max={duration || 100}
               step={1}
-              className={`w-full hover:cursor-grab active:cursor-grabbing [&_[role=slider]]:bg-gradient-to-r [&_[role=slider]]:from-purple-500 [&_[role=slider]]:to-pink-500 [&_[role=slider]]:border-0 [&_[role=slider]]:shadow-lg [&>span:first-child]:bg-gradient-to-r [&>span:first-child]:from-purple-400/30 [&>span:first-child]:to-pink-400/30 [&_[role=slider]:focus-visible]:ring-purple-500/50 [&_[role=slider]]:hover:scale-110 [&_[role=slider]]:transition-all [&_[role=slider]]:duration-200 ${
-                isPlaying
-                  ? "[&>span:first-child]:animate-shimmer [&>span:first-child]:transition-all [&>span:first-child]:duration-1000"
-                  : ""
+              className={`w-full hover:cursor-grab active:cursor-grabbing [&_[role=slider]]:bg-red-500 [&_[role=slider]]:border-0 [&_[role=slider]]:shadow-[0_0_10px_rgba(255,0,51,0.35)] [&>span:first-child]:bg-red-500/30 [&_[role=slider]:focus-visible]:ring-red-500/50 [&_[role=slider]]:hover:scale-110 [&_[role=slider]]:transition-all [&_[role=slider]]:duration-200 ${
+                isPlaying ? "[&>span:first-child]:animate-pulse" : ""
               }`}
               onValueChange={handleSeek}
             />
@@ -246,12 +244,12 @@ export const PlaybackControls = () => {
           </div>
         </div>
         {/* volume controls */}
-        <div className="hidden sm:flex items-center gap-2 min-w-[120px] w-[25%] justify-end">
+        <div className="hidden xl:flex items-center gap-2 min-w-[120px] w-[25%] justify-end">
           <Button
             size="icon"
             variant="ghost"
             onClick={toggleMute}
-            className="hover:text-white text-zinc-500 hover:bg-white/10 rounded-full transition-all duration-200"
+            className="hover:text-white text-red-400 hover:bg-red-500/10 rounded-md transition-all duration-200"
           >
             {isMuted || volume === 0 ? (
               <VolumeX className="h-4 w-4" />
@@ -266,7 +264,7 @@ export const PlaybackControls = () => {
             value={[volume]}
             max={100}
             step={1}
-            className="w-24 hover:cursor-grab active:cursor-grabbing [&_[role=slider]]:bg-gradient-to-r [&_[role=slider]]:from-purple-500 [&_[role=slider]]:to-pink-500 [&_[role=slider]]:border-0 [&_[role=slider]]:shadow-lg [&>span:first-child]:bg-gradient-to-r [&>span:first-child]:from-purple-400/30 [&>span:first-child]:to-pink-400/30 [&_[role=slider]:focus-visible]:ring-purple-500/50 [&_[role=slider]]:hover:scale-110 [&_[role=slider]]:transition-transform"
+            className="w-24 hover:cursor-grab active:cursor-grabbing [&_[role=slider]]:bg-red-500 [&_[role=slider]]:border-0 [&_[role=slider]]:shadow-[0_0_10px_rgba(255,0,51,0.35)] [&>span:first-child]:bg-red-500/30 [&_[role=slider]:focus-visible]:ring-red-500/50 [&_[role=slider]]:hover:scale-110 [&_[role=slider]]:transition-transform"
             onValueChange={handleVolumeChange}
           />
         </div>

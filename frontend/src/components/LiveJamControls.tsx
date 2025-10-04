@@ -23,7 +23,6 @@ const LiveJamControls = () => {
     sharedIsPlaying,
     sharedPosition,
     sharedQueue,
-    syncEnabled,
     startJamSession,
     stopJamSession,
     toggleSharedPlayback,
@@ -37,39 +36,69 @@ const LiveJamControls = () => {
   const [localPosition, setLocalPosition] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
 
-  // Sync with shared playback
+  // Real-time sync with shared playback
   useEffect(() => {
-    if (isJamSession && syncEnabled && !isDragging) {
+    if (isJamSession && !isDragging && !isJamHost) {
       setLocalPosition(sharedPosition);
     }
-  }, [sharedPosition, isJamSession, syncEnabled, isDragging]);
+  }, [sharedPosition, isJamSession, isDragging, isJamHost]);
 
-  // Listen for jam sync events
+  // Listen for jam sync events - improved real-time sync
   useEffect(() => {
     const handleJamSync = (event: CustomEvent) => {
       const { song, position, isPlaying: jamIsPlaying } = event.detail;
 
-      if (!syncEnabled || isJamHost) return; // Host doesn't sync to others
+      if (isJamHost) return; // Host doesn't sync to others
 
-      // Switch to the synced song if different
+      // Immediate sync - switch to the synced song if different
       if (currentSong?._id !== song._id) {
         playAlbum([song], 0);
       }
 
-      // Sync position and playing state
+      // Real-time position and state sync
       setLocalPosition(position);
       if (jamIsPlaying !== isPlaying) {
-        // Don't trigger room updates when syncing
+        // Immediate playback state sync without delays
         const playerStore = usePlayerStore.getState();
         playerStore.togglePlay();
       }
+
+      // Force audio element sync for precise timing
+      const audio = document.querySelector("audio");
+      if (audio && Math.abs(audio.currentTime - position) > 1) {
+        audio.currentTime = position;
+      }
+    };
+
+    const handlePeriodicSync = (event: CustomEvent) => {
+      const { position } = event.detail;
+
+      if (isJamHost || isDragging) return; // Don't sync when host or dragging
+
+      // Continuous position sync for smooth playback
+      const audio = document.querySelector("audio");
+      if (audio && Math.abs(audio.currentTime - position) > 2) {
+        // Only adjust if significantly out of sync (2 seconds)
+        audio.currentTime = position;
+      }
+
+      setLocalPosition(position);
     };
 
     window.addEventListener("jamSync", handleJamSync as EventListener);
+    window.addEventListener(
+      "periodicSync",
+      handlePeriodicSync as EventListener
+    );
+
     return () => {
       window.removeEventListener("jamSync", handleJamSync as EventListener);
+      window.removeEventListener(
+        "periodicSync",
+        handlePeriodicSync as EventListener
+      );
     };
-  }, [syncEnabled, currentSong, isPlaying, playAlbum, isJamHost]);
+  }, [currentSong, isPlaying, playAlbum, isJamHost, isDragging]);
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
@@ -95,11 +124,11 @@ const LiveJamControls = () => {
 
   if (!isJamSession) {
     return (
-      <div className="bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-purple-500/30 rounded-xl p-4 mb-4">
+      <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-4 mb-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-full flex items-center justify-center">
-              <Radio className="w-5 h-5 text-purple-400" />
+            <div className="w-10 h-10 bg-red-500/20 rounded-full flex items-center justify-center mx-auto">
+              <Radio className="w-5 h-5 text-red-400" />
             </div>
             <div>
               <h3 className="text-white font-semibold text-sm">
@@ -112,7 +141,7 @@ const LiveJamControls = () => {
           </div>
           <Button
             onClick={startJamSession}
-            className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-400 hover:to-pink-400 text-white rounded-xl"
+            className="bg-red-600 hover:bg-red-500 text-white rounded-xl shadow-[0_0_10px_rgba(255,0,51,0.35)]"
             size="sm"
           >
             <Radio className="w-4 h-4 mr-2" />
@@ -124,7 +153,7 @@ const LiveJamControls = () => {
   }
 
   return (
-    <div className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-500/50 rounded-xl p-3 md:p-4 mb-4 backdrop-blur-sm">
+    <div className="bg-red-500/10 border border-red-500/40 rounded-xl p-3 md:p-4 mb-4 backdrop-blur-sm">
       {/* Jam Session Header */}
       <div className="flex items-center justify-between mb-3 md:mb-4">
         <div className="flex items-center gap-2">
@@ -133,21 +162,13 @@ const LiveJamControls = () => {
             LIVE JAM SESSION
           </span>
           {isJamHost && (
-            <div className="flex items-center gap-1 bg-yellow-500/20 px-2 py-1 rounded-full">
-              <Crown className="w-3 h-3 text-yellow-400" />
-              <span className="text-yellow-400 text-xs font-medium">HOST</span>
+            <div className="flex items-center gap-1 bg-red-500/20 px-2 py-1 rounded-full">
+              <Crown className="w-3 h-3 text-red-400" />
+              <span className="text-red-300 text-xs font-medium">HOST</span>
             </div>
           )}
         </div>
         <div className="flex items-center gap-2">
-          <div
-            className={`w-2 h-2 rounded-full ${
-              syncEnabled ? "bg-green-400 animate-pulse" : "bg-red-400"
-            }`}
-          ></div>
-          <span className="text-xs text-zinc-400 hidden md:inline">
-            {syncEnabled ? "Synced" : "Offline"}
-          </span>
           {isJamHost && (
             <Button
               onClick={stopJamSession}
@@ -179,8 +200,8 @@ const LiveJamControls = () => {
               </p>
             </div>
             <div className="flex items-center gap-2">
-              <Users className="w-4 h-4 text-purple-400" />
-              <span className="text-purple-300 text-sm font-medium">
+              <Users className="w-4 h-4 text-red-400" />
+              <span className="text-red-300 text-sm font-medium">
                 {sharedQueue.length} queued
               </span>
             </div>
@@ -195,7 +216,7 @@ const LiveJamControls = () => {
               onPointerUp={handleSliderEnd}
               max={currentSharedSong.duration || 180}
               step={1}
-              className="w-full [&_[role=slider]]:bg-gradient-to-r [&_[role=slider]]:from-purple-500 [&_[role=slider]]:to-pink-500 [&_[role=slider]]:border-0 [&_[role=slider]]:shadow-lg [&>span:first-child]:bg-gradient-to-r [&>span:first-child]:from-purple-400/30 [&>span:first-child]:to-pink-400/30 [&_[role=slider]:focus-visible]:ring-purple-500/50 [&_[role=slider]]:hover:scale-110 [&_[role=slider]]:transition-transform disabled:[&_[role=slider]]:opacity-50"
+              className="w-full [&_[role=slider]]:bg-red-500 [&_[role=slider]]:border-0 [&_[role=slider]]:shadow-[0_0_10px_rgba(255,0,51,0.35)] [&>span:first-child]:bg-red-500/30 [&_[role=slider]:focus-visible]:ring-red-500/50 [&_[role=slider]]:hover:scale-110 [&_[role=slider]]:transition-transform disabled:[&_[role=slider]]:opacity-50"
               disabled={!isJamHost}
             />
             <div className="flex justify-between text-xs text-zinc-400">
@@ -234,7 +255,7 @@ const LiveJamControls = () => {
             }
           }}
           disabled={!isJamHost}
-          className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-400 hover:to-pink-400 rounded-full flex items-center justify-center shadow-lg transform hover:scale-105 transition-all duration-200 disabled:opacity-50"
+          className="w-10 h-10 md:w-12 md:h-12 bg-red-600 hover:bg-red-500 rounded-full flex items-center justify-center shadow-[0_0_10px_rgba(255,0,51,0.35)] transform hover:scale-105 transition-all duration-200 disabled:opacity-50"
         >
           {sharedIsPlaying ? (
             <Pause className="w-4 h-4 md:w-6 md:h-6 text-white" />
@@ -266,7 +287,7 @@ const LiveJamControls = () => {
       {sharedQueue.length > 0 && (
         <div className="mt-4 pt-4 border-t border-white/10">
           <div className="flex items-center gap-2 mb-2">
-            <Users className="w-4 h-4 text-purple-400" />
+            <Users className="w-4 h-4 text-red-400" />
             <span className="text-white font-medium text-sm">Shared Queue</span>
             <span className="text-zinc-400 text-xs">
               ({sharedQueue.length} songs)
@@ -297,7 +318,7 @@ const LiveJamControls = () => {
                     onClick={() => playSharedSong(song)}
                     variant="ghost"
                     size="sm"
-                    className="text-purple-400 hover:text-purple-300"
+                    className="text-red-400 hover:text-red-300"
                   >
                     <Play className="w-3 h-3" />
                   </Button>
@@ -317,13 +338,8 @@ const LiveJamControls = () => {
         <div className="mt-3 md:mt-4 pt-3 md:pt-4 border-t border-white/10">
           <div className="flex items-center gap-2 text-zinc-400 text-xs">
             <Crown className="w-3 h-3" />
-            <span className="hidden md:inline">
-              Host controls playback • You're synced automatically
-            </span>
-            <span className="md:hidden">Synced with host</span>
-            {syncEnabled && (
-              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse ml-auto"></div>
-            )}
+            <span className="hidden md:inline">Host controls playback</span>
+            <span className="md:hidden">Host mode</span>
           </div>
         </div>
       )}

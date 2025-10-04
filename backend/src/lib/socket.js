@@ -29,6 +29,21 @@ export const initializeSocket = (server) => {
     return code;
   };
 
+  // Periodic sync for jam sessions - more frequent updates
+  setInterval(() => {
+    rooms.forEach((room) => {
+      if (room.isJamSession && room.jamHost && room.currentSharedSong) {
+        // Send periodic sync updates to ensure all clients stay in sync
+        io.to(room.id).emit("periodic_sync", {
+          song: room.currentSharedSong,
+          position: room.sharedPosition,
+          isPlaying: room.sharedIsPlaying,
+          serverTime: Date.now(),
+        });
+      }
+    });
+  }, 2000); // Every 2 seconds for better sync
+
   io.on("connection", (socket) => {
     socket.on("user_connected", (userId) => {
       userSockets.set(userId, socket.id);
@@ -236,7 +251,7 @@ export const initializeSocket = (server) => {
         room.jamHost = user.user._id;
 
         // Notify all users in room
-        io.to(roomId).emit("jam_session_started", { hostId: user.user._id });
+        io.to(roomId).emit("jam_session_started");
         console.log(
           `Jam session started in room ${room.name} by ${user.user.fullName}`
         );
@@ -247,14 +262,30 @@ export const initializeSocket = (server) => {
 
     socket.on("stop_jam_session", ({ roomId }) => {
       try {
+        console.log("🛑 Stop jam session request received for room:", roomId);
         const room = rooms.get(roomId);
-        if (!room) return;
+        if (!room) {
+          console.log("❌ Room not found:", roomId);
+          return;
+        }
 
         // Check if user is the host
         const user = room.users.find(
           (u) => userSockets.get(u.user._id) === socket.id
         );
-        if (!user || room.jamHost !== user.user._id) return;
+        if (!user) {
+          console.log("❌ User not found in room");
+          return;
+        }
+        if (room.jamHost !== user.user._id) {
+          console.log(
+            "❌ User is not the jam host. Host:",
+            room.jamHost,
+            "User:",
+            user.user._id
+          );
+          return;
+        }
 
         room.isJamSession = false;
         room.jamHost = null;
@@ -276,7 +307,6 @@ export const initializeSocket = (server) => {
         try {
           const room = rooms.get(roomId);
           if (!room || !room.isJamSession) {
-            console.log("Sync failed: Room not found or not a jam session");
             return;
           }
 
@@ -285,31 +315,34 @@ export const initializeSocket = (server) => {
             (u) => userSockets.get(u.user._id) === socket.id
           );
           if (!user || room.jamHost !== user.user._id) {
-            console.log("Sync failed: User is not the jam host");
             return;
           }
 
-          // Update room state
+          // Update room state with precise timestamp for sync
           room.currentSharedSong = song;
           room.sharedPosition = position;
           room.sharedIsPlaying = isPlaying;
+          const syncTimestamp = Date.now();
 
-          // Broadcast to all other users in room
+          // Immediate broadcast to all other users in room with accurate timing
           socket.to(roomId).emit("shared_playback_sync", {
             song,
             position,
             isPlaying,
-            timestamp,
+            timestamp: syncTimestamp,
+            serverTime: syncTimestamp, // Add server time for better sync
           });
 
-          console.log(
-            `🎵 Playback synced in room ${room.name}: ${
-              song?.title || "stopped"
-            } - Playing: ${isPlaying}`
+          // Also update the user's own state in the room
+          const userIndex = room.users.findIndex(
+            (u) => u.user._id === user.user._id
           );
-          console.log(
-            `📡 Broadcasting to ${room.users.length - 1} other users`
-          );
+          if (userIndex !== -1) {
+            room.users[userIndex].currentSong = song;
+            room.users[userIndex].isPlaying = isPlaying;
+            room.users[userIndex].position = position;
+            room.users[userIndex].lastUpdateTime = syncTimestamp;
+          }
         } catch (error) {
           console.error("Error syncing playback:", error);
         }

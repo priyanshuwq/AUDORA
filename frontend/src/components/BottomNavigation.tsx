@@ -13,7 +13,7 @@ const BottomNavigation = () => {
   ];
 
   return (
-    <div className="md:hidden fixed bottom-20 left-0 right-0 bg-black/80 backdrop-blur-xl border-t border-white/10 px-4 py-2">
+    <div className="md:hidden fixed bottom-0 left-0 right-0 bg-zinc-950/95 backdrop-blur-xl border-t border-white/10 px-4 py-3 z-40">
       <div className="flex justify-around items-center">
         {navItems.map((item) => {
           const Icon = item.icon;
@@ -26,11 +26,11 @@ const BottomNavigation = () => {
               className={cn(
                 "flex flex-col items-center gap-1 px-4 py-2 rounded-xl transition-all duration-200",
                 isActive
-                  ? "text-purple-400 bg-purple-500/20"
+                  ? "text-red-400 bg-red-500/15"
                   : "text-zinc-500 hover:text-white hover:bg-white/5"
               )}
             >
-              <Icon className={cn("size-5", isActive && "text-purple-400")} />
+              <Icon className={cn("size-5", isActive && "text-red-400")} />
               <span className="text-xs font-medium">{item.label}</span>
             </Link>
           );

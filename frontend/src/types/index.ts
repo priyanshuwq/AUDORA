@@ -32,3 +32,11 @@ export interface User {
   fullName: string;
   imageUrl: string;
 }
+
+export interface SearchResponse {
+  songs: Song[];
+  totalPages: number;
+  currentPage: number;
+  totalSongs: number;
+  hasMore: boolean;
+}

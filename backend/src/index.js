@@ -18,7 +18,17 @@ import songRoutes from "./routes/song.route.js";
 import albumRoutes from "./routes/album.route.js";
 import statRoutes from "./routes/stat.route.js";
 
-dotenv.config();
+// Load environment variables
+dotenv.config({ path: path.resolve(process.cwd(), ".env") });
+
+// Debug environment variables
+console.log("Environment loaded:");
+console.log("- PORT:", process.env.PORT);
+console.log(
+  "- MONGODB_URI:",
+  process.env.MONGODB_URI ? "✓ Loaded" : "✗ Missing"
+);
+console.log("- NODE_ENV:", process.env.NODE_ENV);
 
 const __dirname = path.resolve();
 const app = express();
@@ -27,22 +37,34 @@ const PORT = process.env.PORT;
 const httpServer = createServer(app);
 initializeSocket(httpServer);
 
+// CORS
 app.use(
   cors({
-    origin: ["http://localhost:5173", "http://localhost:5174", "http://localhost:3000"],
+    origin: [
+      "http://localhost:5173",
+      "http://localhost:5174",
+      "http://localhost:3000",
+    ],
     credentials: true,
+    allowedHeaders: ["Authorization", "Content-Type", "Accept", "Origin"],
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
   })
 );
 
-app.use(express.json()); // to parse req.body
-app.use(clerkMiddleware()); // this will add auth to req obj => req.auth
+// Body parser
+app.use(express.json());
+
+// Clerk (adds req.auth)
+app.use(clerkMiddleware());
+
+// File uploads
 app.use(
   fileUpload({
     useTempFiles: true,
-    tempFileDir: path.join(__dirname, "tmp"),
+    tempFileDir: path.join(process.cwd(), "tmp"),
     createParentPath: true,
     limits: {
-      fileSize: 10 * 1024 * 1024, // 10MB  max file size
+      fileSize: 10 * 1024 * 1024, // 10MB max file size
     },
   })
 );
@@ -63,7 +85,7 @@ cron.schedule("0 * * * *", () => {
   }
 });
 
-// Serve static files from frontend public directory  
+// Serve static files from frontend public directory
 const publicPath = path.join(process.cwd(), "../frontend/public");
 app.use(express.static(publicPath));
 
@@ -83,14 +105,12 @@ if (process.env.NODE_ENV === "production") {
 
 // error handler
 app.use((err, req, res, next) => {
-  res
-    .status(500)
-    .json({
-      message:
-        process.env.NODE_ENV === "production"
-          ? "Internal server error"
-          : err.message,
-    });
+  res.status(500).json({
+    message:
+      process.env.NODE_ENV === "production"
+        ? "Internal server error"
+        : err.message,
+  });
 });
 
 httpServer.listen(PORT, () => {

@@ -85,26 +85,26 @@ const HomePage = () => {
   };
 
   return (
-    <main className="rounded-xl overflow-hidden h-full bg-gradient-to-br from-[#1C1B29]/80 to-[#0D0C1D]/80 backdrop-blur-sm flex flex-col">
+    <main className="rounded-none sm:rounded-xl overflow-hidden h-full bg-zinc-950/90 backdrop-blur-sm flex flex-col mb-32 md:mb-0">
       <Topbar />
       <ScrollArea className="flex-1 overflow-y-auto">
-        <div className="p-6 space-y-8">
-          <div className="mb-8 animate-slideInFromTop">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 bg-gradient-to-r from-white via-purple-200 to-pink-200 bg-clip-text text-transparent animate-shimmerText">
+        <div className="p-3 sm:p-4 md:p-6 space-y-6 sm:space-y-8">
+          <div className="mb-6 sm:mb-8 animate-slideInFromTop">
+            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold mb-2 sm:mb-3 tracking-normal text-white">
               {getGreeting()}
             </h1>
             <p
-              className="text-base sm:text-lg text-zinc-400 animate-fadeInUp"
+              className="text-sm sm:text-base text-zinc-400 animate-fadeInUp"
               style={{ animationDelay: "0.2s" }}
             >
               {getGreetingSubtext()}
             </p>
             <div
-              className="mt-4 flex items-center gap-2 animate-fadeInUp"
+              className="mt-3 sm:mt-4 flex items-center gap-2 animate-fadeInUp"
               style={{ animationDelay: "0.4s" }}
             >
-              <div className="w-2 h-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full animate-pulse"></div>
-              <span className="text-sm text-purple-300">
+              <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-red-500 rounded-full animate-pulse"></div>
+              <span className="text-xs sm:text-sm text-red-300 tracking-normal">
                 Discover • Enjoy • Share
               </span>
             </div>
@@ -112,7 +112,7 @@ const HomePage = () => {
 
           <FeaturedSection />
 
-          <div className="space-y-10">
+          <div className="space-y-6 sm:space-y-8 md:space-y-10">
             <SectionGrid
               title="Made For You"
               songs={madeForYouSongs}
