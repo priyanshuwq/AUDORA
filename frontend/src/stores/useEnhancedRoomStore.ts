@@ -225,22 +225,36 @@ export const useEnhancedRoomStore = create<RoomStore>((set, get) => ({
         position: number;
         isPlaying: boolean;
         timestamp: number;
+        serverTime?: number;
       }) => {
         const currentState = get();
-        if (currentState.syncEnabled && !currentState.isJamHost) {
+        if (!currentState.isJamHost) {
           set({
             currentSharedSong: data.song,
             sharedPosition: data.position,
             sharedIsPlaying: data.isPlaying,
           });
 
-          // Update player store to sync with jam session
+          // Immediate sync without delays
           import("./usePlayerStore").then(({ usePlayerStore }) => {
-            // Update playing state without triggering sync loop
+            const playerStore = usePlayerStore.getState();
+
+            // Switch song if different
+            if (playerStore.currentSong?._id !== data.song._id) {
+              playerStore.playAlbum([data.song], 0);
+            }
+
+            // Immediate state sync
             usePlayerStore.setState({
               isPlaying: data.isPlaying,
               currentSong: data.song,
             });
+
+            // Force audio element sync for precise timing
+            const audio = document.querySelector("audio");
+            if (audio && Math.abs(audio.currentTime - data.position) > 1) {
+              audio.currentTime = data.position;
+            }
           });
 
           // Trigger custom event for audio player to sync
@@ -262,6 +276,38 @@ export const useEnhancedRoomStore = create<RoomStore>((set, get) => ({
             data.isPlaying,
             "at position:",
             data.position
+          );
+        }
+      }
+    );
+
+    // Handle periodic sync updates for continuous synchronization
+    socket.on(
+      "periodic_sync",
+      (data: {
+        song: Song;
+        position: number;
+        isPlaying: boolean;
+        serverTime: number;
+      }) => {
+        const currentState = get();
+        if (!currentState.isJamHost && currentState.isJamSession) {
+          // Update shared position for continuous sync
+          set({
+            sharedPosition: data.position,
+            sharedIsPlaying: data.isPlaying,
+          });
+
+          // Emit event for LiveJamControls to handle fine-tuned sync
+          window.dispatchEvent(
+            new CustomEvent("periodicSync", {
+              detail: {
+                song: data.song,
+                position: data.position,
+                isPlaying: data.isPlaying,
+                serverTime: data.serverTime,
+              },
+            })
           );
         }
       }

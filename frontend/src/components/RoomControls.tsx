@@ -64,10 +64,10 @@ const RoomControls = () => {
 
   if (!isSignedIn) {
     return (
-      <div className="bg-black/30 backdrop-blur-sm border border-white/10 rounded-2xl p-4 text-center shadow-xl">
+      <div className="bg-zinc-900/60 backdrop-blur-sm border border-red-500/30 rounded-2xl p-4 text-center shadow-[0_0_30px_rgba(255,0,51,0.08)]">
         <div className="space-y-3">
-          <div className="w-12 h-12 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-full flex items-center justify-center mx-auto">
-            <DoorOpen className="w-6 h-6 text-purple-400" />
+          <div className="w-12 h-12 bg-red-500/10 rounded-full flex items-center justify-center mx-auto">
+            <DoorOpen className="w-6 h-6 text-red-400" />
           </div>
           <div>
             <h3 className="text-white font-semibold text-sm">Join Jam Rooms</h3>
@@ -78,7 +78,7 @@ const RoomControls = () => {
           <SignInButton mode="modal">
             <Button
               size="sm"
-              className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-400 hover:to-pink-400 text-white font-medium rounded-xl shadow-lg"
+              className="w-full bg-red-600 hover:bg-red-500 text-white font-medium rounded-xl shadow-[0_0_20px_rgba(255,0,51,0.2)]"
             >
               Login to Join Rooms
             </Button>
@@ -95,14 +95,16 @@ const RoomControls = () => {
         <DialogTrigger asChild>
           <Button
             variant="ghost"
-            className="w-full justify-start text-white hover:bg-purple-500/20 hover:text-purple-300 transition-all duration-200 rounded-xl"
+            className="w-full justify-start text-white hover:bg-red-500/15 hover:text-red-300 transition-all duration-200 rounded-xl"
             onClick={() => !isConnected && initSocket()}
           >
-            <Plus className="mr-3 size-4 text-purple-400" />
-            <span className="hidden md:inline font-medium">Create Room</span>
+            <Plus className="mr-3 size-4 text-red-400" />
+            <span className="hidden md:inline font-medium tracking-wide">
+              Create Room
+            </span>
           </Button>
         </DialogTrigger>
-        <DialogContent className="bg-gradient-to-br from-[#1C1B29] to-[#0D0C1D] border border-white/20 rounded-2xl backdrop-blur-xl">
+        <DialogContent className="bg-zinc-950 border border-white/10 rounded-2xl backdrop-blur-xl">
           <DialogHeader>
             <DialogTitle className="text-white text-xl font-bold">
               Create Jam Room
@@ -117,7 +119,7 @@ const RoomControls = () => {
                 placeholder="Enter room name..."
                 value={roomName}
                 onChange={(e) => setRoomName(e.target.value)}
-                className="bg-black/30 border-white/20 text-white placeholder:text-zinc-500 rounded-xl focus:border-purple-500/50"
+                className="bg-black/30 border-white/20 text-white placeholder:text-zinc-500 rounded-xl focus:border-red-500/50"
                 disabled={isLoading}
               />
             </div>
@@ -133,7 +135,7 @@ const RoomControls = () => {
               <Button
                 onClick={handleCreateRoom}
                 disabled={!roomName.trim() || isLoading}
-                className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-400 hover:to-pink-400 rounded-xl shadow-lg"
+                className="flex-1 bg-red-600 hover:bg-red-500 rounded-xl shadow-[0_0_20px_rgba(255,0,51,0.2)]"
               >
                 {isLoading ? (
                   <>
@@ -154,14 +156,16 @@ const RoomControls = () => {
         <DialogTrigger asChild>
           <Button
             variant="ghost"
-            className="w-full justify-start text-white hover:bg-purple-500/20 hover:text-purple-300 transition-all duration-200 rounded-xl"
+            className="w-full justify-start text-white hover:bg-red-500/15 hover:text-red-300 transition-all duration-200 rounded-xl"
             onClick={() => !isConnected && initSocket()}
           >
-            <DoorOpen className="mr-3 size-4 text-purple-400" />
-            <span className="hidden md:inline font-medium">Join Room</span>
+            <DoorOpen className="mr-3 size-4 text-red-400" />
+            <span className="hidden md:inline font-medium tracking-wide">
+              Join Room
+            </span>
           </Button>
         </DialogTrigger>
-        <DialogContent className="bg-gradient-to-br from-[#1C1B29] to-[#0D0C1D] border border-white/20 rounded-2xl backdrop-blur-xl">
+        <DialogContent className="bg-zinc-950 border border-white/10 rounded-2xl backdrop-blur-xl">
           <DialogHeader>
             <DialogTitle className="text-white text-xl font-bold">
               Join Jam Room
@@ -181,7 +185,7 @@ const RoomControls = () => {
                     .slice(0, 4);
                   setRoomCode(value);
                 }}
-                className="bg-black/30 border-white/20 text-white text-center text-lg tracking-wider placeholder:text-zinc-500 rounded-xl focus:border-purple-500/50"
+                className="bg-black/30 border-white/20 text-white text-center text-lg tracking-wider placeholder:text-zinc-500 rounded-xl focus:border-red-500/50"
                 disabled={isLoading}
                 maxLength={4}
               />
@@ -198,7 +202,7 @@ const RoomControls = () => {
               <Button
                 onClick={handleJoinRoom}
                 disabled={roomCode.length !== 4 || isLoading}
-                className="flex-1 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-400 hover:to-emerald-400 rounded-xl shadow-lg"
+                className="flex-1 bg-red-600 hover:bg-red-500 rounded-xl shadow-[0_0_20px_rgba(255,0,51,0.2)]"
               >
                 {isLoading ? (
                   <>
