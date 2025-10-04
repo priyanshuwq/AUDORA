@@ -1,17 +1,19 @@
+@import "./styles/animations.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
-    --primary: 142.1 76.2% 36.3%;
-    --primary-foreground: 355.7 100% 97.3%;
+    --background: 0 0% 0%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 6%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 6%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 350 100% 50%; /* red */
+    --primary-foreground: 0 0% 98%;
     --secondary: 240 4.8% 95.9%;
     --secondary-foreground: 240 5.9% 10%;
     --muted: 240 4.8% 95.9%;
@@ -22,7 +24,7 @@
     --destructive-foreground: 0 0% 98%;
     --border: 240 5.9% 90%;
     --input: 240 5.9% 90%;
-    --ring: 142.1 76.2% 36.3%;
+    --ring: 350 100% 45%;
     --radius: 0.5rem;
     --chart-1: 12 76% 61%;
     --chart-2: 173 58% 39%;
@@ -32,30 +34,30 @@
   }
 
   .dark {
-    --background: 20 14.3% 4.1%;
-    --foreground: 0 0% 95%;
-    --card: 24 9.8% 10%;
-    --card-foreground: 0 0% 95%;
-    --popover: 0 0% 9%;
-    --popover-foreground: 0 0% 95%;
-    --primary: 142.1 70.6% 45.3%;
-    --primary-foreground: 144.9 80.4% 10%;
-    --secondary: 240 3.7% 15.9%;
+    --background: 0 0% 0%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 0%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 6%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 350 100% 50%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 12%;
     --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 15%;
-    --muted-foreground: 240 5% 64.9%;
-    --accent: 12 6.5% 15.1%;
+    --muted: 0 0% 10%;
+    --muted-foreground: 0 0% 60%;
+    --accent: 0 0% 12%;
     --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 85.7% 97.3%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 142.4 71.8% 29.2%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
+    --destructive: 350 100% 40%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 15%;
+    --input: 0 0% 15%;
+    --ring: 350 100% 45%;
+    --chart-1: 350 80% 55%;
+    --chart-2: 350 60% 45%;
+    --chart-3: 350 70% 40%;
+    --chart-4: 350 65% 60%;
+    --chart-5: 350 75% 55%;
   }
 }
 
@@ -65,6 +67,12 @@
   }
   body {
     @apply bg-background text-foreground;
+    background-color: #000000;
+  }
+  /* Nothing OS vibe typography helper */
+  .nothing-wide {
+    letter-spacing: 0.12em;
+    font-weight: 600;
   }
 }
 
@@ -175,11 +183,38 @@
 @keyframes glow {
   0%,
   100% {
-    box-shadow: 0 0 5px rgba(168, 85, 247, 0.4);
+    box-shadow: 0 0 3px rgba(168, 85, 247, 0.12);
   }
   50% {
-    box-shadow: 0 0 20px rgba(168, 85, 247, 0.8),
-      0 0 30px rgba(236, 72, 153, 0.5);
+    box-shadow: 0 0 10px rgba(168, 85, 247, 0.22),
+      0 0 12px rgba(236, 72, 153, 0.12);
+  }
+}
+
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spin-normal {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spin-fast {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
   }
 }
 
@@ -233,6 +268,18 @@
   animation: glow 2s ease-in-out infinite;
 }
 
+.animate-spin-slow {
+  animation: spin-slow 4s linear infinite;
+}
+
+.animate-spin-normal {
+  animation: spin-normal 2s linear infinite;
+}
+
+.animate-spin-fast {
+  animation: spin-fast 1s linear infinite;
+}
+
 /* Responsive utility classes */
 @media (max-width: 768px) {
   .mobile-hidden {
@@ -248,6 +295,13 @@
   }
 }
 
+/* Custom font classes */
+.audora-font {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif;
+  letter-spacing: 0.5px;
+}
+
 /* Global responsive improvements */
 .container-responsive {
   @apply px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto;
@@ -259,4 +313,43 @@
 
 .button-responsive {
   @apply px-3 py-2 sm:px-4 sm:py-2 lg:px-6 lg:py-3;
+}
+
+/* Mobile-specific improvements */
+@media (max-width: 768px) {
+  .mobile-safe-area {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  .mobile-scroll {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .mobile-tap-highlight {
+    -webkit-tap-highlight-color: rgba(239, 68, 68, 0.1);
+  }
+}
+
+/* Improved touch targets for mobile */
+@media (max-width: 768px) {
+  button,
+  [role="button"],
+  input[type="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* Better mobile typography */
+@media (max-width: 640px) {
+  .mobile-text-scale {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+
+  .mobile-title-scale {
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
 }
