@@ -12,9 +12,12 @@ const FeaturedSection = () => {
 
   return (
     <div>
-      <h2 className="text-2xl font-bold mb-6 text-white tracking-widest">
-        Daily Mix
-      </h2>
+      <div className="mb-4">
+        <h2 className="text-2xl sm:text-3xl font-extrabold mb-1 bg-gradient-to-r from-white via-red-200 to-red-400 bg-clip-text text-transparent tracking-wide sm:tracking-widest">
+          Daily Mix
+        </h2>
+        <div className="h-1 w-16 rounded bg-red-600 mb-2" />
+      </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-8">
         {featuredSongs.map((song) => (
           <GlassCard
