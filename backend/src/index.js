@@ -2,6 +2,8 @@ import express from "express";
 import dotenv from "dotenv";
 import { clerkMiddleware } from "@clerk/express";
 import fileUpload from "express-fileupload";
+import helmet from "helmet";
+import rateLimit from "express-rate-limit";
 import path from "path";
 import cors from "cors";
 import fs from "fs";
@@ -38,18 +40,40 @@ const httpServer = createServer(app);
 initializeSocket(httpServer);
 
 // CORS
+// Configure allowed origins via env var for production. Defaults include local dev hosts.
+const allowedOrigins = (process.env.FRONTEND_ORIGINS ||
+  "http://localhost:5173,http://localhost:5174,http://localhost:3000"
+)
+  .split(",")
+  .map((o) => o.trim())
+  .filter(Boolean);
+
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      "http://localhost:5174",
-      "http://localhost:3000",
-    ],
+    origin: (origin, callback) => {
+      // Allow non-browser requests (e.g. curl, server-to-server) when origin is undefined
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) return callback(null, true);
+      return callback(new Error("CORS origin not allowed"), false);
+    },
     credentials: true,
     allowedHeaders: ["Authorization", "Content-Type", "Accept", "Origin"],
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
   })
 );
+
+// Basic security headers
+app.use(helmet());
+
+// Rate limiting for API routes (adjust via env if needed)
+const apiLimiter = rateLimit({
+  windowMs: Number(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000, // 15 minutes
+  max: Number(process.env.RATE_LIMIT_MAX) || 200,
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+app.use('/api/', apiLimiter);
 
 // Body parser
 app.use(express.json());
