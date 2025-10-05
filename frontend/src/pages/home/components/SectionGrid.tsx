@@ -14,9 +14,12 @@ const SectionGrid = ({ songs, title, isLoading }: SectionGridProps) => {
   return (
     <div className="mb-6 sm:mb-8 md:mb-10">
       <div className="flex items-center justify-start mb-4 sm:mb-6">
-        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white tracking-wide sm:tracking-widest">
-          {title}
-        </h2>
+        <div>
+          <h2 className="text-2xl sm:text-3xl font-extrabold mb-1 bg-gradient-to-r from-white via-red-200 to-red-400 bg-clip-text text-transparent">
+            {title}
+          </h2>
+          <div className="h-1 w-16 rounded bg-red-600 mb-2" />
+        </div>
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4 md:gap-6">
