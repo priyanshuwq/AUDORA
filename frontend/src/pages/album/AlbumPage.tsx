@@ -133,11 +133,11 @@ const AlbumPage = () => {
             </div>
 
             {/* Table Section */}
-            <div className="bg-black/40 backdrop-blur-xl border-t border-white/10 rounded-t-2xl">
+            <div className="bg-black/40 backdrop-blur-xl rounded-t-2xl">
               {/* table header */}
               <div
                 className="grid grid-cols-[16px_4fr_2fr_1fr] gap-4 px-10 py-4 text-sm 
-            text-zinc-400 border-b border-white/10"
+            text-zinc-400"
               >
                 <div>#</div>
                 <div>Title</div>
@@ -158,8 +158,7 @@ const AlbumPage = () => {
                         key={song._id}
                         onClick={() => handlePlaySong(index)}
                         className={`grid grid-cols-[16px_4fr_2fr_1fr] gap-4 px-4 py-2 text-sm 
-                      text-zinc-400 hover:bg-white/5 rounded-md group cursor-pointer
-                      `}
+                      text-zinc-400 rounded-lg bg-black/10 hover:bg-white/5 group cursor-pointer transition-all`}
                       >
                         <div className="flex items-center justify-center">
                           {isCurrentSong && isPlaying ? (
@@ -178,7 +177,7 @@ const AlbumPage = () => {
                           <img
                             src={song.imageUrl}
                             alt={song.title}
-                            className="size-10"
+                            className="size-10 rounded-md object-cover"
                           />
 
                           <div>
@@ -236,7 +235,6 @@ const AddSongDialog = ({ albumId, onAddSong, onClose }: AddSongDialogProps) => {
     try {
       await onAddSong(albumId, selectedSongId);
       onClose();
-      toast.success("Song added to album successfully");
     } catch (error) {
       console.error("Error adding song to album:", error);
     } finally {
@@ -245,7 +243,7 @@ const AddSongDialog = ({ albumId, onAddSong, onClose }: AddSongDialogProps) => {
   };
 
   return (
-    <DialogContent className="max-w-2xl bg-zinc-900 text-white border-zinc-800">
+    <DialogContent className="max-w-2xl bg-zinc-900 text-white">
       <DialogHeader>
         <DialogTitle className="text-xl font-bold text-white">
           Add Song to Album
@@ -262,7 +260,7 @@ const AddSongDialog = ({ albumId, onAddSong, onClose }: AddSongDialogProps) => {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Search songs by title or artist"
-          className="w-full pl-10 pr-4 py-2 bg-zinc-800 border border-zinc-700 rounded-md text-white"
+          className="w-full pl-10 pr-4 py-2 bg-zinc-800 rounded-md text-white"
         />
       </div>
 
@@ -278,10 +276,8 @@ const AddSongDialog = ({ albumId, onAddSong, onClose }: AddSongDialogProps) => {
               <div
                 key={song._id}
                 onClick={() => setSelectedSongId(song._id)}
-                className={`flex items-center gap-3 p-2 rounded-md hover:bg-zinc-800 cursor-pointer transition-all ${
-                  selectedSongId === song._id
-                    ? "bg-zinc-800 border border-red-500/50"
-                    : ""
+                className={`flex items-center gap-3 p-2 rounded-lg hover:bg-zinc-800 cursor-pointer transition-all ${
+                  selectedSongId === song._id ? "bg-zinc-800" : ""
                 }`}
               >
                 <img

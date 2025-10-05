@@ -4,6 +4,7 @@ import { useMusicStore } from "@/stores/useMusicStore";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import PlayButton from "@/pages/home/components/PlayButton";
+import GlassCard from "@/components/ui/GlassCard";
 
 const LibraryPage = () => {
   const { albums, songs, fetchAlbums, fetchSongs } = useMusicStore();
@@ -34,26 +35,24 @@ const LibraryPage = () => {
             </h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4 md:gap-6">
               {albums.map((album) => (
-                <Link
-                  key={album._id}
-                  to={`/albums/${album._id}`}
-                  className="bg-black/20 backdrop-blur-sm border border-white/5 p-4 sm:p-6 rounded-2xl hover:bg-black/40 hover:border-red-500/20 transition-all duration-300 group cursor-pointer shadow-lg hover:shadow-xl hover:shadow-red-500/10 hover:scale-105"
-                >
-                  <div className="relative mb-4">
-                    <div className="aspect-square rounded-xl shadow-2xl overflow-hidden">
-                      <img
-                        src={album.imageUrl}
-                        alt={album.title}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                      />
+                <Link key={album._id} to={`/albums/${album._id}`}>
+                  <GlassCard className="p-4 sm:p-6">
+                    <div className="relative mb-4">
+                      <div className="aspect-square rounded-xl shadow-2xl overflow-hidden">
+                        <img
+                          src={album.imageUrl}
+                          alt={album.title}
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                        />
+                      </div>
                     </div>
-                  </div>
-                  <h3 className="font-semibold tracking-widest mb-2 truncate text-white group-hover:text-red-200 transition-colors">
-                    {album.title}
-                  </h3>
-                  <p className="text-sm text-zinc-500 truncate group-hover:text-zinc-400 transition-colors">
-                    {album.artist}
-                  </p>
+                    <h3 className="font-semibold tracking-widest mb-2 truncate text-white group-hover:text-red-200 transition-colors">
+                      {album.title}
+                    </h3>
+                    <p className="text-sm text-zinc-500 truncate group-hover:text-zinc-400 transition-colors">
+                      {album.artist}
+                    </p>
+                  </GlassCard>
                 </Link>
               ))}
             </div>
@@ -66,10 +65,7 @@ const LibraryPage = () => {
             </h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6">
               {songs.slice(0, 10).map((song) => (
-                <div
-                  key={song._id}
-                  className="bg-black/20 backdrop-blur-sm border border-white/5 p-4 sm:p-6 rounded-2xl hover:bg-black/40 hover:border-red-500/20 transition-all duration-300 group cursor-pointer shadow-lg hover:shadow-xl hover:shadow-red-500/10 hover:scale-105"
-                >
+                <GlassCard key={song._id}>
                   <div className="relative mb-4">
                     <div className="aspect-square rounded-xl shadow-2xl overflow-hidden">
                       <img
@@ -86,7 +82,7 @@ const LibraryPage = () => {
                   <p className="text-sm text-zinc-500 truncate group-hover:text-zinc-400 transition-colors">
                     {song.artist}
                   </p>
-                </div>
+                </GlassCard>
               ))}
             </div>
           </section>
@@ -97,7 +93,7 @@ const LibraryPage = () => {
               Quick Actions
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              <div className="bg-black/30 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-black/50 hover:border-red-500/30 transition-all duration-300 cursor-pointer shadow-xl hover:shadow-2xl hover:shadow-red-500/10">
+              <div className="bg-black/30 backdrop-blur-sm rounded-2xl p-6 hover:bg-black/50 transition-all duration-300 cursor-pointer shadow-xl hover:shadow-2xl hover:shadow-red-500/10">
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 bg-red-600 rounded-xl flex items-center justify-center shadow-[0_0_10px_rgba(255,0,51,0.35)]">
                     <span className="text-xl">❤️</span>
@@ -113,7 +109,7 @@ const LibraryPage = () => {
                 </div>
               </div>
 
-              <div className="bg-black/30 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-black/50 hover:border-red-500/30 transition-all duration-300 cursor-pointer shadow-xl hover:shadow-2xl hover:shadow-red-500/10">
+              <div className="bg-black/30 backdrop-blur-sm rounded-2xl p-6 hover:bg-black/50 transition-all duration-300 cursor-pointer shadow-xl hover:shadow-2xl hover:shadow-red-500/10">
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 bg-red-600 rounded-xl flex items-center justify-center shadow-[0_0_10px_rgba(255,0,51,0.35)]">
                     <span className="text-xl">📝</span>
@@ -127,7 +123,7 @@ const LibraryPage = () => {
                 </div>
               </div>
 
-              <div className="bg-black/30 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-black/50 hover:border-red-500/30 transition-all duration-300 cursor-pointer shadow-xl hover:shadow-2xl hover:shadow-red-500/10">
+              <div className="bg-black/30 backdrop-blur-sm rounded-2xl p-6 hover:bg-black/50 transition-all duration-300 cursor-pointer shadow-xl hover:shadow-2xl hover:shadow-red-500/10">
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-500 rounded-xl flex items-center justify-center">
                     <span className="text-xl">📥</span>
