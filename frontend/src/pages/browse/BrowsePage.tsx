@@ -251,16 +251,16 @@ const BrowsePage = () => {
                     <div className="relative group">
                       {/* Search container */}
                       <div
-                        className={`relative bg-zinc-900/70 backdrop-blur-md border rounded-full transition-all duration-200 px-4 py-3 flex items-center ${
+                        className={`relative bg-zinc-900/70 backdrop-blur-md border border-zinc-700 focus-within:border-red-600 rounded-full transition-all duration-200 px-4 py-3 flex items-center ${
                           isSearchFocused
-                            ? "border-green-600/40 ring-1 ring-green-600/20 shadow-md"
-                            : "border-zinc-700/50 hover:border-zinc-600/60"
+                            ? "border-red-600/40 ring-1 ring-red-600/20"
+                            : "hover:border-zinc-600/60"
                         }`}
                       >
                         {/* Search icon */}
                         <div
                           className={`flex items-center pointer-events-none mr-3 ${
-                            isSearchFocused ? "text-green-400" : "text-zinc-400"
+                            isSearchFocused ? "text-red-400" : "text-zinc-400"
                           }`}
                         >
                           <Search
@@ -361,10 +361,11 @@ const BrowsePage = () => {
                 <TabsContent value="featured" className="mt-0">
                   <div className="space-y-8">
                     <div className="text-center py-4">
-                      <h2 className="text-3xl font-bold text-white mb-3 bg-gradient-to-r from-white to-red-200 bg-clip-text text-transparent">
+                      <h2 className="text-2xl sm:text-3xl font-extrabold mb-3 bg-gradient-to-r from-white via-red-200 to-red-400 bg-clip-text text-transparent">
                         Featured Songs
                       </h2>
-                      <p className="text-zinc-400">
+                      <div className="h-1 w-16 rounded bg-red-600 mx-auto sm:mx-0 mb-2" />
+                      <p className="text-white">
                         Hand-picked tracks just for you
                       </p>
                     </div>
@@ -433,10 +434,11 @@ const BrowsePage = () => {
                 <TabsContent value="trending" className="mt-0">
                   <div className="space-y-8">
                     <div className="text-center py-4">
-                      <h2 className="text-3xl font-bold text-white mb-3 bg-gradient-to-r from-white to-red-200 bg-clip-text text-transparent">
+                      <h2 className="text-2xl sm:text-3xl font-extrabold mb-3 bg-gradient-to-r from-white via-red-200 to-red-400 bg-clip-text text-transparent">
                         Trending Now
                       </h2>
-                      <p className="text-zinc-400">
+                      <div className="h-1 w-16 rounded bg-red-600 mx-auto sm:mx-0 mb-2" />
+                      <p className="text-white">
                         What everyone's listening to right now
                       </p>
                     </div>
@@ -511,12 +513,11 @@ const BrowsePage = () => {
                 <TabsContent value="for-you" className="mt-0">
                   <div className="space-y-8">
                     <div className="text-center py-4">
-                      <h2 className="text-3xl font-bold text-white mb-3 bg-gradient-to-r from-white to-red-200 bg-clip-text text-transparent">
+                      <h2 className="text-2xl sm:text-3xl font-extrabold mb-3 bg-gradient-to-r from-white via-red-200 to-red-400 bg-clip-text text-transparent">
                         Made For You
                       </h2>
-                      <p className="text-zinc-400">
-                        Personalized recommendations
-                      </p>
+                      <div className="h-1 w-16 rounded bg-red-600 mx-auto sm:mx-0 mb-2" />
+                      <p className="text-white">Personalized recommendations</p>
                     </div>
 
                     {musicStoreLoading ? (
@@ -589,10 +590,11 @@ const BrowsePage = () => {
                 <TabsContent value="recent" className="mt-0">
                   <div className="space-y-8">
                     <div className="text-center py-4">
-                      <h2 className="text-3xl font-bold text-white mb-3 bg-gradient-to-r from-white to-red-200 bg-clip-text text-transparent">
+                      <h2 className="text-2xl sm:text-3xl font-extrabold mb-3 bg-gradient-to-r from-white via-red-200 to-red-400 bg-clip-text text-transparent">
                         Recently Added
                       </h2>
-                      <p className="text-zinc-400">
+                      <div className="h-1 w-16 rounded bg-red-600 mx-auto sm:mx-0 mb-2" />
+                      <p className="text-white">
                         The newest additions to our collection
                       </p>
                     </div>
