@@ -7,6 +7,7 @@ interface VinylLogoProps {
   showText?: boolean;
   syncWithPlayer?: boolean;
   speed?: "slow" | "normal" | "fast";
+  textColor?: string;
 }
 
 const VinylLogo = ({
@@ -15,6 +16,7 @@ const VinylLogo = ({
   showText = true,
   syncWithPlayer = true,
   speed = "normal",
+  textColor,
 }: VinylLogoProps) => {
   const { isPlaying } = usePlayerStore();
 
@@ -27,11 +29,11 @@ const VinylLogo = ({
   };
 
   const textSizeClasses = {
-    sm: "text-lg",
-    md: "text-xl",
-    lg: "text-2xl",
-    xl: "text-3xl",
-    xxl: "text-4xl",
+    sm: "text-2xl",
+    md: "text-3xl",
+    lg: "text-4xl",
+    xl: "text-5xl",
+    xxl: "text-6xl",
   };
 
   const speedClasses = {
@@ -159,8 +161,14 @@ const VinylLogo = ({
       {showText && (
         <span
           className={cn(
-            "font-bold text-white audora-font uppercase",
-            textSizeClasses[size]
+            "font-extrabold audora-font uppercase tracking-tight",
+            // allow overriding text color via prop (e.g., text-red-400 on nav bar)
+            // default to red to make the brand name stand out; callers can override
+            textColor || "text-red-800",
+            textSizeClasses[size],
+            // subtle entrance + shimmer + glow, respect user's motion settings
+            "motion-safe:animate-shimmerText motion-safe:animate-glow motion-safe:animate-fadeInUp transition-transform duration-300",
+            "hover:scale-105"
           )}
         >
           AUDORA
