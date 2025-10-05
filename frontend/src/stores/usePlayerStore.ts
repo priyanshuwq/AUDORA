@@ -14,6 +14,8 @@ interface PlayerStore {
   togglePlay: () => void;
   playNext: () => void;
   playPrevious: () => void;
+  isFullscreenPlayer: boolean;
+  setIsFullscreenPlayer: (val: boolean) => void;
 }
 
 // Helper function to update room with current song
@@ -37,6 +39,7 @@ const getCurrentAudioPosition = (): number => {
 export const usePlayerStore = create<PlayerStore>((set, get) => ({
   currentSong: null,
   isPlaying: false,
+  isFullscreenPlayer: false,
   queue: [],
   currentIndex: -1,
 
@@ -185,4 +188,7 @@ export const usePlayerStore = create<PlayerStore>((set, get) => ({
       updateRoomSong(get().currentSong, false, getCurrentAudioPosition());
     }
   },
+
+  // fullscreen player toggle
+  setIsFullscreenPlayer: (val: boolean) => set({ isFullscreenPlayer: val }),
 }));
