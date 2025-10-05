@@ -7,6 +7,7 @@ import AlbumPage from "./pages/album/AlbumPage";
 import AdminPage from "./pages/admin/AdminPage";
 import BrowsePage from "./pages/browse/BrowsePage";
 import LibraryPage from "./pages/library/LibraryPage";
+import RoomsPage from "./pages/rooms/RoomsPage";
 
 import { Toaster } from "react-hot-toast";
 import NotFoundPage from "./pages/404/NotFoundPage";
@@ -41,7 +42,7 @@ function App() {
         <Route element={<MainLayout />}>
           <Route path="/" element={<HomePage />} />
           <Route path="/browse" element={<BrowsePage />} />
-          <Route path="/rooms" element={<HomePage />} />
+          <Route path="/rooms" element={<RoomsPage />} />
           <Route path="/library" element={<LibraryPage />} />
           <Route path="/albums/:albumId" element={<AlbumPage />} />
           <Route path="*" element={<NotFoundPage />} />
