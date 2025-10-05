@@ -86,6 +86,13 @@
   }
 }
 
+/* Force existing `text-zinc-400` usages to render white globally.
+   This is a small scoped override to avoid editing many components.
+*/
+[class*="text-zinc-400"] {
+  color: #ffffff !important;
+}
+
 /* Enhanced animations for better UI experience */
 @keyframes fadeInUp {
   from {
