@@ -8,8 +8,8 @@ interface RoomUser {
   currentSong: Song | null;
   isPlaying: boolean;
   timestamp: number;
-  position: number; // Current playback position in seconds
-  lastUpdateTime: number; // When position was last updated
+  position: number;
+  lastUpdateTime: number;
 }
 
 interface Room {
@@ -18,16 +18,15 @@ interface Room {
   name: string;
   users: RoomUser[];
   createdAt: string;
-  isJamSession: boolean; // Whether it's a collaborative jam session
-  jamHost: string | null; // User ID of the jam host
-  sharedQueue: Song[]; // Shared playlist queue
+  isJamSession: boolean;
+  jamHost: string | null;
+  sharedQueue: Song[];
   currentSharedSong: Song | null;
   sharedPosition: number;
   sharedIsPlaying: boolean;
 }
 
 interface RoomStore {
-  // State
   socket: Socket | null;
   isConnected: boolean;
   currentRoom: Room | null;
@@ -36,7 +35,6 @@ interface RoomStore {
   isLoading: boolean;
   error: string | null;
 
-  // Jam session state
   isJamSession: boolean;
   isJamHost: boolean;
   sharedQueue: Song[];
@@ -45,7 +43,6 @@ interface RoomStore {
   sharedIsPlaying: boolean;
   syncEnabled: boolean;
 
-  // Actions
   initSocket: () => void;
   disconnectSocket: () => void;
   createRoom: (
@@ -66,7 +63,6 @@ interface RoomStore {
     position?: number
   ) => void;
 
-  // Jam session actions
   startJamSession: () => void;
   stopJamSession: () => void;
   syncPlayback: (song: Song, position: number, isPlaying: boolean) => void;
@@ -80,7 +76,6 @@ interface RoomStore {
 }
 
 export const useEnhancedRoomStore = create<RoomStore>((set, get) => ({
-  // Initial state
   socket: null,
   isConnected: false,
   currentRoom: null,
@@ -89,7 +84,6 @@ export const useEnhancedRoomStore = create<RoomStore>((set, get) => ({
   isLoading: false,
   error: null,
 
-  // Jam session initial state
   isJamSession: false,
   isJamHost: false,
   sharedQueue: [],
@@ -98,10 +92,8 @@ export const useEnhancedRoomStore = create<RoomStore>((set, get) => ({
   sharedIsPlaying: false,
   syncEnabled: true,
 
-  // Initialize socket connection with enhanced events
   initSocket: () => {
     if (get().socket) return;
-
     const socket = io("http://localhost:8000", {
       autoConnect: true,
       withCredentials: true,
@@ -109,6 +101,9 @@ export const useEnhancedRoomStore = create<RoomStore>((set, get) => ({
 
     socket.on("connect", () => {
       set({ isConnected: true });
+      try {
+        (window as any).__USE_ENHANCED_ROOM_STORE__ = get();
+      } catch (e) {}
     });
 
     socket.on("disconnect", () => {
@@ -124,19 +119,20 @@ export const useEnhancedRoomStore = create<RoomStore>((set, get) => ({
       });
     });
 
-    // Existing room events
     socket.on("room_created", (data: { room: Room; code: string }) => {
-      const isHost = true;
       set({
         currentRoom: data.room,
         isInRoom: true,
         isLoading: false,
         isJamSession: data.room.isJamSession || false,
-        isJamHost: isHost,
+        isJamHost: true,
         sharedQueue: data.room.sharedQueue || [],
         currentSharedSong: data.room.currentSharedSong || null,
       });
       toast.success(`Room created! Code: ${data.code}`);
+      try {
+        (window as any).__USE_ENHANCED_ROOM_STORE__ = get();
+      } catch (e) {}
     });
 
     socket.on("room_joined", (data: { room: Room; isHost?: boolean }) => {
@@ -152,13 +148,17 @@ export const useEnhancedRoomStore = create<RoomStore>((set, get) => ({
         sharedPosition: data.room.sharedPosition || 0,
         sharedIsPlaying: data.room.sharedIsPlaying || false,
       });
+      try {
+        (window as any).__USE_ENHANCED_ROOM_STORE__ = get();
+      } catch (e) {}
       toast.success("Joined room successfully!");
     });
 
     socket.on("user_joined_room", (data: { user: RoomUser }) => {
-      set((state) => ({
-        joinedUsers: [...state.joinedUsers, data.user],
-      }));
+      set((state) => ({ joinedUsers: [...state.joinedUsers, data.user] }));
+      try {
+        (window as any).__USE_ENHANCED_ROOM_STORE__ = get();
+      } catch (e) {}
       toast.success(`${data.user.user.fullName} joined the room`);
     });
 
@@ -167,14 +167,16 @@ export const useEnhancedRoomStore = create<RoomStore>((set, get) => ({
       (data: { userId: string; userName: string }) => {
         set((state) => ({
           joinedUsers: state.joinedUsers.filter(
-            (user) => user.user._id !== data.userId
+            (u) => u.user._id !== data.userId
           ),
         }));
+        try {
+          (window as any).__USE_ENHANCED_ROOM_STORE__ = get();
+        } catch (e) {}
         toast(`${data.userName} left the room`);
       }
     );
 
-    // Enhanced song update with position sync
     socket.on(
       "user_song_update",
       (data: {
@@ -199,15 +201,16 @@ export const useEnhancedRoomStore = create<RoomStore>((set, get) => ({
               : user
           ),
         }));
+        try {
+          (window as any).__USE_ENHANCED_ROOM_STORE__ = get();
+        } catch (e) {}
       }
     );
 
-    // New jam session events
     socket.on("jam_session_started", () => {
       set({ isJamSession: true });
       toast.success("Jam session started! 🎵");
     });
-
     socket.on("jam_session_stopped", () => {
       set({
         isJamSession: false,
@@ -234,32 +237,20 @@ export const useEnhancedRoomStore = create<RoomStore>((set, get) => ({
             sharedPosition: data.position,
             sharedIsPlaying: data.isPlaying,
           });
-
-          // Immediate sync without delays
           import("./usePlayerStore").then(({ usePlayerStore }) => {
             const playerStore = usePlayerStore.getState();
-
-            // Switch song if different
-            if (playerStore.currentSong?._id !== data.song._id) {
+            if (playerStore.currentSong?._id !== data.song._id)
               playerStore.playAlbum([data.song], 0);
-            }
-
-            // Immediate state sync
             usePlayerStore.setState({
               isPlaying: data.isPlaying,
               currentSong: data.song,
             });
-
-            // Force audio element sync for precise timing
             const audio = document.querySelector("audio");
-            if (audio && Math.abs(audio.currentTime - data.position) > 1) {
+            if (audio && Math.abs(audio.currentTime - data.position) > 1)
               audio.currentTime = data.position;
-            }
           });
-
-          // Trigger custom event for audio player to sync
           window.dispatchEvent(
-            new CustomEvent("room-sync", {
+            new CustomEvent("jamSync", {
               detail: {
                 song: data.song,
                 position: data.position,
@@ -268,7 +259,6 @@ export const useEnhancedRoomStore = create<RoomStore>((set, get) => ({
               },
             })
           );
-
           console.log(
             "🎵 Sync received:",
             data.song.title,
@@ -281,7 +271,6 @@ export const useEnhancedRoomStore = create<RoomStore>((set, get) => ({
       }
     );
 
-    // Handle periodic sync updates for continuous synchronization
     socket.on(
       "periodic_sync",
       (data: {
@@ -292,22 +281,12 @@ export const useEnhancedRoomStore = create<RoomStore>((set, get) => ({
       }) => {
         const currentState = get();
         if (!currentState.isJamHost && currentState.isJamSession) {
-          // Update shared position for continuous sync
           set({
             sharedPosition: data.position,
             sharedIsPlaying: data.isPlaying,
           });
-
-          // Emit event for LiveJamControls to handle fine-tuned sync
           window.dispatchEvent(
-            new CustomEvent("periodicSync", {
-              detail: {
-                song: data.song,
-                position: data.position,
-                isPlaying: data.isPlaying,
-                serverTime: data.serverTime,
-              },
-            })
+            new CustomEvent("periodicSync", { detail: data })
           );
         }
       }
@@ -316,7 +295,6 @@ export const useEnhancedRoomStore = create<RoomStore>((set, get) => ({
     socket.on("shared_queue_updated", (data: { queue: Song[] }) => {
       set({ sharedQueue: data.queue });
     });
-
     socket.on("room_error", (data: { message: string }) => {
       set({ error: data.message, isLoading: false });
       toast.error(data.message);
@@ -325,7 +303,6 @@ export const useEnhancedRoomStore = create<RoomStore>((set, get) => ({
     set({ socket });
   },
 
-  // Disconnect socket
   disconnectSocket: () => {
     const { socket } = get();
     if (socket) {
@@ -344,7 +321,6 @@ export const useEnhancedRoomStore = create<RoomStore>((set, get) => ({
     }
   },
 
-  // Enhanced create room with jam session option
   createRoom: async (
     roomName: string,
     userId: string,
@@ -353,61 +329,48 @@ export const useEnhancedRoomStore = create<RoomStore>((set, get) => ({
   ) => {
     const { socket } = get();
     if (!socket) return null;
-
     set({ isLoading: true, error: null });
-
     return new Promise((resolve) => {
       const timeout = setTimeout(() => {
         set({ isLoading: false });
         resolve(null);
       }, 5000);
-
       socket.once("room_created", (data: { room: Room; code: string }) => {
         clearTimeout(timeout);
         resolve(data.code);
       });
-
       socket.once("room_error", () => {
         clearTimeout(timeout);
         resolve(null);
       });
-
       socket.emit("create_room", { roomName, userId, userName, isJamSession });
     });
   },
 
-  // Join room (unchanged)
   joinRoom: async (code: string, userId: string, userName: string) => {
     const { socket } = get();
     if (!socket) return false;
-
     set({ isLoading: true, error: null });
-
     return new Promise((resolve) => {
       const timeout = setTimeout(() => {
         set({ isLoading: false });
         resolve(false);
       }, 5000);
-
       socket.once("room_joined", () => {
         clearTimeout(timeout);
         resolve(true);
       });
-
       socket.once("room_error", () => {
         clearTimeout(timeout);
         resolve(false);
       });
-
       socket.emit("join_room", { code, userId, userName });
     });
   },
 
-  // Leave room
   leaveRoom: () => {
     const { socket, currentRoom } = get();
     if (!socket || !currentRoom) return;
-
     socket.emit("leave_room", { roomId: currentRoom.id });
     set({
       isInRoom: false,
