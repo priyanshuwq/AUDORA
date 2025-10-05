@@ -39,15 +39,16 @@ const HomePage = () => {
 
   const { user } = useUser();
 
-  const getGreeting = () => {
+  const getSalutation = () => {
     const hour = new Date().getHours();
-    const firstName =
-      user?.firstName || user?.fullName?.split(" ")[0] || "there";
+    if (hour >= 5 && hour < 12) return `Good morning`;
+    if (hour >= 12 && hour < 17) return `Good afternoon`;
+    if (hour >= 17 && hour < 22) return `Good evening`;
+    return `Good night`;
+  };
 
-    if (hour >= 5 && hour < 12) return `Good Morning, ${firstName}`;
-    if (hour >= 12 && hour < 17) return `Good Afternoon, ${firstName}`;
-    if (hour >= 17 && hour < 22) return `Good Evening, ${firstName}`;
-    return `Good Night, ${firstName}`;
+  const getUserName = () => {
+    return user?.firstName || user?.fullName?.split(" ")[0] || "there";
   };
 
   const getGreetingSubtext = () => {
@@ -90,11 +91,16 @@ const HomePage = () => {
       <ScrollArea className="flex-1 overflow-y-auto">
         <div className="p-3 sm:p-4 md:p-6 space-y-6 sm:space-y-8">
           <div className="mb-6 sm:mb-8 animate-slideInFromTop">
-            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold mb-2 sm:mb-3 tracking-normal text-white">
-              {getGreeting()}
+            <h1 className="mb-2 sm:mb-3">
+              <span className="block text-2xl sm:text-3xl md:text-4xl lg:text-4xl font-semibold text-zinc-200">
+                {getSalutation()}
+              </span>
+              <span className="block text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold mt-1 bg-gradient-to-r from-red-300 via-red-200 to-white bg-clip-text text-transparent tracking-tight">
+                {getUserName()}
+              </span>
             </h1>
             <p
-              className="text-sm sm:text-base text-zinc-400 animate-fadeInUp"
+              className="text-sm sm:text-base text-zinc-400/90 leading-relaxed max-w-3xl animate-fadeInUp"
               style={{ animationDelay: "0.2s" }}
             >
               {getGreetingSubtext()}

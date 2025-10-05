@@ -24,6 +24,7 @@ import SearchResults from "@/components/SearchResults";
 import SongCard from "@/components/SongCard";
 import AnimatedGrid from "@/components/AnimatedGrid";
 import ErrorBoundary from "@/components/ErrorBoundary";
+import GlassCard from "@/components/ui/GlassCard";
 import { useSearch } from "@/hooks/useSearch";
 import { useKeyboardNavigation } from "@/hooks/useKeyboardNavigation";
 import { usePlayerStore } from "@/stores/usePlayerStore";
@@ -181,7 +182,7 @@ const BrowsePage = () => {
 
   return (
     <ErrorBoundary>
-      <main className="rounded-none sm:rounded-xl overflow-hidden h-full bg-gradient-to-br from-zinc-900/95 to-black/95 backdrop-blur-sm flex flex-col border-0 sm:border border-white/5 mb-32 md:mb-0">
+      <main className="rounded-none sm:rounded-xl overflow-hidden h-full bg-gradient-to-br from-zinc-900/95 to-black/95 backdrop-blur-sm flex flex-col mb-32 md:mb-0">
         <Topbar />
 
         <div className="flex-1 overflow-hidden">
@@ -201,7 +202,7 @@ const BrowsePage = () => {
                   </p>
                 </div>
 
-                <TabsList className="grid w-full grid-cols-5 bg-zinc-900/50 backdrop-blur-sm border border-white/10 rounded-lg p-1 mb-6 sm:mb-8">
+                <TabsList className="grid w-full grid-cols-5 bg-zinc-900/50 backdrop-blur-sm rounded-lg p-1 mb-6 sm:mb-8">
                   <TabsTrigger
                     value="search"
                     className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 text-zinc-400 data-[state=active]:text-white data-[state=active]:bg-red-500/20 data-[state=active]:border-red-500/30 transition-all duration-200 py-2 sm:py-3"
@@ -371,14 +372,11 @@ const BrowsePage = () => {
                     {musicStoreLoading ? (
                       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4 md:gap-6">
                         {[...Array(12)].map((_, i) => (
-                          <div
-                            key={i}
-                            className="bg-black/20 p-3 sm:p-4 md:p-6 rounded-xl sm:rounded-2xl animate-pulse"
-                          >
+                          <GlassCard key={i} className="animate-pulse">
                             <div className="aspect-square rounded-lg bg-zinc-800 mb-3" />
                             <div className="h-4 bg-zinc-800 rounded w-3/4 mb-2" />
                             <div className="h-3 bg-zinc-800 rounded w-1/2" />
-                          </div>
+                          </GlassCard>
                         ))}
                       </div>
                     ) : featuredSongs.length === 0 ? (
@@ -396,10 +394,7 @@ const BrowsePage = () => {
                     ) : (
                       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4 md:gap-6">
                         {featuredSongs.map((song) => (
-                          <div
-                            key={song._id}
-                            className="bg-black/20 backdrop-blur-sm border border-white/5 p-3 sm:p-4 md:p-5 rounded-xl sm:rounded-2xl hover:bg-black/40 hover:border-red-500/20 transition-all duration-300 group cursor-pointer shadow-lg hover:shadow-xl hover:shadow-red-500/10 hover:scale-105"
-                          >
+                          <GlassCard key={song._id}>
                             <div className="relative mb-3 sm:mb-4">
                               <div className="aspect-square rounded-lg sm:rounded-xl shadow-2xl overflow-hidden">
                                 <img
@@ -410,7 +405,7 @@ const BrowsePage = () => {
                               </div>
                               <button
                                 onClick={() => handlePlaySong(song)}
-                                className="absolute right-2 bottom-2 bg-red-500 rounded-full p-2 opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110 hover:bg-red-600 shadow-xl"
+                                className="absolute right-2 bottom-2 bg-red-500 rounded-full p-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all duration-300 hover:scale-110 hover:bg-red-600 shadow-xl"
                               >
                                 {isPlaying && currentSong?._id === song._id ? (
                                   <div className="w-4 h-4 flex items-center justify-center">
@@ -428,7 +423,7 @@ const BrowsePage = () => {
                             <p className="text-xs sm:text-sm text-zinc-500 truncate group-hover:text-zinc-400 transition-colors">
                               {song.artist}
                             </p>
-                          </div>
+                          </GlassCard>
                         ))}
                       </div>
                     )}
@@ -476,7 +471,7 @@ const BrowsePage = () => {
                         {trendingSongs.map((song) => (
                           <div
                             key={song._id}
-                            className="bg-black/20 backdrop-blur-sm border border-white/5 p-3 sm:p-4 md:p-5 rounded-xl sm:rounded-2xl hover:bg-black/40 hover:border-red-500/20 transition-all duration-300 group cursor-pointer shadow-lg hover:shadow-xl hover:shadow-red-500/10 hover:scale-105"
+                            className="bg-black/20 backdrop-blur-sm p-3 sm:p-4 md:p-5 rounded-xl sm:rounded-2xl hover:bg-black/40 transition-all duration-300 group cursor-pointer shadow-md hover:shadow-xl hover:scale-105"
                           >
                             <div className="relative mb-3 sm:mb-4">
                               <div className="aspect-square rounded-lg sm:rounded-xl shadow-2xl overflow-hidden">
@@ -554,7 +549,7 @@ const BrowsePage = () => {
                         {madeForYouSongs.map((song) => (
                           <div
                             key={song._id}
-                            className="bg-black/20 backdrop-blur-sm border border-white/5 p-3 sm:p-4 md:p-5 rounded-xl sm:rounded-2xl hover:bg-black/40 hover:border-red-500/20 transition-all duration-300 group cursor-pointer shadow-lg hover:shadow-xl hover:shadow-red-500/10 hover:scale-105"
+                            className="bg-black/20 backdrop-blur-sm p-3 sm:p-4 md:p-5 rounded-xl sm:rounded-2xl hover:bg-black/40 transition-all duration-300 group cursor-pointer shadow-md hover:shadow-xl hover:scale-105"
                           >
                             <div className="relative mb-3 sm:mb-4">
                               <div className="aspect-square rounded-lg sm:rounded-xl shadow-2xl overflow-hidden">
@@ -631,7 +626,7 @@ const BrowsePage = () => {
                       <AnimatedGrid
                         songs={recentSongs}
                         renderItem={(song) => (
-                          <div className="bg-black/20 backdrop-blur-sm border border-white/5 p-3 sm:p-4 md:p-5 rounded-xl sm:rounded-2xl hover:bg-black/40 hover:border-red-500/20 transition-all duration-300 group cursor-pointer shadow-lg hover:shadow-xl hover:shadow-red-500/10 hover:scale-105">
+                          <div className="bg-black/20 backdrop-blur-sm p-3 sm:p-4 md:p-5 rounded-xl sm:rounded-2xl hover:bg-black/40 transition-all duration-300 group cursor-pointer shadow-lg hover:shadow-xl hover:shadow-red-500/10 hover:scale-105">
                             <div className="relative mb-3 sm:mb-4">
                               <div className="aspect-square rounded-lg sm:rounded-xl shadow-2xl overflow-hidden">
                                 <img

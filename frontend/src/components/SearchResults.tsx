@@ -222,7 +222,7 @@ const SearchResults = ({
             <Button
               onClick={onLoadMore}
               variant="outline"
-              className="bg-black/20 border-white/10 hover:bg-black/40 hover:border-red-500/30 text-white"
+              className="bg-black/20 hover:bg-black/40 text-white"
             >
               Load More Songs
             </Button>

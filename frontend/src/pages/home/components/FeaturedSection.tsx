@@ -1,6 +1,7 @@
 import { useMusicStore } from "@/stores/useMusicStore";
 import FeaturedGridSkeleton from "@/components/skeletons/FeaturedGridSkeleton";
 import PlayButton from "./PlayButton";
+import GlassCard from "@/components/ui/GlassCard";
 
 const FeaturedSection = () => {
   const { isLoading, featuredSongs, error } = useMusicStore();
@@ -14,28 +15,33 @@ const FeaturedSection = () => {
       <h2 className="text-2xl font-bold mb-6 text-white tracking-widest">
         Daily Mix
       </h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-8">
         {featuredSongs.map((song) => (
-          <div
+          <GlassCard
             key={song._id}
-            className="flex items-center bg-black/30 backdrop-blur-sm border border-white/10 rounded-2xl overflow-hidden
-						 hover:bg-black/50 hover:border-red-500/30 transition-all duration-300 group cursor-pointer relative shadow-xl hover:shadow-2xl hover:shadow-red-500/10 hover:scale-[1.02]"
+            className="overflow-hidden bg-gradient-to-b from-zinc-900/60 to-black/40 shadow-md"
           >
-            <img
-              src={song.imageUrl}
-              alt={song.title}
-              className="w-16 sm:w-20 h-16 sm:h-20 object-cover flex-shrink-0 rounded-l-2xl"
-            />
-            <div className="flex-1 p-4">
-              <p className="font-semibold tracking-widest truncate text-white group-hover:text-red-200 transition-colors">
+            <div className="w-full aspect-w-1 aspect-h-1 relative group">
+              <img
+                src={song.imageUrl}
+                alt={song.title}
+                className="w-full h-full object-cover rounded-md transform group-hover:scale-105 transition-transform duration-300"
+              />
+              <PlayButton
+                song={song}
+                className="absolute inset-0 m-auto w-12 h-12 flex items-center justify-center"
+              />
+            </div>
+            <div className="p-2">
+              <p className="text-sm font-semibold text-white truncate">
                 {song.title}
               </p>
-              <p className="text-sm text-zinc-500 truncate group-hover:text-zinc-400 transition-colors">
-                {song.artist}
-              </p>
+              <p className="text-xs text-zinc-400 truncate">{song.artist}</p>
             </div>
-            <PlayButton song={song} />
-          </div>
+            <div className="absolute top-2 right-2 hidden group-hover:block md:block transition-opacity">
+              <PlayButton song={song} />
+            </div>
+          </GlassCard>
         ))}
       </div>
     </div>
