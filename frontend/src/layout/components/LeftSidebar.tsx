@@ -22,7 +22,7 @@ const LeftSidebar = () => {
   return (
     <div className="h-full flex flex-col gap-3">
       {/* Navigation menu */}
-      <div className="rounded-xl bg-zinc-950/80 backdrop-blur-sm border border-white/5 p-4">
+      <div className="rounded-xl bg-zinc-950/80 backdrop-blur-sm p-4">
         <div className="space-y-2">
           <Link
             to={"/"}
@@ -55,7 +55,7 @@ const LeftSidebar = () => {
       </div>
 
       {/* Jam Rooms section - Clean version */}
-      <div className="rounded-xl bg-zinc-950/80 backdrop-blur-sm border border-white/5 p-4">
+      <div className="rounded-xl bg-zinc-950/80 backdrop-blur-sm p-4">
         <div className="flex items-center text-white px-2 mb-3">
           <Radio className="size-5 mr-3 text-red-500" />
           <span className="hidden md:inline font-semibold tracking-widest">
@@ -69,7 +69,7 @@ const LeftSidebar = () => {
       </div>
 
       {/* Library section */}
-      <div className="flex-1 rounded-xl bg-zinc-950/80 backdrop-blur-sm border border-white/5 p-4">
+      <div className="flex-1 rounded-xl bg-zinc-950/80 backdrop-blur-sm p-4">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center text-white px-2">
             <Library className="size-5 mr-3 text-red-500" />
@@ -93,7 +93,7 @@ const LeftSidebar = () => {
                   <img
                     src={album.imageUrl}
                     alt="Playlist img"
-                    className="size-12 rounded-xl flex-shrink-0 object-cover shadow-lg"
+                    className="size-12 rounded-full flex-shrink-0 object-cover shadow-md"
                   />
 
                   <div className="flex-1 min-w-0 hidden md:block">
