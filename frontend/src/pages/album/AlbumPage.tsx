@@ -72,29 +72,31 @@ const AlbumPage = () => {
 
           {/* Content */}
           <div className="relative z-10">
-            <div className="flex p-6 gap-6 pb-8">
+            <div className="flex flex-col sm:flex-row p-4 sm:p-6 gap-4 sm:gap-6 pb-6 sm:pb-8 items-start">
               <img
                 src={currentAlbum?.imageUrl}
                 alt={currentAlbum?.title}
-                className="w-[240px] h-[240px] shadow-2xl rounded-2xl"
+                className="w-40 h-40 sm:w-[240px] sm:h-[240px] shadow-2xl rounded-2xl object-cover"
               />
-              <div className="flex flex-col justify-end">
-                <p className="text-sm font-medium">Album</p>
-                <h1 className="text-7xl font-bold my-4">
+              <div className="flex-1 flex flex-col justify-center">
+                <p className="text-sm font-medium text-zinc-300">Album</p>
+                <h1 className="text-2xl sm:text-5xl md:text-7xl font-bold my-2 sm:my-4 leading-tight">
                   {currentAlbum?.title}
                 </h1>
-                <div className="flex items-center gap-2 text-sm text-zinc-100">
+                <div className="flex flex-wrap items-center gap-2 text-sm text-zinc-100">
                   <span className="font-medium text-white">
                     {currentAlbum?.artist}
                   </span>
                   <span>• {currentAlbum?.songs.length} songs</span>
-                  <span>• {currentAlbum?.releaseYear}</span>
+                  {currentAlbum?.releaseYear ? (
+                    <span>• {currentAlbum?.releaseYear}</span>
+                  ) : null}
                 </div>
               </div>
             </div>
 
-            {/* play button and add song button */}
-            <div className="px-6 pb-4 flex items-center gap-6">
+            {/* play button and add song button (stack on mobile) */}
+            <div className="px-6 pb-4 flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-6">
               <Button
                 onClick={handlePlayAlbum}
                 size="icon"
@@ -133,12 +135,9 @@ const AlbumPage = () => {
             </div>
 
             {/* Table Section */}
-            <div className="bg-black/40 backdrop-blur-xl rounded-t-2xl">
-              {/* table header */}
-              <div
-                className="grid grid-cols-[16px_4fr_2fr_1fr] gap-4 px-10 py-4 text-sm 
-            text-zinc-400"
-              >
+            <div className="bg-black/40 rounded-t-2xl">
+              {/* desktop header */}
+              <div className="hidden sm:grid grid-cols-[16px_4fr_2fr_1fr] gap-4 px-10 py-4 text-sm text-zinc-400">
                 <div>#</div>
                 <div>Title</div>
                 <div>Released Date</div>
@@ -148,50 +147,77 @@ const AlbumPage = () => {
               </div>
 
               {/* songs list */}
-
-              <div className="px-6">
-                <div className="space-y-2 py-4">
+              <div className="px-4 sm:px-6">
+                <div className="space-y-3 py-4">
                   {currentAlbum?.songs.map((song, index) => {
                     const isCurrentSong = currentSong?._id === song._id;
                     return (
-                      <div
-                        key={song._id}
-                        onClick={() => handlePlaySong(index)}
-                        className={`grid grid-cols-[16px_4fr_2fr_1fr] gap-4 px-4 py-2 text-sm 
-                      text-zinc-400 rounded-lg bg-black/10 hover:bg-white/5 group cursor-pointer transition-all`}
-                      >
-                        <div className="flex items-center justify-center">
-                          {isCurrentSong && isPlaying ? (
-                            <div className="size-4 text-green-500">♫</div>
-                          ) : (
-                            <span className="group-hover:hidden">
-                              {index + 1}
-                            </span>
-                          )}
-                          {!isCurrentSong && (
-                            <Play className="h-4 w-4 hidden group-hover:block" />
-                          )}
+                      <div key={song._id}>
+                        {/* Desktop / tablet row */}
+                        <div
+                          onClick={() => handlePlaySong(index)}
+                          className="hidden sm:grid grid-cols-[16px_4fr_2fr_1fr] gap-4 px-4 py-2 text-sm text-zinc-400 rounded-lg bg-black/10 hover:bg-white/5 group cursor-pointer transition-all"
+                        >
+                          <div className="flex items-center justify-center">
+                            {isCurrentSong && isPlaying ? (
+                              <div className="size-4 text-red-500">♫</div>
+                            ) : (
+                              <span className="group-hover:hidden">
+                                {index + 1}
+                              </span>
+                            )}
+                            {!isCurrentSong && (
+                              <Play className="h-4 w-4 hidden group-hover:block" />
+                            )}
+                          </div>
+
+                          <div className="flex items-center gap-3">
+                            <img
+                              src={song.imageUrl}
+                              alt={song.title}
+                              className="h-10 w-10 rounded-md object-cover"
+                            />
+                            <div>
+                              <div className="font-medium text-white">
+                                {song.title}
+                              </div>
+                              <div className="text-zinc-400 text-sm">
+                                {song.artist}
+                              </div>
+                            </div>
+                          </div>
+                          <div className="flex items-center">
+                            {song.createdAt.split("T")[0]}
+                          </div>
+                          <div className="flex items-center">
+                            {formatDuration(song.duration)}
+                          </div>
                         </div>
 
-                        <div className="flex items-center gap-3">
+                        {/* Mobile stacked row */}
+                        <div
+                          onClick={() => handlePlaySong(index)}
+                          className="sm:hidden flex items-center gap-3 px-3 py-3 rounded-lg bg-black/10 hover:bg-white/5 cursor-pointer transition-all"
+                        >
+                          <div className="w-8 text-center text-zinc-300">
+                            {index + 1}
+                          </div>
                           <img
                             src={song.imageUrl}
                             alt={song.title}
-                            className="size-10 rounded-md object-cover"
+                            className="h-12 w-12 rounded-md object-cover"
                           />
-
-                          <div>
-                            <div className={`font-medium text-white`}>
+                          <div className="flex-1 min-w-0">
+                            <div className="font-medium text-white truncate">
                               {song.title}
                             </div>
-                            <div>{song.artist}</div>
+                            <div className="text-xs text-zinc-400 truncate">
+                              {song.artist}
+                            </div>
                           </div>
-                        </div>
-                        <div className="flex items-center">
-                          {song.createdAt.split("T")[0]}
-                        </div>
-                        <div className="flex items-center">
-                          {formatDuration(song.duration)}
+                          <div className="text-xs text-zinc-400">
+                            {formatDuration(song.duration)}
+                          </div>
                         </div>
                       </div>
                     );
