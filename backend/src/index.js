@@ -49,7 +49,9 @@ const allowedOrigins = (
   .map((o) => o.trim())
   .filter(Boolean);
 
+// Apply CORS only to API routes to avoid interfering with static asset requests
 app.use(
+  '/api',
   cors({
     origin: (origin, callback) => {
       // Allow non-browser requests (e.g. curl, server-to-server) when origin is undefined
@@ -80,7 +82,10 @@ app.use("/api/", apiLimiter);
 app.use(express.json());
 
 // Clerk (adds req.auth)
-app.use(clerkMiddleware());
+// Apply Clerk middleware only to API routes so static asset requests
+// (served from frontend/public or frontend/dist) are not processed by Clerk
+// which can throw errors for browser asset requests when not needed.
+app.use('/api', clerkMiddleware());
 
 // File uploads
 app.use(
