@@ -117,9 +117,7 @@ const EnhancedRoomControls = () => {
             onClick={() => !isConnected && initSocket()}
           >
             <Plus className="mr-3 size-4 text-red-400 group-hover:rotate-90 transition-transform duration-300" />
-            <span className="hidden md:inline font-medium tracking-wide">
-              Create Jam Room
-            </span>
+            <span className="font-medium tracking-wide">Create Jam Room</span>
           </Button>
         </DialogTrigger>
         <DialogContent className="bg-zinc-950 border border-white/10 rounded-2xl backdrop-blur-xl max-w-md">
@@ -230,9 +228,7 @@ const EnhancedRoomControls = () => {
             onClick={() => !isConnected && initSocket()}
           >
             <DoorOpen className="mr-3 size-4 text-red-400 group-hover:scale-110 transition-transform duration-300" />
-            <span className="hidden md:inline font-medium tracking-wide">
-              Join Room
-            </span>
+            <span className="font-medium tracking-wide">Join Room</span>
           </Button>
         </DialogTrigger>
         <DialogContent className="bg-zinc-950 border border-white/10 rounded-2xl backdrop-blur-xl max-w-md">
