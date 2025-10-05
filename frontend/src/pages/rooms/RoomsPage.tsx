@@ -12,6 +12,7 @@ import { useState } from "react";
 const RoomsPage = () => {
   const { isInRoom, currentRoom, leaveRoom } = useEnhancedRoomStore();
   const [tab, setTab] = useState<"room" | "activity">("room");
+  const [showHint, setShowHint] = useState(true);
 
   return (
     <main className="min-h-screen rounded-none sm:rounded-xl overflow-hidden bg-zinc-950/90 backdrop-blur-sm flex flex-col mb-32 md:mb-0">
@@ -67,6 +68,30 @@ const RoomsPage = () => {
                       <span className="text-sm text-white">Activity</span>
                     </button>
                   </div>
+
+                  {/* Mobile-only short description for using the room */}
+                  {tab === "room" && showHint && (
+                    <div className="block sm:hidden bg-neutral-900/60 border border-white/8 p-3 rounded-lg relative">
+                      <button
+                        aria-label="Dismiss"
+                        onClick={() => setShowHint(false)}
+                        className="absolute top-2 right-2 text-zinc-400 hover:text-zinc-200"
+                      >
+                        ✕
+                      </button>
+
+                      <p className="text-sm font-semibold text-white">
+                        How this room works
+                      </p>
+                      <p className="mt-1 text-xs text-zinc-300">
+                        The host controls playback — when the host plays or
+                        seeks, everyone syncs. Tap the play button to play/pause
+                        and open the full player for more controls. Use the
+                        Activity tab to see who's listening. Leave anytime via
+                        the Exit button in the topbar.
+                      </p>
+                    </div>
+                  )}
 
                   {tab === "room" ? (
                     <>
