@@ -13,6 +13,7 @@ import {
   VolumeX,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { useEnhancedRoomStore } from "@/stores/useEnhancedRoomStore";
 
 const formatTime = (seconds: number) => {
   const minutes = Math.floor(seconds / 60);
@@ -71,6 +72,33 @@ export const PlaybackControls = () => {
       }
     }, 100);
 
+    // Periodic host sync emitter: when user is jam host, emit periodic sync events to server
+    const periodicSyncInterval = setInterval(() => {
+      try {
+        const store = useEnhancedRoomStore.getState();
+        const socket = store.socket;
+        const sharedSong = store.currentSharedSong;
+        if (
+          socket &&
+          store.isJamHost &&
+          store.isJamSession &&
+          audio &&
+          !audio.paused &&
+          sharedSong
+        ) {
+          socket.emit("periodic_sync", {
+            roomId: store.currentRoom?.id,
+            song: sharedSong,
+            position: audio.currentTime,
+            isPlaying: !audio.paused,
+            serverTime: Date.now(),
+          });
+        }
+      } catch (e) {
+        // ignore
+      }
+    }, 1000);
+
     audio.addEventListener("timeupdate", updateTime);
     audio.addEventListener("loadedmetadata", updateDuration);
     audio.addEventListener("canplay", updateDuration);
@@ -83,6 +111,7 @@ export const PlaybackControls = () => {
 
     return () => {
       clearInterval(interval);
+      clearInterval(periodicSyncInterval);
       if (audio) {
         audio.removeEventListener("timeupdate", updateTime);
         audio.removeEventListener("loadedmetadata", updateDuration);
@@ -100,6 +129,23 @@ export const PlaybackControls = () => {
       }
     } catch (error) {
       console.warn("Error seeking:", error);
+    }
+  };
+
+  // Notify room of manual seek so others can sync
+  const handleSeekAndNotify = (value: number[]) => {
+    handleSeek(value);
+    try {
+      const roomStore = useEnhancedRoomStore.getState();
+      if (roomStore.currentRoom && roomStore.socket) {
+        roomStore.updateCurrentSong(
+          roomStore.currentSharedSong || usePlayerStore.getState().currentSong,
+          usePlayerStore.getState().isPlaying,
+          value[0]
+        );
+      }
+    } catch (e) {
+      // ignore
     }
   };
 
@@ -135,7 +181,7 @@ export const PlaybackControls = () => {
   };
 
   return (
-    <footer className="h-16 sm:h-20 md:h-24 bg-zinc-950/95 backdrop-blur-xl border-t border-white/10 px-2 sm:px-4 shadow-lg md:relative fixed bottom-16 md:bottom-0 left-0 right-0 z-30">
+    <footer className="h-16 sm:h-20 md:h-24 bg-zinc-950/95 backdrop-blur-xl px-2 sm:px-4 shadow-lg md:relative fixed bottom-20 md:bottom-0 left-0 right-0 z-50">
       <div className="flex justify-between items-center h-full max-w-[1800px] mx-auto">
         {/* currently playing song */}
         <div className="hidden lg:flex items-center gap-3 min-w-[180px] w-[30%]">
@@ -177,13 +223,15 @@ export const PlaybackControls = () => {
         {/* player controls*/}
         <div className="flex flex-col items-center gap-2 sm:gap-3 flex-1 max-w-full">
           <div className="flex items-center gap-3 sm:gap-4 md:gap-6 text-red-400">
-            <Button
-              size="icon"
-              variant="ghost"
-              className="hidden sm:inline-flex hover:text-white text-red-400 hover:bg-red-500/10 rounded-md transition-all duration-200"
-            >
-              <Shuffle className="h-4 w-4" />
-            </Button>
+            <div className="hidden xs:hidden sm:flex items-center gap-2">
+              <Button
+                size="icon"
+                variant="ghost"
+                className="hidden sm:inline-flex hover:text-white text-red-400 hover:bg-red-500/10 rounded-md transition-all duration-200"
+              >
+                <Shuffle className="h-4 w-4" />
+              </Button>
+            </div>
 
             <Button
               size="icon"
@@ -197,7 +245,7 @@ export const PlaybackControls = () => {
 
             <Button
               size="icon"
-              className="bg-red-600 hover:bg-red-500 text-white rounded-full h-10 w-10 shadow-[0_0_10px_rgba(255,0,51,0.35)] hover:shadow-[0_0_16px_rgba(255,0,51,0.6)] hover:scale-105 transition-all duration-200"
+              className="bg-red-600 hover:bg-red-500 text-white rounded-full h-9 w-9 sm:h-10 sm:w-10 shadow-[0_0_10px_rgba(255,0,51,0.35)] hover:shadow-[0_0_16px_rgba(255,0,51,0.6)] hover:scale-105 transition-all duration-200"
               onClick={togglePlay}
               disabled={!currentSong}
             >
@@ -216,13 +264,16 @@ export const PlaybackControls = () => {
             >
               <SkipForward className="h-5 w-5" />
             </Button>
-            <Button
-              size="icon"
-              variant="ghost"
-              className="hidden sm:inline-flex hover:text-white text-red-400 hover:bg-red-500/10 rounded-md transition-all duration-200"
-            >
-              <Repeat className="h-4 w-4" />
-            </Button>
+
+            <div className="hidden sm:flex items-center">
+              <Button
+                size="icon"
+                variant="ghost"
+                className="hidden sm:inline-flex hover:text-white text-red-400 hover:bg-red-500/10 rounded-md transition-all duration-200"
+              >
+                <Repeat className="h-4 w-4" />
+              </Button>
+            </div>
           </div>
 
           <div className="hidden md:flex items-center gap-3 w-full">
@@ -236,7 +287,7 @@ export const PlaybackControls = () => {
               className={`w-full hover:cursor-grab active:cursor-grabbing [&_[role=slider]]:bg-red-500 [&_[role=slider]]:border-0 [&_[role=slider]]:shadow-[0_0_10px_rgba(255,0,51,0.35)] [&>span:first-child]:bg-red-500/30 [&_[role=slider]:focus-visible]:ring-red-500/50 [&_[role=slider]]:hover:scale-110 [&_[role=slider]]:transition-all [&_[role=slider]]:duration-200 ${
                 isPlaying ? "[&>span:first-child]:animate-pulse" : ""
               }`}
-              onValueChange={handleSeek}
+              onValueChange={handleSeekAndNotify}
             />
             <div className="text-xs text-zinc-400 font-medium tabular-nums min-w-[35px] text-right">
               {formatTime(duration)}
@@ -267,6 +318,32 @@ export const PlaybackControls = () => {
             className="w-24 hover:cursor-grab active:cursor-grabbing [&_[role=slider]]:bg-red-500 [&_[role=slider]]:border-0 [&_[role=slider]]:shadow-[0_0_10px_rgba(255,0,51,0.35)] [&>span:first-child]:bg-red-500/30 [&_[role=slider]:focus-visible]:ring-red-500/50 [&_[role=slider]]:hover:scale-110 [&_[role=slider]]:transition-transform"
             onValueChange={handleVolumeChange}
           />
+        </div>
+        {/* Fullscreen toggle visible on mobile */}
+        <div className="flex items-center md:hidden ml-2">
+          <Button
+            size="icon"
+            variant="ghost"
+            onClick={() =>
+              usePlayerStore.getState().setIsFullscreenPlayer(true)
+            }
+            className="text-zinc-300 hover:text-white"
+            title="Expand player"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <path d="M8 3H5a2 2 0 0 0-2 2v3" />
+              <path d="M16 3h3a2 2 0 0 1 2 2v3" />
+              <path d="M8 21H5a2 2 0 0 1-2-2v-3" />
+              <path d="M16 21h3a2 2 0 0 0 2-2v-3" />
+            </svg>
+          </Button>
         </div>
       </div>
     </footer>
