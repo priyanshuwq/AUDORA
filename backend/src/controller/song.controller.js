@@ -124,3 +124,17 @@ export const searchSongs = async (req, res, next) => {
     next(error);
   }
 };
+
+// trimmed public songs for suggestion lists (minimal fields)
+export const getPublicSongs = async (req, res, next) => {
+  try {
+    const songs = await Song.find()
+      .select("_id title artist imageUrl audioUrl duration albumId")
+      .sort({ createdAt: -1 })
+      .limit(200);
+
+    res.json(songs);
+  } catch (error) {
+    next(error);
+  }
+};
