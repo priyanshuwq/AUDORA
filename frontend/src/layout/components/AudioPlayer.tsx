@@ -1,6 +1,7 @@
 import { usePlayerStore } from "@/stores/usePlayerStore";
 import { useEnhancedRoomStore } from "@/stores/useEnhancedRoomStore";
 import { useEffect, useRef } from "react";
+import { Play, Pause } from "lucide-react";
 
 const AudioPlayer = () => {
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -99,6 +100,51 @@ const AudioPlayer = () => {
     };
   }, [isJamSession, isJamHost]);
 
-  return <audio ref={audioRef} />;
+  const togglePlay = usePlayerStore.getState().togglePlay;
+  const setIsFullscreen = usePlayerStore.getState().setIsFullscreenPlayer;
+
+  return (
+    <>
+      <audio ref={audioRef} />
+
+      {/* Mobile mini-player: visible on small screens, shows current song and centered play/pause */}
+      <div
+        className="md:hidden fixed left-0 right-0 bottom-28 z-50 px-4"
+        onClick={() => setIsFullscreen(true)}
+        role="button"
+        aria-label="Open full player"
+      >
+        <div className="bg-zinc-950/90 backdrop-blur-xl rounded-2xl p-3 flex items-center justify-between shadow-lg border border-white/5">
+          <div className="flex-1 min-w-0">
+            <div className="text-sm font-semibold text-white truncate">
+              {currentSong ? currentSong.title : "Nothing playing"}
+            </div>
+            <div className="text-xs text-zinc-400 truncate">
+              {currentSong ? currentSong.artist : ""}
+            </div>
+          </div>
+
+          <div
+            className="flex items-center justify-center ml-4"
+            onClick={(e) => {
+              e.stopPropagation();
+              togglePlay();
+            }}
+          >
+            <button
+              className="bg-red-600 hover:bg-red-500 text-white rounded-full p-3 shadow-lg flex items-center justify-center"
+              aria-label={isPlaying ? "Pause" : "Play"}
+            >
+              {isPlaying ? (
+                <Pause className="w-4 h-4" />
+              ) : (
+                <Play className="w-4 h-4" />
+              )}
+            </button>
+          </div>
+        </div>
+      </div>
+    </>
+  );
 };
 export default AudioPlayer;
