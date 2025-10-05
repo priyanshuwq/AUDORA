@@ -87,8 +87,8 @@ const LibraryPage = () => {
             </div>
           </section>
 
-          {/* Quick Actions */}
-          <section>
+          {/* Quick Actions (hidden on small screens) */}
+          <section className="hidden sm:block">
             <h2 className="text-2xl sm:text-3xl font-bold text-white mb-6">
               Quick Actions
             </h2>
