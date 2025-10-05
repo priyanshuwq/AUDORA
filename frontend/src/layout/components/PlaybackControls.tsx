@@ -181,7 +181,7 @@ export const PlaybackControls = () => {
   };
 
   return (
-    <footer className="h-16 sm:h-20 md:h-24 bg-zinc-950/95 backdrop-blur-xl px-2 sm:px-4 shadow-lg md:relative fixed bottom-20 md:bottom-0 left-0 right-0 z-50">
+    <footer className="hidden md:block h-16 sm:h-20 md:h-24 bg-zinc-950/95 backdrop-blur-xl px-2 sm:px-4 shadow-lg md:relative fixed bottom-20 md:bottom-0 left-0 right-0 z-50">
       <div className="flex justify-between items-center h-full max-w-[1800px] mx-auto">
         {/* currently playing song */}
         <div className="hidden lg:flex items-center gap-3 min-w-[180px] w-[30%]">
