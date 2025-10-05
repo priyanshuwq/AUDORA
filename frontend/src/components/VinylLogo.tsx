@@ -140,7 +140,7 @@ const VinylLogo = ({
           }}
         >
           {/* Center hole */}
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full shadow-inner border border-gray-300" />
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3 h-3 bg-red-600 rounded-full shadow-inner border border-red-700" />
 
           {/* Label reflection */}
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/3 h-1/3 bg-gradient-to-tr from-red-600/80 to-red-400/60 rounded-full" />
@@ -154,7 +154,7 @@ const VinylLogo = ({
 
         {/* Glow effect when playing */}
         {shouldSpin && (
-          <div className="absolute inset-0 rounded-full bg-red-500/20 animate-pulse -z-10" />
+          <div className="absolute inset-0 rounded-full bg-red-600/20 animate-pulse -z-10" />
         )}
       </div>
 
@@ -163,8 +163,8 @@ const VinylLogo = ({
           className={cn(
             "font-extrabold audora-font uppercase tracking-tight",
             // allow overriding text color via prop (e.g., text-red-400 on nav bar)
-            // default to red to make the brand name stand out; callers can override
-            textColor || "text-red-800",
+            // default to red-600 to make the brand name stand out; callers can override
+            textColor || "text-red-600",
             textSizeClasses[size],
             // subtle entrance + shimmer + glow, respect user's motion settings
             "motion-safe:animate-shimmerText motion-safe:animate-glow motion-safe:animate-fadeInUp transition-transform duration-300",
