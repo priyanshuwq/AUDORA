@@ -41,7 +41,8 @@ initializeSocket(httpServer);
 
 // CORS
 // Configure allowed origins via env var for production. Defaults include local dev hosts.
-const allowedOrigins = (process.env.FRONTEND_ORIGINS ||
+const allowedOrigins = (
+  process.env.FRONTEND_ORIGINS ||
   "http://localhost:5173,http://localhost:5174,http://localhost:3000"
 )
   .split(",")
@@ -73,7 +74,7 @@ const apiLimiter = rateLimit({
   legacyHeaders: false,
 });
 
-app.use('/api/', apiLimiter);
+app.use("/api/", apiLimiter);
 
 // Body parser
 app.use(express.json());
