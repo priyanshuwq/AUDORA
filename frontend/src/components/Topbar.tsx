@@ -5,24 +5,28 @@ import SignInOAuthButtons from "./SignInOAuthButtons";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { cn } from "@/lib/utils";
 import VinylLogo from "./VinylLogo";
+import ExitButton from "./ExitButton";
 // GlobalSearch removed from Topbar per request
 
 const Topbar = () => {
   const { isAdmin } = useAuthStore();
 
   return (
-    <div className="flex items-center justify-between p-3 sm:p-4 md:p-6 sticky top-0 bg-black/40 backdrop-blur-xl border-b border-white/10 z-10">
+    <div className="flex items-center justify-between p-3 sm:p-4 md:p-6 sticky top-0 bg-black/50/40 backdrop-blur-xl border-b border-white/8 z-10">
       {/* Responsive Logo: smaller on mobile */}
       <div className="flex items-center">
         <div className="sm:hidden">
-          <VinylLogo size="sm" syncWithPlayer={true} textColor="text-red-400" />
+          <VinylLogo size="sm" syncWithPlayer={true} textColor="text-red-600" />
         </div>
         <div className="hidden sm:block">
-          <VinylLogo size="md" syncWithPlayer={true} textColor="text-red-400" />
+          <VinylLogo size="md" syncWithPlayer={true} textColor="text-red-600" />
         </div>
       </div>
 
       <div className="flex items-center gap-4">
+        <div className="hidden sm:inline-flex">
+          <ExitButton />
+        </div>
         {isAdmin && (
           <>
             {/* Replace small admin icon with mobile account button (UserButton) */}
