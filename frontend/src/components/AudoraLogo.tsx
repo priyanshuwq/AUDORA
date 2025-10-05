@@ -27,10 +27,10 @@ const AudoraLogo = ({
   };
 
   const textSizeClasses = {
-    sm: "text-lg",
-    md: "text-xl",
-    lg: "text-2xl",
-    xl: "text-3xl",
+    sm: "text-2xl",
+    md: "text-3xl",
+    lg: "text-4xl",
+    xl: "text-5xl",
   };
 
   // Build a small fallback chain to avoid broken image icons in case a file
@@ -78,7 +78,7 @@ const AudoraLogo = ({
       ) : (
         <img
           src={currentSrc}
-          alt="AUDORA Logo"
+          alt="Audora logo"
           width={40}
           height={40}
           loading="eager"
@@ -93,11 +93,13 @@ const AudoraLogo = ({
       {showText && (
         <span
           className={cn(
-            "font-bold text-white audora-font uppercase",
+            "font-extrabold audora-font nothing-wide bg-gradient-to-r from-white via-red-200 to-red-400 bg-clip-text text-transparent",
+            // Animations: shimmer text + soft glow; scale slightly on hover for affordance
+            "motion-safe:animate-shimmerText motion-safe:animate-glow transform-gpu transition-all duration-400 hover:scale-105",
             textSizeClasses[size]
           )}
         >
-          AUDORA
+          Audora
         </span>
       )}
     </div>
