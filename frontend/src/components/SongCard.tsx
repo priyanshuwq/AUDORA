@@ -35,9 +35,18 @@ const SongCard = ({
 
   return (
     <div
+      onClick={handlePlay}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          handlePlay();
+        }
+      }}
+      role="button"
+      tabIndex={0}
       className={cn(
-        "group relative bg-black/20 backdrop-blur-sm border border-white/10 rounded-xl sm:rounded-2xl p-3 sm:p-4 hover:bg-black/40 hover:border-red-500/30 transition-all duration-300 cursor-pointer mobile-tap-highlight",
-        isCurrentSong && "border-red-500/50 bg-red-500/10",
+        "group relative bg-black/20 backdrop-blur-sm rounded-xl sm:rounded-2xl p-3 sm:p-4 transition-all duration-300 cursor-pointer mobile-tap-highlight transform opacity-0 translate-y-2 animate-fadeInUp",
+        isCurrentSong && "bg-red-500/10",
         className
       )}
     >
@@ -68,11 +77,12 @@ const SongCard = ({
             )}
           </div>
 
-          {/* Play button overlay */}
-          <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-xl flex items-center justify-center">
+          {/* Play button overlay: visible on md+ always, on small screens only on hover */}
+          <div className="absolute inset-0 bg-black/30 rounded-lg sm:rounded-xl hidden group-hover:flex md:flex items-center justify-center">
             <button
               onClick={handlePlay}
-              className="bg-red-500 hover:bg-red-600 text-white rounded-full p-2 transform scale-90 hover:scale-100 transition-transform duration-200 shadow-lg"
+              className="bg-red-500 hover:bg-red-600 text-white rounded-full p-2 transform scale-95 hover:scale-100 transition-transform duration-200 shadow-lg"
+              title="Play"
             >
               {isCurrentSong && isPlaying ? (
                 <Pause className="w-4 h-4" />

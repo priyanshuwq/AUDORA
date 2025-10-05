@@ -1,4 +1,5 @@
 import { Music } from "lucide-react";
+import GlassCard from "@/components/ui/GlassCard";
 import { Song } from "@/types";
 
 interface SongGridProps {
@@ -54,16 +55,13 @@ const SongGrid = ({
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4 md:gap-6">
       {songs.map((song) => (
-        <div
-          key={song._id}
-          className="bg-black/20 backdrop-blur-sm border border-white/5 p-3 sm:p-4 md:p-5 rounded-xl sm:rounded-2xl hover:bg-black/40 hover:border-red-500/20 transition-all duration-300 group cursor-pointer shadow-lg hover:shadow-xl hover:shadow-red-500/10 hover:scale-105"
-        >
+        <GlassCard key={song._id}>
           <div className="relative mb-3 sm:mb-4">
-            <div className="aspect-square rounded-lg sm:rounded-xl shadow-2xl overflow-hidden">
+            <div className="aspect-square rounded-xl shadow-md overflow-hidden">
               <img
                 src={song.imageUrl}
                 alt={song.title}
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 rounded-xl"
               />
             </div>
             <button
@@ -86,7 +84,7 @@ const SongGrid = ({
           <p className="text-xs sm:text-sm text-zinc-500 truncate group-hover:text-zinc-400 transition-colors">
             {song.artist}
           </p>
-        </div>
+        </GlassCard>
       ))}
     </div>
   );
