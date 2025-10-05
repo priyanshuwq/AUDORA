@@ -76,7 +76,27 @@ app.use(
     useDefaults: true,
     directives: {
       defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "https://*.clerk.accounts.dev", "https://*.clerk.dev", "https://cdn.jsdelivr.net"],
+      // Allow scripts from Clerk, cdn.jsdelivr and Cloudflare Turnstile. Include blob: for worker creation.
+      scriptSrc: [
+        "'self'",
+        "https://*.clerk.accounts.dev",
+        "https://*.clerk.dev",
+        "https://cdn.jsdelivr.net",
+        "https://challenges.cloudflare.com",
+        "blob:"
+      ],
+      // Used for <script> elements specifically
+      scriptSrcElem: [
+        "'self'",
+        "https://*.clerk.accounts.dev",
+        "https://*.clerk.dev",
+        "https://cdn.jsdelivr.net",
+        "https://challenges.cloudflare.com"
+      ],
+      // Allow blob workers explicitly (otherwise script-src is used as a fallback)
+      workerSrc: ["'self'", "blob:"],
+      // Turnstile uses iframes/frames
+      frameSrc: ["https://challenges.cloudflare.com", "https://*.clerk.accounts.dev", "https://*.clerk.dev"],
       connectSrc: ["'self'", "https://*.clerk.accounts.dev", "https://*.clerk.dev"],
       imgSrc: ["'self'", 'data:', 'https:'],
       styleSrc: ["'self'", "'unsafe-inline'", 'https:'],
