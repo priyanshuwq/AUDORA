@@ -36,7 +36,7 @@ const AuthCallbackPage = () => {
 
   return (
     <div className="h-screen w-full bg-black flex items-center justify-center">
-      <Card className="w-[90%] max-w-md bg-zinc-900 border-zinc-800">
+      <Card className="w-[90%] max-w-md bg-zinc-900">
         <CardContent className="flex flex-col items-center gap-4 pt-6">
           <AudoraLogo size="lg" />
           <div className="flex items-center gap-2">
