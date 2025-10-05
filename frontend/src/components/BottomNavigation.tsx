@@ -1,9 +1,11 @@
 import { cn } from "@/lib/utils";
 import { Home, Search, Library, Radio } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
+import { usePlayerStore } from "@/stores/usePlayerStore";
 
 const BottomNavigation = () => {
   const location = useLocation();
+  const { isFullscreenPlayer } = usePlayerStore();
 
   const navItems = [
     { icon: Home, label: "Home", path: "/" },
@@ -11,6 +13,8 @@ const BottomNavigation = () => {
     { icon: Radio, label: "Rooms", path: "/rooms" },
     { icon: Library, label: "Library", path: "/library" },
   ];
+
+  if (isFullscreenPlayer) return null;
 
   return (
     <div className="md:hidden fixed bottom-0 left-0 right-0 bg-zinc-950/95 backdrop-blur-xl border-t border-white/10 px-4 py-3 z-40">
