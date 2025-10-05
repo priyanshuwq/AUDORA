@@ -105,13 +105,13 @@ const AddSongDialog = () => {
   return (
     <Dialog open={songDialogOpen} onOpenChange={setSongDialogOpen}>
       <DialogTrigger asChild>
-        <Button className="bg-emerald-500 hover:bg-emerald-600 text-black">
+        <Button className="bg-red-600 hover:bg-red-500 text-white">
           <Plus className="mr-2 h-4 w-4" />
           Add Song
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="bg-zinc-900 border-zinc-700 max-h-[80vh] overflow-auto">
+      <DialogContent className="bg-zinc-900 max-h-[80vh] overflow-auto">
         <DialogHeader>
           <DialogTitle>Add New Song</DialogTitle>
           <DialogDescription>
@@ -142,7 +142,7 @@ const AddSongDialog = () => {
 
           {/* image upload area */}
           <div
-            className="flex items-center justify-center p-6 border-2 border-dashed border-zinc-700 rounded-lg cursor-pointer"
+            className="flex items-center justify-center p-6 border-2 border-dashed border-transparent rounded-lg cursor-pointer"
             onClick={() => imageInputRef.current?.click()}
           >
             <div className="text-center">
@@ -195,7 +195,7 @@ const AddSongDialog = () => {
               onChange={(e) =>
                 setNewSong({ ...newSong, title: e.target.value })
               }
-              className="bg-zinc-800 border-zinc-700"
+              className="bg-zinc-800"
             />
           </div>
 
@@ -206,7 +206,7 @@ const AddSongDialog = () => {
               onChange={(e) =>
                 setNewSong({ ...newSong, artist: e.target.value })
               }
-              className="bg-zinc-800 border-zinc-700"
+              className="bg-zinc-800"
             />
           </div>
 
@@ -231,10 +231,10 @@ const AddSongDialog = () => {
                 setNewSong({ ...newSong, album: value })
               }
             >
-              <SelectTrigger className="bg-zinc-800 border-zinc-700">
+              <SelectTrigger className="bg-zinc-800">
                 <SelectValue placeholder="Select album" />
               </SelectTrigger>
-              <SelectContent className="bg-zinc-800 border-zinc-700">
+              <SelectContent className="bg-zinc-800">
                 <SelectItem value="none">No Album (Single)</SelectItem>
                 {albums.map((album) => (
                   <SelectItem key={album._id} value={album._id}>
@@ -254,7 +254,11 @@ const AddSongDialog = () => {
           >
             Cancel
           </Button>
-          <Button onClick={handleSubmit} disabled={isLoading}>
+          <Button
+            onClick={handleSubmit}
+            disabled={isLoading}
+            className="bg-red-600 hover:bg-red-500 text-white"
+          >
             {isLoading ? "Uploading..." : "Add Song"}
           </Button>
         </DialogFooter>
