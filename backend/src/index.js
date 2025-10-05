@@ -68,6 +68,23 @@ app.use(
 // Basic security headers
 app.use(helmet());
 
+// Content Security Policy: allow Clerk's hosted JS and related endpoints
+// so the frontend can load Clerk's script when using Clerk's hosted domain.
+// The wildcard hosts cover account-specific subdomains used by Clerk.
+app.use(
+  helmet.contentSecurityPolicy({
+    useDefaults: true,
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "https://*.clerk.accounts.dev", "https://*.clerk.dev", "https://cdn.jsdelivr.net"],
+      connectSrc: ["'self'", "https://*.clerk.accounts.dev", "https://*.clerk.dev"],
+      imgSrc: ["'self'", 'data:', 'https:'],
+      styleSrc: ["'self'", "'unsafe-inline'", 'https:'],
+      fontSrc: ["'self'", 'https:', 'data:'],
+    },
+  })
+);
+
 // Rate limiting for API routes (adjust via env if needed)
 const apiLimiter = rateLimit({
   windowMs: Number(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000, // 15 minutes
