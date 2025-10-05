@@ -14,6 +14,7 @@ import { useEnhancedRoomStore } from "@/stores/useEnhancedRoomStore";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Users, X } from "lucide-react";
+import FullPlayer from "./components/FullPlayer";
 
 const MainLayout = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -112,6 +113,9 @@ const MainLayout = () => {
         {/* Mobile Activity Dialog */}
         {isMobile && <MobileActivityDialog />}
 
+        {/* Fullscreen Player overlay */}
+        <FullPlayer />
+
         {/* Playback Controls - positioned above bottom nav on mobile */}
         <div className="animate-slideInFromTop">
           <PlaybackControls />
@@ -127,7 +131,7 @@ const MainLayout = () => {
             className="absolute inset-0 bg-black/60"
             onClick={() => setIsSidebarOpen(false)}
           />
-          <div className="absolute left-0 top-0 h-full w-[82%] max-w-xs bg-zinc-950 border-r border-white/10 shadow-2xl animate-slideInFromLeft">
+          <div className="absolute left-0 top-0 h-full w-[82%] max-w-xs bg-zinc-950 shadow-2xl animate-slideInFromLeft">
             <div className="absolute top-2 right-2 z-10">
               <Button
                 onClick={() => setIsSidebarOpen(false)}
