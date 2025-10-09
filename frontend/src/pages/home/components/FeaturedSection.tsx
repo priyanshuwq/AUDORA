@@ -41,9 +41,7 @@ const FeaturedSection = () => {
               </p>
               <p className="text-xs text-zinc-400 truncate">{song.artist}</p>
             </div>
-            <div className="absolute top-2 right-2 hidden group-hover:block md:block transition-opacity">
-              <PlayButton song={song} />
-            </div>
+            {/* Removed duplicate top-right play button to avoid alignment conflicts */}
           </GlassCard>
         ))}
       </div>
