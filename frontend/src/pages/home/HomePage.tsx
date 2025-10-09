@@ -91,26 +91,26 @@ const HomePage = () => {
       <ScrollArea className="flex-1 overflow-y-auto">
         <div className="p-3 sm:p-4 md:p-6 space-y-6 sm:space-y-8">
           <div className="mb-6 sm:mb-8 animate-slideInFromTop">
-            <h1 className="mb-2 sm:mb-3">
-              <span className="block text-2xl sm:text-3xl md:text-4xl lg:text-4xl font-semibold text-zinc-200">
+            <h1 className="mb-3 sm:mb-4">
+              <span className="block text-3xl sm:text-4xl md:text-5xl lg:text-5xl font-medium text-zinc-200 leading-tight">
                 {getSalutation()}
               </span>
-              <span className="block text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold mt-1 bg-gradient-to-r from-red-300 via-red-200 to-white bg-clip-text text-transparent tracking-tight">
+              <span className="block text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mt-1 bg-gradient-to-r from-red-400 via-rose-300 to-white bg-clip-text text-transparent tracking-tight leading-none">
                 {getUserName()}
               </span>
             </h1>
             <p
-              className="text-sm sm:text-base text-zinc-400/90 leading-relaxed max-w-3xl animate-fadeInUp"
+              className="text-base sm:text-lg md:text-xl text-zinc-300/90 leading-relaxed max-w-2xl animate-fadeInUp"
               style={{ animationDelay: "0.2s" }}
             >
               {getGreetingSubtext()}
             </p>
             <div
-              className="mt-3 sm:mt-4 flex items-center gap-2 animate-fadeInUp"
+              className="mt-3 sm:mt-4 flex items-center gap-3 animate-fadeInUp"
               style={{ animationDelay: "0.4s" }}
             >
-              <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-red-500 rounded-full animate-pulse"></div>
-              <span className="text-xs sm:text-sm text-red-300 tracking-normal">
+              <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 bg-red-500 rounded-full animate-pulse"></div>
+              <span className="text-sm sm:text-base text-red-300 tracking-normal">
                 Discover • Enjoy • Share
               </span>
             </div>
