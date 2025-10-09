@@ -56,7 +56,11 @@ const Topbar = () => {
         )}
 
         <SignedOut>
-          {/* Hide large auth buttons on very small screens to avoid crowding */}
+          {/* Mobile: compact OAuth icon button; Desktop: full OAuth button */}
+          <div className="sm:hidden mr-2">
+            <SignInOAuthButtons compact />
+          </div>
+
           <div className="hidden sm:block">
             <SignInOAuthButtons />
           </div>
