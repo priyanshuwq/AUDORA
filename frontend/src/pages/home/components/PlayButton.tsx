@@ -28,9 +28,9 @@ const PlayButton = ({
   return (
     <Button size={"icon"} onClick={handlePlay} className={finalClass}>
       {isCurrentSong && isPlaying ? (
-        <Pause className="size-4 text-white" />
+        <Pause className="h-4 w-4 text-white" />
       ) : (
-        <Play className="size-4 text-white ml-0.5" />
+        <Play className="h-4 w-4 text-white" />
       )}
     </Button>
   );
