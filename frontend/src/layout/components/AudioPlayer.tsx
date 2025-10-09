@@ -1,14 +1,14 @@
 import { usePlayerStore } from "@/stores/usePlayerStore";
 import { useEnhancedRoomStore } from "@/stores/useEnhancedRoomStore";
 import { useEffect, useRef } from "react";
-import { Play, Pause } from "lucide-react";
+import { Play, Pause, SkipForward } from "lucide-react";
 
 const AudioPlayer = () => {
   const audioRef = useRef<HTMLAudioElement>(null);
   const prevSongRef = useRef<string | null>(null);
   const syncTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  const { currentSong, isPlaying, playNext } = usePlayerStore();
+  const { currentSong, isPlaying, playNext, isFullscreenPlayer } = usePlayerStore();
   const { isJamSession, isJamHost } = useEnhancedRoomStore();
 
   // handle play/pause logic
@@ -108,42 +108,67 @@ const AudioPlayer = () => {
       <audio ref={audioRef} />
 
       {/* Mobile mini-player: visible on small screens, shows current song and centered play/pause */}
-      <div
-        className="md:hidden fixed left-0 right-0 bottom-28 z-50 px-4"
-        onClick={() => setIsFullscreen(true)}
-        role="button"
-        aria-label="Open full player"
-      >
-        <div className="bg-zinc-950/90 backdrop-blur-xl rounded-2xl p-3 flex items-center justify-between shadow-lg border border-white/5">
-          <div className="flex-1 min-w-0">
-            <div className="text-sm font-semibold text-white truncate">
-              {currentSong ? currentSong.title : "Nothing playing"}
-            </div>
-            <div className="text-xs text-zinc-400 truncate">
-              {currentSong ? currentSong.artist : ""}
-            </div>
-          </div>
+      {!isFullscreenPlayer && (
+        <div
+          className="md:hidden fixed left-3 right-3 bottom-24 z-50"
+          onClick={() => setIsFullscreen(true)}
+          role="button"
+          aria-label="Open full player"
+        >
+          <div className="flex items-center justify-between p-3 rounded-2xl shadow-lg border border-white/6 bg-zinc-900/70 backdrop-blur-sm backdrop-saturate-90">
+            {/* small poster */}
+            <div className="flex items-center gap-3 min-w-0">
+              <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0">
+                {currentSong && currentSong.imageUrl ? (
+                  // stopPropagation so clicking the image doesn't open the full player
+                  <img
+                    src={currentSong.imageUrl}
+                    alt={currentSong.title}
+                    className="w-full h-full object-cover"
+                    onClick={(e) => e.stopPropagation()}
+                  />
+                ) : (
+                  <div className="w-full h-full bg-zinc-800" />
+                )}
+              </div>
 
-          <div
-            className="flex items-center justify-center ml-4"
-            onClick={(e) => {
-              e.stopPropagation();
-              togglePlay();
-            }}
-          >
-            <button
-              className="bg-red-600 hover:bg-red-500 text-white rounded-full p-3 shadow-lg flex items-center justify-center"
-              aria-label={isPlaying ? "Pause" : "Play"}
-            >
-              {isPlaying ? (
-                <Pause className="w-4 h-4" />
-              ) : (
-                <Play className="w-4 h-4" />
-              )}
-            </button>
+              <div className="flex-1 min-w-0">
+                <div className="text-sm font-semibold text-white truncate">
+                  {currentSong ? currentSong.title : "Nothing playing"}
+                </div>
+                <div className="text-xs text-zinc-400 truncate">
+                  {currentSong ? currentSong.artist : ""}
+                </div>
+              </div>
+            </div>
+
+            {/* controls: play/pause + next */}
+            <div className="flex items-center gap-3 ml-4">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  togglePlay();
+                }}
+                aria-label={isPlaying ? "Pause" : "Play"}
+                className="bg-red-600 hover:bg-red-500 text-white rounded-full p-3 shadow-lg flex items-center justify-center"
+              >
+                {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+              </button>
+
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  playNext();
+                }}
+                aria-label="Next"
+                className="bg-white/3 hover:bg-white/6 text-white rounded-md p-2 flex items-center justify-center"
+              >
+                <SkipForward className="w-4 h-4 text-white" />
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </>
   );
 };
