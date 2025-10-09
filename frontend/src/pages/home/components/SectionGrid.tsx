@@ -25,7 +25,7 @@ const SectionGrid = ({ songs, title, isLoading }: SectionGridProps) => {
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4 md:gap-6">
         {songs.map((song) => (
           <GlassCard key={song._id}>
-            <div className="relative mb-3 sm:mb-4">
+              <div className="relative mb-3 sm:mb-4 group">
               <div className="aspect-square rounded-lg sm:rounded-xl shadow-2xl overflow-hidden">
                 <img
                   src={song.imageUrl}
@@ -33,7 +33,7 @@ const SectionGrid = ({ songs, title, isLoading }: SectionGridProps) => {
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                 />
               </div>
-              <PlayButton song={song} />
+              <PlayButton song={song} className="absolute inset-0 m-auto w-10 h-10 flex items-center justify-center" />
             </div>
             <h3 className="font-semibold text-sm sm:text-base tracking-wide sm:tracking-widest mb-1 sm:mb-2 truncate text-white group-hover:text-red-200 transition-colors">
               {song.title}
