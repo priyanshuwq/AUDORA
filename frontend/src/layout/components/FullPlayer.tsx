@@ -1,5 +1,5 @@
 import { usePlayerStore } from "@/stores/usePlayerStore";
-import { X, Play, Pause, SkipBack, SkipForward, Volume2 } from "lucide-react";
+import { X, Play, Pause, SkipBack, SkipForward, Volume2, List } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useEffect, useRef, useState } from "react";
 
@@ -86,27 +86,25 @@ const FullPlayer = () => {
   };
 
   return (
-    <div
-      className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center text-white p-4 transition-opacity duration-300 ease-in-out"
+    <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-md flex items-center justify-center text-white p-4 transition-opacity duration-300 ease-in-out"
       onTouchStart={onTouchStart}
       onTouchMove={onTouchMove}
     >
-      <div className="absolute top-4 right-4">
+        <div className="absolute top-4 right-4">
         <Button variant="ghost" onClick={() => setIsFullscreenPlayer(false)}>
           <X className="w-6 h-6" />
         </Button>
       </div>
+        <div className="max-w-3xl w-full text-center transform transition-transform duration-400 ease-in-out scale-100">
+          <div className="bg-black/50 backdrop-blur-xl rounded-3xl p-6 border border-white/6 shadow-2xl">
+            <img
+              src={currentSong.imageUrl}
+              alt={currentSong.title}
+              className="mx-auto w-80 h-80 object-cover rounded-2xl shadow-[0_20px_40px_rgba(0,0,0,0.6)] mb-6"
+            />
 
-      <div className="max-w-3xl w-full text-center transform transition-transform duration-400 ease-in-out scale-100">
-        <div className="bg-black/60 backdrop-blur-md rounded-2xl p-6">
-          <img
-            src={currentSong.imageUrl}
-            alt={currentSong.title}
-            className="mx-auto w-72 h-72 object-cover rounded-xl shadow-2xl mb-6"
-          />
-
-          <h2 className="text-3xl font-bold mb-2">{currentSong.title}</h2>
-          <p className="text-zinc-300 mb-4">{currentSong.artist}</p>
+            <h2 className="text-4xl font-extrabold mb-2">{currentSong.title}</h2>
+            <p className="text-zinc-300 mb-4">{currentSong.artist}</p>
 
           <div className="w-full px-4">
             <input
@@ -115,7 +113,7 @@ const FullPlayer = () => {
               max={duration || 0}
               value={progress}
               onChange={handleSeek}
-              className="w-full accent-red-500"
+              className="w-full accent-red-500 h-2"
             />
             <div className="flex justify-between text-xs text-zinc-400 mt-2">
               <span>
@@ -132,14 +130,14 @@ const FullPlayer = () => {
             </div>
           </div>
 
-          <div className="flex items-center justify-center gap-4 my-4">
+          <div className="flex items-center justify-center gap-6 my-4">
             <Button size="icon" variant="ghost" onClick={playPrevious}>
               <SkipBack className="w-6 h-6" />
             </Button>
 
             <Button
               size="icon"
-              className="bg-red-600 text-white rounded-full h-14 w-14"
+              className="bg-red-600 text-white rounded-full h-16 w-16 shadow-[0_8px_30px_rgba(255,0,51,0.25)]"
               onClick={togglePlay}
             >
               {isPlaying ? (
@@ -158,18 +156,21 @@ const FullPlayer = () => {
             <Button
               variant="ghost"
               onClick={() => setShowVolume((v) => !v)}
-              className="flex items-center gap-2 text-red-400 hover:bg-red-500/10 rounded-md transition-all"
+              className="flex items-center justify-center p-2 text-red-400 hover:bg-red-500/10 rounded-md transition-all"
+              aria-label="Toggle volume"
+              title="Volume"
             >
-              <Volume2 className="w-4 h-4 text-red-400" />
-              <span className="text-xs text-red-300">Volume</span>
+              <Volume2 className="w-5 h-5 text-red-400" />
             </Button>
 
             <Button
               variant="ghost"
               onClick={() => setShowQueue((q) => !q)}
-              className="flex items-center gap-2"
+              className="flex items-center justify-center p-2 text-zinc-200 hover:bg-white/5 rounded-md transition-all"
+              aria-label="Toggle queue"
+              title="Queue"
             >
-              <span className="text-xs text-zinc-200">Queue</span>
+              <List className="w-5 h-5" />
             </Button>
           </div>
 
