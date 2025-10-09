@@ -161,7 +161,7 @@ const VinylLogo = ({
       {showText && (
         <span
           className={cn(
-            "font-extrabold audora-font uppercase tracking-tight",
+            "font-black audora-font uppercase tracking-tight",
             // allow overriding text color via prop (e.g., text-red-400 on nav bar)
             // default to red-600 to make the brand name stand out; callers can override
             textColor || "text-red-600",
