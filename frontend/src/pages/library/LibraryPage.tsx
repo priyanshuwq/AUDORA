@@ -74,7 +74,7 @@ const LibraryPage = () => {
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                       />
                     </div>
-                    <PlayButton song={song} />
+                    <PlayButton song={song} className="absolute inset-0 m-auto w-10 h-10 flex items-center justify-center" />
                   </div>
                   <h3 className="font-semibold tracking-widest mb-2 truncate text-white group-hover:text-red-200 transition-colors">
                     {song.title}
