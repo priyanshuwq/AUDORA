@@ -22,6 +22,7 @@ import { useLocation } from "react-router-dom";
 import Topbar from "@/components/Topbar";
 import SearchResults from "@/components/SearchResults";
 import SongCard from "@/components/SongCard";
+import PlayButton from "@/pages/home/components/PlayButton";
 import AnimatedGrid from "@/components/AnimatedGrid";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import GlassCard from "@/components/ui/GlassCard";
@@ -404,19 +405,7 @@ const BrowsePage = () => {
                                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                                 />
                               </div>
-                              <button
-                                onClick={() => handlePlaySong(song)}
-                                className="absolute right-2 bottom-2 bg-red-500 rounded-full p-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all duration-300 hover:scale-110 hover:bg-red-600 shadow-xl"
-                              >
-                                {isPlaying && currentSong?._id === song._id ? (
-                                  <div className="w-4 h-4 flex items-center justify-center">
-                                    <div className="w-1 h-4 bg-white mx-0.5 animate-pulse-slow" />
-                                    <div className="w-1 h-4 bg-white mx-0.5 animate-pulse" />
-                                  </div>
-                                ) : (
-                                  <div className="w-0 h-0 border-t-4 border-t-transparent border-l-8 border-l-white border-b-4 border-b-transparent ml-0.5" />
-                                )}
-                              </button>
+                              <PlayButton song={song} className="absolute inset-0 m-auto w-10 h-10 flex items-center justify-center md:opacity-0 md:group-hover:opacity-100" />
                             </div>
                             <h3 className="font-semibold text-sm sm:text-base tracking-wide mb-1 sm:mb-2 truncate text-white group-hover:text-red-200 transition-colors">
                               {song.title}
@@ -483,19 +472,7 @@ const BrowsePage = () => {
                                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                                 />
                               </div>
-                              <button
-                                onClick={() => handlePlaySong(song)}
-                                className="absolute right-2 bottom-2 bg-red-500 rounded-full p-2 opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110 hover:bg-red-600 shadow-xl"
-                              >
-                                {isPlaying && currentSong?._id === song._id ? (
-                                  <div className="w-4 h-4 flex items-center justify-center">
-                                    <div className="w-1 h-4 bg-white mx-0.5 animate-pulse-slow" />
-                                    <div className="w-1 h-4 bg-white mx-0.5 animate-pulse" />
-                                  </div>
-                                ) : (
-                                  <div className="w-0 h-0 border-t-4 border-t-transparent border-l-8 border-l-white border-b-4 border-b-transparent ml-0.5" />
-                                )}
-                              </button>
+                              <PlayButton song={song} className="absolute inset-0 m-auto w-10 h-10 flex items-center justify-center" />
                             </div>
                             <h3 className="font-semibold text-sm sm:text-base tracking-wide mb-1 sm:mb-2 truncate text-white group-hover:text-red-200 transition-colors">
                               {song.title}
@@ -560,19 +537,7 @@ const BrowsePage = () => {
                                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                                 />
                               </div>
-                              <button
-                                onClick={() => handlePlaySong(song)}
-                                className="absolute right-2 bottom-2 bg-red-500 rounded-full p-2 opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110 hover:bg-red-600 shadow-xl"
-                              >
-                                {isPlaying && currentSong?._id === song._id ? (
-                                  <div className="w-4 h-4 flex items-center justify-center">
-                                    <div className="w-1 h-4 bg-white mx-0.5 animate-pulse-slow" />
-                                    <div className="w-1 h-4 bg-white mx-0.5 animate-pulse" />
-                                  </div>
-                                ) : (
-                                  <div className="w-0 h-0 border-t-4 border-t-transparent border-l-8 border-l-white border-b-4 border-b-transparent ml-0.5" />
-                                )}
-                              </button>
+                              <PlayButton song={song} className="absolute inset-0 m-auto w-10 h-10 flex items-center justify-center" />
                             </div>
                             <h3 className="font-semibold text-sm sm:text-base tracking-wide mb-1 sm:mb-2 truncate text-white group-hover:text-red-200 transition-colors">
                               {song.title}
@@ -637,19 +602,7 @@ const BrowsePage = () => {
                                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                                 />
                               </div>
-                              <button
-                                onClick={() => handlePlaySong(song)}
-                                className="absolute right-2 bottom-2 bg-red-500 rounded-full p-2 opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110 hover:bg-red-600 shadow-xl"
-                              >
-                                {isPlaying && currentSong?._id === song._id ? (
-                                  <div className="w-4 h-4 flex items-center justify-center">
-                                    <div className="w-1 h-4 bg-white mx-0.5 animate-pulse-slow" />
-                                    <div className="w-1 h-4 bg-white mx-0.5 animate-pulse" />
-                                  </div>
-                                ) : (
-                                  <div className="w-0 h-0 border-t-4 border-t-transparent border-l-8 border-l-white border-b-4 border-b-transparent ml-0.5" />
-                                )}
-                              </button>
+                              <PlayButton song={song} className="absolute inset-0 m-auto w-10 h-10 flex items-center justify-center" />
                             </div>
                             <div className="space-y-1">
                               <h3 className="font-semibold text-sm sm:text-base tracking-wide truncate text-white group-hover:text-red-200 transition-colors">
