@@ -22,7 +22,7 @@ const formatTime = (seconds: number) => {
 };
 
 export const PlaybackControls = () => {
-  const { currentSong, isPlaying, togglePlay, playNext, playPrevious } =
+  const { currentSong, isPlaying, togglePlay, playNext, playPrevious, isFullscreenPlayer } =
     usePlayerStore();
 
   const [volume, setVolume] = useState(75);
@@ -179,6 +179,9 @@ export const PlaybackControls = () => {
       audioRef.current.volume = newVolume / 100;
     }
   };
+
+  // Hide the compact footer controls when the fullscreen player is open
+  if (isFullscreenPlayer) return null;
 
   return (
     <footer className="hidden md:block h-16 sm:h-20 md:h-24 bg-zinc-950/95 backdrop-blur-xl px-2 sm:px-4 shadow-lg md:relative fixed bottom-20 md:bottom-0 left-0 right-0 z-50">
