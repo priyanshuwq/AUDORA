@@ -93,11 +93,12 @@ const AudoraLogo = ({
       {showText && (
         <span
           className={cn(
-            "font-extrabold audora-font nothing-wide bg-gradient-to-r from-white via-red-200 to-red-400 bg-clip-text text-transparent",
+            "font-black audora-font nothing-wide bg-gradient-to-r from-white via-red-200 to-red-400 bg-clip-text text-transparent",
             // Animations: shimmer text + soft glow; scale slightly on hover for affordance
             "motion-safe:animate-shimmerText motion-safe:animate-glow transform-gpu transition-all duration-400 hover:scale-105",
             textSizeClasses[size]
           )}
+          style={{ fontWeight: "900", fontFamily: "inherit" }}
         >
           Audora
         </span>
