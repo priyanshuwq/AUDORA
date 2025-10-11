@@ -63,10 +63,11 @@
 
 @layer base {
   * {
-    @apply border-border;
+    border-color: hsl(var(--border));
   }
   body {
-    @apply bg-background text-foreground;
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
     background-color: #000000;
   }
   /* Nothing OS vibe typography helper */
@@ -311,15 +312,69 @@
 
 /* Global responsive improvements */
 .container-responsive {
-  @apply px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (min-width: 640px) {
+  .container-responsive {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container-responsive {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
 }
 
 .text-responsive {
-  @apply text-sm sm:text-base lg:text-lg;
+  font-size: 0.875rem; /* text-sm */
+  line-height: 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .text-responsive {
+    font-size: 1rem; /* sm:text-base */
+    line-height: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .text-responsive {
+    font-size: 1.125rem; /* lg:text-lg */
+    line-height: 1.75rem;
+  }
 }
 
 .button-responsive {
-  @apply px-3 py-2 sm:px-4 sm:py-2 lg:px-6 lg:py-3;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+@media (min-width: 640px) {
+  .button-responsive {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .button-responsive {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
 }
 
 /* Mobile-specific improvements */
