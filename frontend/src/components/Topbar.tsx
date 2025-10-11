@@ -12,7 +12,7 @@ const Topbar = () => {
   const { isAdmin } = useAuthStore();
 
   return (
-    <div className="flex items-center justify-between p-3 sm:p-4 md:p-6 sticky top-0 bg-black/50/40 backdrop-blur-xl border-b border-white/8 z-10">
+    <div className="flex items-center justify-between p-3 sm:p-4 md:p-6 sticky top-0 bg-black/50/40 backdrop-blur-xl z-10">
       {/* Responsive Logo: smaller on mobile */}
       <div className="flex items-center">
         <div className="sm:hidden">
