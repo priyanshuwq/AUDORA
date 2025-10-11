@@ -20,8 +20,6 @@ import {
 } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import Topbar from "@/components/Topbar";
-import SearchResults from "@/components/SearchResults";
-import SongCard from "@/components/SongCard";
 import PlayButton from "@/pages/home/components/PlayButton";
 import AnimatedGrid from "@/components/AnimatedGrid";
 import ErrorBoundary from "@/components/ErrorBoundary";
@@ -41,7 +39,7 @@ const BrowsePage = () => {
 
   // Album dialog state
   const [isAddToAlbumDialogOpen, setIsAddToAlbumDialogOpen] = useState(false);
-  const [selectedSong, setSelectedSong] = useState<Song | null>(null);
+  const [selectedSong] = useState<Song | null>(null);
 
   // Handle initial search from navigation
   useEffect(() => {
@@ -53,8 +51,8 @@ const BrowsePage = () => {
   }, [location.state]);
 
   // Stores
-  const { currentSong, isPlaying, setCurrentSong, initializeQueue } =
-    usePlayerStore();
+  // Removed unused destructured elements from usePlayerStore
+  usePlayerStore();
   const {
     featuredSongs,
     trendingSongs,
@@ -136,39 +134,8 @@ const BrowsePage = () => {
     },
   });
 
-  const handlePlaySong = (song: Song) => {
-    if (currentSong?._id === song._id) {
-      // If same song, just toggle play/pause
-      return;
-    }
-
-    // Set up queue based on current context
-    let songsQueue: Song[] = [];
-
-    if (activeTab === "search" && searchResults.length > 0) {
-      songsQueue = searchResults;
-    } else if (activeTab === "featured") {
-      songsQueue = featuredSongs;
-    } else if (activeTab === "trending") {
-      songsQueue = trendingSongs;
-    } else if (activeTab === "for-you") {
-      songsQueue = madeForYouSongs;
-    } else if (activeTab === "recent") {
-      songsQueue = recentSongs;
-    }
-
-    // Initialize queue and play song
-    if (songsQueue.length > 0) {
-      initializeQueue(songsQueue);
-    }
-    setCurrentSong(song);
-  };
 
   // Functions for adding songs to albums
-  const handleOpenAddToAlbumDialog = (song: Song) => {
-    setSelectedSong(song);
-    setIsAddToAlbumDialogOpen(true);
-  };
 
   const handleAddToAlbum = async (albumId: string) => {
     if (!selectedSong) return;
@@ -301,46 +268,138 @@ const BrowsePage = () => {
 
                   {searchQuery ? (
                     <div className="space-y-8">
-                      {/* Direct search results */}
-                      <SearchResults
-                        songs={searchResults}
-                        isLoading={searchLoading}
-                        isLoadingMore={isLoadingMore}
-                        error={error}
-                        hasMore={hasMore}
-                        totalSongs={totalSongs}
-                        query={searchQuery}
-                        onLoadMore={loadMore}
-                        onPlay={handlePlaySong}
-                        onAddToAlbum={handleOpenAddToAlbumDialog}
-                        currentSong={currentSong}
-                        isPlaying={isPlaying}
-                        showHeader={false}
-                      />{" "}
+                      {/* Search Results Grid */}
+                      {searchLoading ? (
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4 md:gap-6">
+                          {[...Array(12)].map((_, i) => (
+                            <GlassCard key={i} className="animate-pulse">
+                              <div className="aspect-square rounded-lg bg-zinc-800 mb-3" />
+                              <div className="h-4 bg-zinc-800 rounded w-3/4 mb-2" />
+                              <div className="h-3 bg-zinc-800 rounded w-1/2" />
+                            </GlassCard>
+                          ))}
+                        </div>
+                      ) : searchResults.length > 0 ? (
+                        <div className="space-y-6">
+                          <div className="flex items-center justify-between">
+                            <h3 className="text-xl font-semibold text-white flex items-center gap-2">
+                              <Search className="w-5 h-5 text-red-400" />
+                              Search Results for "{searchQuery}"
+                            </h3>
+                            <span className="text-sm text-zinc-400">
+                              {totalSongs} songs found
+                            </span>
+                          </div>
+
+                          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4 md:gap-6">
+                            {searchResults.map((song, index) => (
+                              <GlassCard
+                                key={song._id}
+                                className="search-result-item"
+                                style={{ animationDelay: `${index * 50}ms` }}
+                              >
+                                <div className="relative mb-3 sm:mb-4">
+                                  <div className="aspect-square rounded-lg sm:rounded-xl shadow-2xl overflow-hidden">
+                                    <img
+                                      src={song.imageUrl}
+                                      alt={song.title}
+                                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                    />
+                                  </div>
+                                  <PlayButton
+                                    song={song}
+                                    className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-12 h-12 opacity-0 group-hover:opacity-100 transition-all duration-200 scale-90 group-hover:scale-100"
+                                  />
+                                </div>
+                                <h3 className="font-semibold text-sm sm:text-base tracking-wide mb-1 sm:mb-2 truncate text-white group-hover:text-red-200 transition-colors">
+                                  {song.title}
+                                </h3>
+                                <p className="text-xs sm:text-sm text-zinc-500 truncate group-hover:text-zinc-400 transition-colors">
+                                  {song.artist}
+                                </p>
+                              </GlassCard>
+                            ))}
+                          </div>
+
+                          {/* Load More Button */}
+                          {hasMore && (
+                            <div className="flex justify-center pt-4">
+                              <Button
+                                onClick={loadMore}
+                                disabled={isLoadingMore}
+                                variant="outline"
+                                className="bg-zinc-800/50 border-zinc-700 hover:bg-zinc-700/50 text-white"
+                              >
+                                {isLoadingMore ? (
+                                  <>
+                                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                                    Loading...
+                                  </>
+                                ) : (
+                                  "Load More"
+                                )}
+                              </Button>
+                            </div>
+                          )}
+                        </div>
+                      ) : error ? (
+                        <div className="flex flex-col items-center justify-center py-12 space-y-4">
+                          <Search className="w-16 h-16 text-red-500/50" />
+                          <div className="text-center">
+                            <h3 className="text-xl font-semibold text-white mb-2">
+                              Search Error
+                            </h3>
+                            <p className="text-zinc-400">{error}</p>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="flex flex-col items-center justify-center py-12 space-y-4">
+                          <Search className="w-16 h-16 text-zinc-600" />
+                          <div className="text-center">
+                            <h3 className="text-xl font-semibold text-white mb-2">
+                              No results found
+                            </h3>
+                            <p className="text-zinc-400">
+                              Try searching with different keywords
+                            </p>
+                          </div>
+                        </div>
+                      )}
+
                       {/* Related/Popular songs when we have results */}
                       {searchResults.length > 0 && featuredSongs.length > 0 && (
-                        <div className="border-t border-zinc-800 pt-6">
-                          <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                        <div className="border-t border-zinc-800 pt-8">
+                          <h3 className="text-lg font-semibold text-white mb-6 flex items-center gap-2">
                             <Sparkles className="w-4 h-4 text-red-400" />
                             You might also like
                           </h3>
-                          <div className="space-y-3">
+                          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4 md:gap-6">
                             {featuredSongs.slice(0, 6).map((song, index) => (
-                              <div
+                              <GlassCard
                                 key={`related-${song._id}`}
-                                className="search-result-item"
+                                className="search-result-item opacity-80 hover:opacity-100"
                                 style={{ animationDelay: `${index * 100}ms` }}
                               >
-                                <SongCard
-                                  song={song}
-                                  isCurrentSong={currentSong?._id === song._id}
-                                  isPlaying={
-                                    isPlaying && currentSong?._id === song._id
-                                  }
-                                  onPlay={handlePlaySong}
-                                  className="song-card-hover opacity-80 hover:opacity-100"
-                                />
-                              </div>
+                                <div className="relative mb-3 sm:mb-4">
+                                  <div className="aspect-square rounded-lg sm:rounded-xl shadow-2xl overflow-hidden">
+                                    <img
+                                      src={song.imageUrl}
+                                      alt={song.title}
+                                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                    />
+                                  </div>
+                                  <PlayButton
+                                    song={song}
+                                    className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-12 h-12 opacity-0 group-hover:opacity-100 transition-all duration-200 scale-90 group-hover:scale-100"
+                                  />
+                                </div>
+                                <h3 className="font-semibold text-sm sm:text-base tracking-wide mb-1 sm:mb-2 truncate text-white group-hover:text-red-200 transition-colors">
+                                  {song.title}
+                                </h3>
+                                <p className="text-xs sm:text-sm text-zinc-500 truncate group-hover:text-zinc-400 transition-colors">
+                                  {song.artist}
+                                </p>
+                              </GlassCard>
                             ))}
                           </div>
                         </div>
@@ -366,9 +425,7 @@ const BrowsePage = () => {
                         Featured Songs
                       </h2>
                       <div className="h-1 w-16 rounded bg-red-600 mx-auto sm:mx-0 mb-2" />
-                      <p className="text-white">
-                        Hand-picked tracks just for you
-                      </p>
+                      <p className="text-white">Hand-picked tracks just for you</p>
                     </div>
 
                     {musicStoreLoading ? (
@@ -405,7 +462,10 @@ const BrowsePage = () => {
                                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                                 />
                               </div>
-                              <PlayButton song={song} className="absolute inset-0 m-auto w-10 h-10 flex items-center justify-center md:opacity-0 md:group-hover:opacity-100" />
+                              <PlayButton
+                                song={song}
+                                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-12 h-12 opacity-0 group-hover:opacity-100 transition-all duration-200 scale-90 group-hover:scale-100"
+                              />
                             </div>
                             <h3 className="font-semibold text-sm sm:text-base tracking-wide mb-1 sm:mb-2 truncate text-white group-hover:text-red-200 transition-colors">
                               {song.title}
@@ -435,14 +495,11 @@ const BrowsePage = () => {
                     {musicStoreLoading ? (
                       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4 md:gap-6">
                         {[...Array(12)].map((_, i) => (
-                          <div
-                            key={i}
-                            className="bg-black/20 p-3 sm:p-4 md:p-6 rounded-xl sm:rounded-2xl animate-pulse"
-                          >
+                          <GlassCard key={i} className="animate-pulse">
                             <div className="aspect-square rounded-lg bg-zinc-800 mb-3" />
                             <div className="h-4 bg-zinc-800 rounded w-3/4 mb-2" />
                             <div className="h-3 bg-zinc-800 rounded w-1/2" />
-                          </div>
+                          </GlassCard>
                         ))}
                       </div>
                     ) : trendingSongs.length === 0 ? (
@@ -460,10 +517,7 @@ const BrowsePage = () => {
                     ) : (
                       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4 md:gap-6">
                         {trendingSongs.map((song) => (
-                          <div
-                            key={song._id}
-                            className="bg-black/20 backdrop-blur-sm p-3 sm:p-4 md:p-5 rounded-xl sm:rounded-2xl hover:bg-black/40 transition-all duration-300 group cursor-pointer shadow-md hover:shadow-xl hover:scale-105"
-                          >
+                          <GlassCard key={song._id}>
                             <div className="relative mb-3 sm:mb-4">
                               <div className="aspect-square rounded-lg sm:rounded-xl shadow-2xl overflow-hidden">
                                 <img
@@ -472,7 +526,10 @@ const BrowsePage = () => {
                                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                                 />
                               </div>
-                              <PlayButton song={song} className="absolute inset-0 m-auto w-10 h-10 flex items-center justify-center" />
+                              <PlayButton
+                                song={song}
+                                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-12 h-12 opacity-0 group-hover:opacity-100 transition-all duration-200 scale-90 group-hover:scale-100"
+                              />
                             </div>
                             <h3 className="font-semibold text-sm sm:text-base tracking-wide mb-1 sm:mb-2 truncate text-white group-hover:text-red-200 transition-colors">
                               {song.title}
@@ -480,7 +537,7 @@ const BrowsePage = () => {
                             <p className="text-xs sm:text-sm text-zinc-500 truncate group-hover:text-zinc-400 transition-colors">
                               {song.artist}
                             </p>
-                          </div>
+                          </GlassCard>
                         ))}
                       </div>
                     )}
@@ -500,14 +557,11 @@ const BrowsePage = () => {
                     {musicStoreLoading ? (
                       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4 md:gap-6">
                         {[...Array(12)].map((_, i) => (
-                          <div
-                            key={i}
-                            className="bg-black/20 p-3 sm:p-4 md:p-6 rounded-xl sm:rounded-2xl animate-pulse"
-                          >
+                          <GlassCard key={i} className="animate-pulse">
                             <div className="aspect-square rounded-lg bg-zinc-800 mb-3" />
                             <div className="h-4 bg-zinc-800 rounded w-3/4 mb-2" />
                             <div className="h-3 bg-zinc-800 rounded w-1/2" />
-                          </div>
+                          </GlassCard>
                         ))}
                       </div>
                     ) : madeForYouSongs.length === 0 ? (
@@ -525,10 +579,7 @@ const BrowsePage = () => {
                     ) : (
                       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4 md:gap-6">
                         {madeForYouSongs.map((song) => (
-                          <div
-                            key={song._id}
-                            className="bg-black/20 backdrop-blur-sm p-3 sm:p-4 md:p-5 rounded-xl sm:rounded-2xl hover:bg-black/40 transition-all duration-300 group cursor-pointer shadow-md hover:shadow-xl hover:scale-105"
-                          >
+                          <GlassCard key={song._id}>
                             <div className="relative mb-3 sm:mb-4">
                               <div className="aspect-square rounded-lg sm:rounded-xl shadow-2xl overflow-hidden">
                                 <img
@@ -537,7 +588,10 @@ const BrowsePage = () => {
                                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                                 />
                               </div>
-                              <PlayButton song={song} className="absolute inset-0 m-auto w-10 h-10 flex items-center justify-center" />
+                              <PlayButton
+                                song={song}
+                                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-12 h-12 opacity-0 group-hover:opacity-100 transition-all duration-200 scale-90 group-hover:scale-100"
+                              />
                             </div>
                             <h3 className="font-semibold text-sm sm:text-base tracking-wide mb-1 sm:mb-2 truncate text-white group-hover:text-red-200 transition-colors">
                               {song.title}
@@ -545,7 +599,7 @@ const BrowsePage = () => {
                             <p className="text-xs sm:text-sm text-zinc-500 truncate group-hover:text-zinc-400 transition-colors">
                               {song.artist}
                             </p>
-                          </div>
+                          </GlassCard>
                         ))}
                       </div>
                     )}
@@ -567,14 +621,11 @@ const BrowsePage = () => {
                     {musicStoreLoading ? (
                       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4 md:gap-6">
                         {[...Array(12)].map((_, i) => (
-                          <div
-                            key={i}
-                            className="bg-black/20 p-3 sm:p-4 md:p-6 rounded-xl sm:rounded-2xl animate-pulse"
-                          >
+                          <GlassCard key={i} className="animate-pulse">
                             <div className="aspect-square rounded-lg bg-zinc-800 mb-3" />
                             <div className="h-4 bg-zinc-800 rounded w-3/4 mb-2" />
                             <div className="h-3 bg-zinc-800 rounded w-1/2" />
-                          </div>
+                          </GlassCard>
                         ))}
                       </div>
                     ) : recentSongs.length === 0 ? (
@@ -593,7 +644,7 @@ const BrowsePage = () => {
                       <AnimatedGrid
                         songs={recentSongs}
                         renderItem={(song) => (
-                          <div className="bg-black/20 backdrop-blur-sm p-3 sm:p-4 md:p-5 rounded-xl sm:rounded-2xl hover:bg-black/40 transition-all duration-300 group cursor-pointer shadow-lg hover:shadow-xl hover:shadow-red-500/10 hover:scale-105">
+                          <GlassCard>
                             <div className="relative mb-3 sm:mb-4">
                               <div className="aspect-square rounded-lg sm:rounded-xl shadow-2xl overflow-hidden">
                                 <img
@@ -602,7 +653,10 @@ const BrowsePage = () => {
                                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                                 />
                               </div>
-                              <PlayButton song={song} className="absolute inset-0 m-auto w-10 h-10 flex items-center justify-center" />
+                              <PlayButton
+                                song={song}
+                                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-12 h-12 opacity-0 group-hover:opacity-100 transition-all duration-200 scale-90 group-hover:scale-100"
+                              />
                             </div>
                             <div className="space-y-1">
                               <h3 className="font-semibold text-sm sm:text-base tracking-wide truncate text-white group-hover:text-red-200 transition-colors">
@@ -616,7 +670,7 @@ const BrowsePage = () => {
                                 <span>Recently added</span>
                               </div>
                             </div>
-                          </div>
+                          </GlassCard>
                         )}
                       />
                     )}
