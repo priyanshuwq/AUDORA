@@ -170,6 +170,7 @@ const VinylLogo = ({
             "motion-safe:animate-shimmerText motion-safe:animate-glow motion-safe:animate-fadeInUp transition-transform duration-300",
             "hover:scale-105"
           )}
+          style={{ fontWeight: '900', fontFamily: 'inherit' }}
         >
           AUDORA
         </span>
