@@ -334,7 +334,7 @@ export const useEnhancedRoomStore = create<RoomStore>((set, get) => ({
       const timeout = setTimeout(() => {
         set({ isLoading: false });
         resolve(null);
-      }, 5000);
+      }, 8000);
       socket.once("room_created", (data: { room: Room; code: string }) => {
         clearTimeout(timeout);
         resolve(data.code);
