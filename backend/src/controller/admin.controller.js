@@ -1,17 +1,48 @@
 import { Song } from "../models/song.model.js";
 import { Album } from "../models/album.model.js";
 import cloudinary from "../lib/cloudinary.js";
+import fs from "fs";
+import path from "path";
 
-// helper function for cloudinary uploads
+// helper function for cloudinary uploads with better error handling
 const uploadToCloudinary = async (file) => {
   try {
+    if (!process.env.CLOUDINARY_CLOUD_NAME) {
+      throw new Error("Cloudinary configuration is missing");
+    }
+
     const result = await cloudinary.uploader.upload(file.tempFilePath, {
       resource_type: "auto",
+      timeout: 60000, // Increase timeout to 60s for larger files
     });
+
     return result.secure_url;
   } catch (error) {
-    console.log("Error in uploadToCloudinary", error);
-    throw new Error("Error uploading to cloudinary");
+    console.error("Error in uploadToCloudinary:", error);
+
+    // If Cloudinary is not configured, use a local path as fallback
+    if (error.message.includes("configuration is missing")) {
+      console.log("Using local path fallback for file upload");
+
+      // Create a unique filename
+      const filename = `${Date.now()}_${file.name.replace(/\s+/g, "_")}`;
+      const publicDir = path.join(process.cwd(), "../frontend/public");
+      const uploadDir = path.join(publicDir, "uploads");
+
+      // Ensure upload directory exists
+      if (!fs.existsSync(uploadDir)) {
+        fs.mkdirSync(uploadDir, { recursive: true });
+      }
+
+      // Copy file to uploads directory
+      const targetPath = path.join(uploadDir, filename);
+      fs.copyFileSync(file.tempFilePath, targetPath);
+
+      // Return a path that will be accessible from the frontend
+      return `/uploads/${filename}`;
+    }
+
+    throw new Error(`Error uploading to cloudinary: ${error.message}`);
   }
 };
 
