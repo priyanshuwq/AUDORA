@@ -3,6 +3,16 @@ import { io, Socket } from "socket.io-client";
 import { Song, User } from "@/types";
 import toast from "react-hot-toast";
 
+// Get the appropriate socket URL based on environment
+const getSocketUrl = () => {
+  // In production, use relative URL which will resolve to the same host
+  if (import.meta.env.PROD) {
+    return "/";
+  }
+  // In development, use localhost with port
+  return "http://localhost:8000";
+};
+
 interface RoomUser {
   user: User;
   currentSong: Song | null;
@@ -94,9 +104,17 @@ export const useEnhancedRoomStore = create<RoomStore>((set, get) => ({
 
   initSocket: () => {
     if (get().socket) return;
-    const socket = io("http://localhost:8000", {
+    const socket = io(getSocketUrl(), {
       autoConnect: true,
       withCredentials: true,
+      reconnection: true,
+      reconnectionAttempts: 5,
+      reconnectionDelay: 1000,
+    });
+
+    socket.on("connect_error", (error) => {
+      console.error("Socket connection error:", error);
+      toast.error("Connection to server failed. Please try again later.");
     });
 
     socket.on("connect", () => {
