@@ -11,7 +11,6 @@ import { createServer } from "http";
 import cron from "node-cron";
 
 import { initializeSocket } from "./lib/socket.js";
-
 import { connectDB } from "./lib/db.js";
 import userRoutes from "./routes/user.route.js";
 import adminRoutes from "./routes/admin.route.js";
@@ -34,7 +33,7 @@ console.log("- NODE_ENV:", process.env.NODE_ENV);
 
 const __dirname = path.resolve();
 const app = express();
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 8000;
 
 const httpServer = createServer(app);
 initializeSocket(httpServer);
@@ -49,7 +48,7 @@ const allowedOrigins = (
   .map((o) => o.trim())
   .filter(Boolean);
 
-// Apply CORS only to API routes to avoid interfering with static asset requests
+// Apply CORS only to API routes
 app.use(
   '/api',
   cors({
@@ -69,14 +68,11 @@ app.use(
 app.use(helmet());
 
 // Content Security Policy: allow Clerk's hosted JS and related endpoints
-// so the frontend can load Clerk's script when using Clerk's hosted domain.
-// The wildcard hosts cover account-specific subdomains used by Clerk.
 app.use(
   helmet.contentSecurityPolicy({
     useDefaults: true,
     directives: {
       defaultSrc: ["'self'"],
-      // Allow scripts from Clerk, cdn.jsdelivr and Cloudflare Turnstile. Include blob: for worker creation.
       scriptSrc: [
         "'self'",
         "https://*.clerk.accounts.dev",
@@ -85,7 +81,6 @@ app.use(
         "https://challenges.cloudflare.com",
         "blob:"
       ],
-      // Used for <script> elements specifically
       scriptSrcElem: [
         "'self'",
         "https://*.clerk.accounts.dev",
@@ -93,9 +88,7 @@ app.use(
         "https://cdn.jsdelivr.net",
         "https://challenges.cloudflare.com"
       ],
-      // Allow blob workers explicitly (otherwise script-src is used as a fallback)
       workerSrc: ["'self'", "blob:"],
-      // Turnstile uses iframes/frames
       frameSrc: ["https://challenges.cloudflare.com", "https://*.clerk.accounts.dev", "https://*.clerk.dev"],
       connectSrc: ["'self'", "https://*.clerk.accounts.dev", "https://*.clerk.dev"],
       imgSrc: ["'self'", 'data:', 'https:'],
@@ -105,7 +98,7 @@ app.use(
   })
 );
 
-// Rate limiting for API routes (adjust via env if needed)
+// Rate limiting for API routes
 const apiLimiter = rateLimit({
   windowMs: Number(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000, // 15 minutes
   max: Number(process.env.RATE_LIMIT_MAX) || 200,
@@ -118,10 +111,7 @@ app.use("/api/", apiLimiter);
 // Body parser
 app.use(express.json());
 
-// Clerk (adds req.auth)
-// Apply Clerk middleware only to API routes so static asset requests
-// (served from frontend/public or frontend/dist) are not processed by Clerk
-// which can throw errors for browser asset requests when not needed.
+// Apply Clerk middleware only to API routes
 app.use('/api', clerkMiddleware());
 
 // File uploads
@@ -136,17 +126,19 @@ app.use(
   })
 );
 
-// cron jobs
+// cron jobs to clean up temp directory
 const tempDir = path.join(process.cwd(), "tmp");
 cron.schedule("0 * * * *", () => {
   if (fs.existsSync(tempDir)) {
     fs.readdir(tempDir, (err, files) => {
       if (err) {
-        console.log("error", err);
+        console.log("Error cleaning temp directory:", err);
         return;
       }
       for (const file of files) {
-        fs.unlink(path.join(tempDir, file), (err) => {});
+        fs.unlink(path.join(tempDir, file), (err) => {
+          if (err) console.log(`Error removing temp file ${file}:`, err);
+        });
       }
     });
   }
@@ -156,6 +148,16 @@ cron.schedule("0 * * * *", () => {
 const publicPath = path.join(process.cwd(), "../frontend/public");
 app.use(express.static(publicPath));
 
+// Health check endpoint
+app.get("/api/health", (req, res) => {
+  res.status(200).json({ 
+    status: "ok", 
+    environment: process.env.NODE_ENV || "development",
+    timestamp: new Date().toISOString()
+  });
+});
+
+// API routes
 app.use("/api/users", userRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/auth", authRoutes);
@@ -163,6 +165,7 @@ app.use("/api/songs", songRoutes);
 app.use("/api/albums", albumRoutes);
 app.use("/api/stats", statRoutes);
 
+// Production setup for serving frontend
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../frontend/dist")));
   app.get("*", (req, res) => {
@@ -170,17 +173,25 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-// error handler
+// Global error handler
 app.use((err, req, res, next) => {
+  console.error("Server error:", {
+    message: err.message,
+    stack: process.env.NODE_ENV === "production" ? "Hidden in production" : err.stack,
+    path: req.path,
+    method: req.method,
+    timestamp: new Date().toISOString(),
+  });
+  
   res.status(500).json({
-    message:
-      process.env.NODE_ENV === "production"
-        ? "Internal server error"
-        : err.message,
+    message: process.env.NODE_ENV === "production" 
+      ? "Internal server error" 
+      : err.message,
   });
 });
 
+// Start the server
 httpServer.listen(PORT, () => {
-  console.log("Server is running on port " + PORT);
+  console.log(`Server is running on port ${PORT}`);
   connectDB();
-}); // restart
+});
