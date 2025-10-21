@@ -85,6 +85,17 @@ const HomePage = () => {
     return timeMessages[Math.floor(Math.random() * timeMessages.length)];
   };
 
+  // Golden Ratio formatting for "Good night Priyanshu"
+  const phi = 1.6180339887;
+  const baseGoldenSize = 34; // px for salutation; name scales by φ
+  const isNightPriyanshu = (() => {
+    const hour = new Date().getHours();
+    const isNight = hour >= 22 || hour < 5;
+    const firstName =
+      (user?.firstName || user?.fullName?.split(" ")[0] || "").toLowerCase();
+    return isNight && firstName === "priyanshu";
+  })();
+
   return (
     <main className="rounded-none sm:rounded-xl overflow-hidden h-full bg-zinc-950/90 backdrop-blur-sm flex flex-col mb-32 md:mb-0">
       <Topbar />
@@ -92,10 +103,20 @@ const HomePage = () => {
         <div className="p-3 sm:p-4 md:p-6 space-y-6 sm:space-y-8">
           <div className="mb-6 sm:mb-8 animate-slideInFromTop">
             <h1 className="mb-3 sm:mb-4">
-              <span className="block text-3xl sm:text-4xl md:text-5xl lg:text-5xl font-medium text-zinc-200 leading-tight">
+              <span
+                className="block text-3xl sm:text-4xl md:text-5xl lg:text-5xl font-medium text-zinc-200 leading-tight"
+                style={isNightPriyanshu ? { fontSize: baseGoldenSize } : undefined}
+              >
                 {getSalutation()}
               </span>
-              <span className="block text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mt-1 bg-gradient-to-r from-red-400 via-rose-300 to-white bg-clip-text text-transparent tracking-tight leading-none">
+              <span
+                className="block text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mt-1 bg-gradient-to-r from-red-400 via-rose-300 to-white bg-clip-text text-transparent tracking-tight leading-none"
+                style={
+                  isNightPriyanshu
+                    ? { fontSize: baseGoldenSize * phi }
+                    : undefined
+                }
+              >
                 {getUserName()}
               </span>
             </h1>
