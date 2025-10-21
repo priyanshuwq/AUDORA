@@ -22,6 +22,17 @@ import statRoutes from "./routes/stat.route.js";
 // Load environment variables
 dotenv.config({ path: path.resolve(process.cwd(), ".env") });
 
+// Validate critical environment variables
+const requiredEnvVars = ['MONGODB_URI'];
+const missingEnvVars = requiredEnvVars.filter(key => !process.env[key]);
+
+if (missingEnvVars.length > 0 && process.env.NODE_ENV === 'production') {
+  console.error("❌ Critical environment variables are missing:");
+  missingEnvVars.forEach(key => console.error(`   - ${key}`));
+  console.error("\nPlease set these variables in your deployment environment.");
+  process.exit(1);
+}
+
 // Debug environment variables
 console.log("Environment loaded:");
 console.log("- PORT:", process.env.PORT);
@@ -30,10 +41,16 @@ console.log(
   process.env.MONGODB_URI ? "✓ Loaded" : "✗ Missing"
 );
 console.log("- NODE_ENV:", process.env.NODE_ENV);
+console.log("- CLERK_PUBLISHABLE_KEY:", process.env.CLERK_PUBLISHABLE_KEY ? "✓ Loaded" : "⚠ Missing (Clerk auth may fail)");
+console.log("- CLERK_SECRET_KEY:", process.env.CLERK_SECRET_KEY ? "✓ Loaded" : "⚠ Missing (Clerk auth may fail)");
 
 const __dirname = path.resolve();
 const app = express();
 const PORT = process.env.PORT || 8000;
+
+// Trust proxy - required for Render.com and other reverse proxies
+// This fixes the express-rate-limit X-Forwarded-For header error
+app.set('trust proxy', 1);
 
 const httpServer = createServer(app);
 initializeSocket(httpServer);
@@ -48,6 +65,13 @@ const allowedOrigins = (
   .map((o) => o.trim())
   .filter(Boolean);
 
+// In production, also allow the deployment URL
+if (process.env.NODE_ENV === 'production' && process.env.RENDER_EXTERNAL_URL) {
+  allowedOrigins.push(process.env.RENDER_EXTERNAL_URL);
+}
+
+console.log("Allowed CORS origins:", allowedOrigins);
+
 // Apply CORS only to API routes
 app.use(
   '/api',
@@ -55,7 +79,15 @@ app.use(
     origin: (origin, callback) => {
       // Allow non-browser requests (e.g. curl, server-to-server) when origin is undefined
       if (!origin) return callback(null, true);
+      
+      // In production, also allow same-origin requests
+      if (process.env.NODE_ENV === 'production' && !origin.includes('localhost')) {
+        return callback(null, true);
+      }
+      
       if (allowedOrigins.includes(origin)) return callback(null, true);
+      
+      console.warn(`⚠ CORS blocked origin: ${origin}`);
       return callback(new Error("CORS origin not allowed"), false);
     },
     credentials: true,
@@ -111,8 +143,20 @@ app.use("/api/", apiLimiter);
 // Body parser
 app.use(express.json());
 
-// Apply Clerk middleware only to API routes
+// Apply Clerk middleware only to API routes with error handling
 app.use('/api', clerkMiddleware());
+
+// Clerk error handler - catch authentication errors gracefully
+app.use('/api', (err, req, res, next) => {
+  if (err.name === 'ClerkAuthenticationError' || err.message?.includes('Clerk')) {
+    console.error('Clerk authentication error:', err.message);
+    return res.status(401).json({ 
+      message: 'Authentication failed',
+      error: process.env.NODE_ENV === 'production' ? 'Unauthorized' : err.message
+    });
+  }
+  next(err);
+});
 
 // File uploads
 app.use(
@@ -146,14 +190,37 @@ cron.schedule("0 * * * *", () => {
 
 // Serve static files from frontend public directory
 const publicPath = path.join(process.cwd(), "../frontend/public");
-app.use(express.static(publicPath));
+if (fs.existsSync(publicPath)) {
+  app.use(express.static(publicPath));
+  console.log("✓ Serving static files from:", publicPath);
+} else {
+  console.warn("⚠ Public directory not found:", publicPath);
+}
 
 // Health check endpoint
 app.get("/api/health", (req, res) => {
-  res.status(200).json({ 
-    status: "ok", 
+  const healthCheck = {
+    status: "ok",
     environment: process.env.NODE_ENV || "development",
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+    checks: {
+      mongodb: false,
+      clerk: !!process.env.CLERK_SECRET_KEY,
+      frontend: process.env.NODE_ENV === 'production' 
+        ? fs.existsSync(path.join(__dirname, "../frontend/dist"))
+        : true
+    }
+  };
+
+  // Quick MongoDB connection check
+  import('./lib/db.js').then(({ default: mongoose }) => {
+    healthCheck.checks.mongodb = mongoose.connection.readyState === 1;
+    
+    const statusCode = Object.values(healthCheck.checks).every(v => v) ? 200 : 503;
+    res.status(statusCode).json(healthCheck);
+  }).catch(() => {
+    res.status(503).json(healthCheck);
   });
 });
 
@@ -167,10 +234,19 @@ app.use("/api/stats", statRoutes);
 
 // Production setup for serving frontend
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "../frontend/dist")));
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "../frontend", "dist", "index.html"));
-  });
+  const frontendDistPath = path.join(__dirname, "../frontend/dist");
+  
+  if (fs.existsSync(frontendDistPath)) {
+    app.use(express.static(frontendDistPath));
+    console.log("✓ Serving frontend from:", frontendDistPath);
+    
+    app.get("*", (req, res) => {
+      res.sendFile(path.join(frontendDistPath, "index.html"));
+    });
+  } else {
+    console.error("❌ Frontend dist folder not found:", frontendDistPath);
+    console.error("   Please run 'npm run build' from the project root.");
+  }
 }
 
 // Global error handler

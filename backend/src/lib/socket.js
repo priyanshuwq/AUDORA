@@ -10,6 +10,13 @@ export const initializeSocket = (server) => {
     .map((o) => o.trim())
     .filter(Boolean);
 
+  // In production, also allow the deployment URL
+  if (process.env.NODE_ENV === 'production' && process.env.RENDER_EXTERNAL_URL) {
+    allowedOrigins.push(process.env.RENDER_EXTERNAL_URL);
+  }
+
+  console.log("Socket.io allowed origins:", allowedOrigins);
+
   const io = new Server(server, {
     cors: {
       // In production, allow request from the same origin
@@ -17,16 +24,20 @@ export const initializeSocket = (server) => {
         // Allow requests with no origin (like mobile apps, curl, etc)
         if (!origin) return callback(null, true);
         
+        // In production, allow same-origin and deployment requests
+        if (process.env.NODE_ENV === 'production') {
+          // Allow all same-origin requests (when frontend is served from backend)
+          if (!origin.includes('localhost')) {
+            return callback(null, true);
+          }
+        }
+        
         // Check if the origin is in our allowed list
         if (allowedOrigins.includes(origin)) {
           return callback(null, true);
         }
         
-        // In production, also allow same-origin requests
-        if (process.env.NODE_ENV === 'production') {
-          return callback(null, true);
-        }
-        
+        console.warn(`⚠ Socket.io CORS blocked origin: ${origin}`);
         return callback(new Error('Not allowed by CORS'), false);
       },
       credentials: true,
@@ -35,6 +46,9 @@ export const initializeSocket = (server) => {
     // Better handling for proxies in production
     path: '/socket.io',
     transports: ['websocket', 'polling'],
+    // Increase ping timeout for slower connections
+    pingTimeout: 60000,
+    pingInterval: 25000,
   });
 
   const userSockets = new Map(); // { userId: socketId}

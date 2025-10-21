@@ -15,6 +15,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Users, X } from "lucide-react";
 import FullPlayer from "./components/FullPlayer";
+import MobileFullscreenPlayer from "./components/MobileFullscreenPlayer";
 
 const MainLayout = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -113,8 +114,11 @@ const MainLayout = () => {
         {/* Mobile Activity Dialog */}
         {isMobile && <MobileActivityDialog />}
 
-        {/* Fullscreen Player overlay */}
-        <FullPlayer />
+        {/* Fullscreen Player overlay - Desktop version */}
+        {!isMobile && <FullPlayer />}
+
+        {/* Mobile Fullscreen Player - Spotify-style */}
+        {isMobile && <MobileFullscreenPlayer />}
 
         {/* Playback Controls - positioned above bottom nav on mobile */}
         <div className="animate-slideInFromTop">
