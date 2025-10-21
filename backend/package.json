@@ -12,7 +12,13 @@
     "remove:album-covers": "node src/seeds/removeAlbumCovers.js",
     "seed:generated:songs": "node src/seeds/seedGeneratedSongsNoAlbums.js",
     "extract:metadata": "node src/scripts/extractSongMetadata.js",
-    "import:songs": "node src/scripts/importSongs.js"
+    "import:songs": "node src/scripts/importSongs.js",
+    "prune:albums": "node src/seeds/pruneAlbumsOnly.js",
+    "import:manual-albums": "node src/seeds/importManualAlbums.js",
+    "reseed:songs": "node src/seeds/reseedSongsNoDuplicates.js",
+    "cleanup:songs": "node src/scripts/cleanupDatabaseSongs.js",
+    "remove:duplicates": "node src/scripts/removeDuplicateSongs.js",
+    "auto:match-albums": "node src/scripts/autoMatchSongsToAlbums.js"
   },
   "keywords": [],
   "type": "module",
