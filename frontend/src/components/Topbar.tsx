@@ -27,22 +27,18 @@ const Topbar = () => {
         <div className="hidden sm:inline-flex">
           <ExitButton />
         </div>
+        
         {isAdmin && (
           <>
-            {/* Replace small admin icon with mobile account button (UserButton) */}
-            <div className="md:hidden inline-flex items-center justify-center h-9 w-9 rounded-md">
-              <UserButton />
-            </div>
-
-            {/* Sleeker Admin button on md+ */}
+            {/* Admin button with icon on mobile, full button on desktop */}
             <Link
               to={"/admin"}
               role="button"
               aria-label="Open admin dashboard"
               className={cn(
-                "hidden md:inline-flex items-center gap-2",
-                // Sleek pill: subtle glassy background, red accent on hover, scale and shadow for affordance
-                "rounded-full px-3 py-1.5 bg-black/30 backdrop-blur-sm text-red-200 hover:text-red-50 transition-transform duration-200 ease-out transform hover:scale-105",
+                "inline-flex items-center gap-2 rounded-full p-2 md:px-3 md:py-1.5",
+                "bg-black/30 backdrop-blur-sm text-red-200 hover:text-red-50",
+                "transition-transform duration-200 ease-out transform hover:scale-105",
                 "focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2",
                 "shadow-sm hover:shadow-[0_8px_24px_rgba(239,68,68,0.12)]"
               )}
@@ -50,7 +46,7 @@ const Topbar = () => {
               <div className="inline-flex items-center justify-center h-7 w-7 rounded-full bg-gradient-to-br from-red-600/15 to-transparent">
                 <LayoutDashboardIcon className="h-4 w-4" />
               </div>
-              <span className="truncate text-sm font-medium">Admin</span>
+              <span className="hidden md:block truncate text-sm font-medium">Admin</span>
             </Link>
           </>
         )}
@@ -66,9 +62,17 @@ const Topbar = () => {
           </div>
         </SignedOut>
 
-        {/* Desktop account button (hidden on mobile to avoid duplicate) */}
-        <div className="hidden md:inline-flex">
-          <UserButton />
+        {/* User profile button - visible on all screen sizes when signed in */}
+        <div className="inline-flex">
+          <UserButton 
+            appearance={{
+              elements: {
+                avatarBox: "w-9 h-9 md:w-10 md:h-10",
+                userButtonPopoverCard: "bg-zinc-900 border-zinc-800",
+                userButtonPopoverActionButton: "hover:bg-zinc-800",
+              }
+            }}
+          />
         </div>
       </div>
     </div>
