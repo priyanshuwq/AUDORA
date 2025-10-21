@@ -76,7 +76,7 @@ const ActivityBar = () => {
 
   if (!currentRoom) {
     return (
-      <div className="w-full h-full bg-gradient-to-b from-[#1C1B29]/90 to-[#0D0C1D]/90 backdrop-blur-xl border-l border-white/10 flex flex-col animate-slideInFromRight">
+      <div className="w-full h-full bg-gradient-to-b from-zinc-900/90 to-zinc-950/90 backdrop-blur-xl border-l border-white/10 flex flex-col animate-slideInFromRight">
         <div className="p-4 border-b border-white/10">
           <div className="flex items-center justify-between">
             <h2 className="text-white font-semibold text-lg flex items-center gap-3">
@@ -144,7 +144,7 @@ const ActivityBar = () => {
 
   if (activities.length === 0) {
     return (
-      <div className="w-full h-full bg-gradient-to-b from-[#1C1B29]/90 to-[#0D0C1D]/90 backdrop-blur-xl border-l border-white/10 flex flex-col animate-slideInFromRight">
+      <div className="w-full h-full bg-gradient-to-b from-zinc-900/90 to-zinc-950/90 backdrop-blur-xl border-l border-white/10 flex flex-col animate-slideInFromRight">
         <div className="p-4 border-b border-white/10">
           <div className="flex items-center justify-between">
             <h2 className="text-white font-semibold text-lg flex items-center gap-3">
@@ -210,7 +210,7 @@ const ActivityBar = () => {
   }
 
   return (
-    <div className="w-full h-full bg-gradient-to-b from-[#1C1B29]/90 to-[#0D0C1D]/90 backdrop-blur-xl border-l border-white/10 flex flex-col animate-slideInFromRight">
+    <div className="w-full h-full bg-gradient-to-b from-zinc-900/90 to-zinc-950/90 backdrop-blur-xl border-l border-white/10 flex flex-col animate-slideInFromRight">
       {/* Header */}
       <div className="p-3 md:p-4 border-b border-white/10">
         <div className="flex items-center justify-between">
@@ -324,7 +324,7 @@ const ActivityBar = () => {
                     </div>
                     <div
                       className={cn(
-                        "absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-[#1C1B29]",
+                        "absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-zinc-900",
                         activity.isPlaying
                           ? "bg-green-400 animate-pulse"
                           : "bg-zinc-500"
