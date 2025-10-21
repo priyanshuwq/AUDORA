@@ -1,0 +1,42 @@
+{
+  "albums": [
+    {
+      "title": "My Custom Album",
+      "artist": "Various Artists",
+      "imageUrl": "/albums/my_custom_album.jpg",
+      "releaseYear": 2024,
+      "match": {
+        "by": "filename",
+        "songs": [
+          "Artist A - Song One.mp3",
+          "Artist B - Song Two.mp3"
+        ]
+      }
+    },
+    {
+      "title": "Exact Pairs Album",
+      "artist": "Some Artist",
+      "imageUrl": "/albums/some_artist_album.jpg",
+      "releaseYear": 2018,
+      "match": {
+        "by": "exact",
+        "songs": [
+          "Song Title One||Artist Name",
+          "Song Title Two||Artist Name"
+        ]
+      }
+    },
+    {
+      "title": "Loose Matching Album",
+      "artist": "Loose Artist",
+      "imageUrl": "/albums/loose_album.jpg",
+      "releaseYear": 2020,
+      "match": {
+        "by": "contains",
+        "songs": [
+          "keyword from title or artist"
+        ]
+      }
+    }
+  ]
+}
