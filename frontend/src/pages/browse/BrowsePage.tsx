@@ -6,6 +6,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import {
@@ -160,7 +161,7 @@ const BrowsePage = () => {
             className="h-full flex flex-col"
           >
             <div className="flex-shrink-0 px-4 sm:px-6 md:px-8 pt-4 sm:pt-6">
-              <div className="container-responsive">
+              <div className="max-w-full">
                 <div className="mb-6 sm:mb-8 text-center sm:text-left">
                   <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 sm:mb-3 bg-gradient-to-r from-white via-red-100 to-red-200 bg-clip-text text-transparent">
                     Browse Music
@@ -170,65 +171,64 @@ const BrowsePage = () => {
                   </p>
                 </div>
 
-                <TabsList className="grid w-full grid-cols-5 bg-zinc-900/50 backdrop-blur-sm rounded-lg p-1 mb-6 sm:mb-8">
+                <TabsList className="inline-flex w-full items-center justify-center gap-1 bg-zinc-900/40 backdrop-blur-sm border border-zinc-800/50 rounded-xl p-1.5 mb-6 sm:mb-8">
                   <TabsTrigger
                     value="search"
-                    className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 text-zinc-400 data-[state=active]:text-white data-[state=active]:bg-red-500/20 data-[state=active]:border-red-500/30 transition-all duration-200 py-2 sm:py-3"
+                    className="flex flex-1 flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 bg-transparent text-zinc-400 border-0 data-[state=active]:text-white data-[state=active]:bg-red-600/25 data-[state=active]:shadow-lg data-[state=active]:shadow-red-500/20 hover:data-[state=inactive]:bg-zinc-800/30 hover:data-[state=inactive]:text-zinc-300 transition-all duration-200 py-2.5 sm:py-3 rounded-lg"
                   >
                     <Search className="w-3 h-3 sm:w-4 sm:h-4" />
-                    <span className="text-xs sm:text-sm">Search</span>
+                    <span className="text-xs sm:text-sm font-medium">Search</span>
                   </TabsTrigger>
                   <TabsTrigger
                     value="featured"
-                    className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 text-zinc-400 data-[state=active]:text-white data-[state=active]:bg-red-500/20 data-[state=active]:border-red-500/30 transition-all duration-200 py-2 sm:py-3"
+                    className="flex flex-1 flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 bg-transparent text-zinc-400 border-0 data-[state=active]:text-white data-[state=active]:bg-red-600/25 data-[state=active]:shadow-lg data-[state=active]:shadow-red-500/20 hover:data-[state=inactive]:bg-zinc-800/30 hover:data-[state=inactive]:text-zinc-300 transition-all duration-200 py-2.5 sm:py-3 rounded-lg"
                   >
                     <Sparkles className="w-3 h-3 sm:w-4 sm:h-4" />
-                    <span className="text-xs sm:text-sm">Featured</span>
+                    <span className="text-xs sm:text-sm font-medium">Featured</span>
                   </TabsTrigger>
                   <TabsTrigger
                     value="trending"
-                    className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 text-zinc-400 data-[state=active]:text-white data-[state=active]:bg-red-500/20 data-[state=active]:border-red-500/30 transition-all duration-200 py-2 sm:py-3"
+                    className="flex flex-1 flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 bg-transparent text-zinc-400 border-0 data-[state=active]:text-white data-[state=active]:bg-red-600/25 data-[state=active]:shadow-lg data-[state=active]:shadow-red-500/20 hover:data-[state=inactive]:bg-zinc-800/30 hover:data-[state=inactive]:text-zinc-300 transition-all duration-200 py-2.5 sm:py-3 rounded-lg"
                   >
                     <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4" />
-                    <span className="text-xs sm:text-sm">Trending</span>
+                    <span className="text-xs sm:text-sm font-medium">Trending</span>
                   </TabsTrigger>
                   <TabsTrigger
                     value="for-you"
-                    className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 text-zinc-400 data-[state=active]:text-white data-[state=active]:bg-red-500/20 data-[state=active]:border-red-500/30 transition-all duration-200 py-2 sm:py-3"
+                    className="flex flex-1 flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 bg-transparent text-zinc-400 border-0 data-[state=active]:text-white data-[state=active]:bg-red-600/25 data-[state=active]:shadow-lg data-[state=active]:shadow-red-500/20 hover:data-[state=inactive]:bg-zinc-800/30 hover:data-[state=inactive]:text-zinc-300 transition-all duration-200 py-2.5 sm:py-3 rounded-lg"
                   >
                     <Music className="w-3 h-3 sm:w-4 sm:h-4" />
-                    <span className="text-xs sm:text-sm">For You</span>
+                    <span className="text-xs sm:text-sm font-medium">For You</span>
                   </TabsTrigger>
                   <TabsTrigger
                     value="recent"
-                    className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 text-zinc-400 data-[state=active]:text-white data-[state=active]:bg-red-500/20 data-[state=active]:border-red-500/30 transition-all duration-200 py-2 sm:py-3"
+                    className="flex flex-1 flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 bg-transparent text-zinc-400 border-0 data-[state=active]:text-white data-[state=active]:bg-red-600/25 data-[state=active]:shadow-lg data-[state=active]:shadow-red-500/20 hover:data-[state=inactive]:bg-zinc-800/30 hover:data-[state=inactive]:text-zinc-300 transition-all duration-200 py-2.5 sm:py-3 rounded-lg"
                   >
                     <Clock className="w-3 h-3 sm:w-4 sm:h-4" />
-                    <span className="text-xs sm:text-sm">Recent</span>
+                    <span className="text-xs sm:text-sm font-medium">Recent</span>
                   </TabsTrigger>
                 </TabsList>
               </div>
             </div>
 
             <ScrollArea className="flex-1 px-4 sm:px-6 md:px-8">
-              <div className="container-responsive pb-8">
+              <div className="pb-8">
                 <TabsContent value="search" className="mt-0 space-y-6">
                   {/* Clean Search Input */}
-                  {/* Minimal Clean Search Input */}
-                  <div className="sticky top-0 z-10 bg-gradient-to-br from-zinc-900/95 to-black/95 backdrop-blur-sm py-4">
+                  <div className="sticky top-0 z-10 py-4">
                     <div className="relative group">
                       {/* Search container */}
                       <div
-                        className={`relative bg-zinc-900/70 backdrop-blur-md border border-zinc-700 focus-within:border-red-600 rounded-full transition-all duration-200 px-4 py-3 flex items-center ${
+                        className={`relative border rounded-full transition-all duration-300 px-5 py-3.5 flex items-center ${
                           isSearchFocused
-                            ? "border-red-600/40 ring-1 ring-red-600/20"
-                            : "hover:border-zinc-600/60"
+                            ? "border-red-500/60 shadow-[0_0_20px_rgba(239,68,68,0.15)]"
+                            : "border-zinc-700/50 hover:border-zinc-600/70"
                         }`}
                       >
                         {/* Search icon */}
                         <div
-                          className={`flex items-center pointer-events-none mr-3 ${
-                            isSearchFocused ? "text-red-400" : "text-zinc-400"
+                          className={`flex items-center pointer-events-none mr-3 transition-colors duration-200 ${
+                            isSearchFocused ? "text-red-400" : "text-zinc-500"
                           }`}
                         >
                           <Search
@@ -237,7 +237,7 @@ const BrowsePage = () => {
                             }`}
                           />
                           {searchLoading && (
-                            <Loader2 className="h-5 w-5 animate-spin text-zinc-300 absolute" />
+                            <Loader2 className="h-5 w-5 animate-spin text-red-400 absolute" />
                           )}
                         </div>
 
@@ -250,16 +250,16 @@ const BrowsePage = () => {
                           onFocus={() => setIsSearchFocused(true)}
                           onBlur={() => setIsSearchFocused(false)}
                           placeholder="What do you want to play?"
-                          className="flex-1 bg-transparent text-white text-base placeholder-zinc-500 focus:outline-none transition-colors duration-150"
+                          className="flex-1 bg-transparent text-white text-base placeholder-zinc-500 focus:outline-none"
                         />
 
                         {/* Clear button */}
                         {searchQuery && (
                           <button
                             onClick={handleClearSearch}
-                            className="absolute inset-y-0 right-0 pr-4 flex items-center text-zinc-500 hover:text-zinc-300 transition-colors duration-200"
+                            className="ml-2 p-1 rounded-full text-zinc-500 hover:text-white hover:bg-red-500/20 transition-all duration-200"
                           >
-                            <X className="h-5 w-5" />
+                            <X className="h-4 w-4" />
                           </button>
                         )}
                       </div>
@@ -420,12 +420,12 @@ const BrowsePage = () => {
 
                 <TabsContent value="featured" className="mt-0">
                   <div className="space-y-8">
-                    <div className="text-center py-4">
+                    <div className="text-center sm:text-left py-4">
                       <h2 className="text-2xl sm:text-3xl font-extrabold mb-3 bg-gradient-to-r from-white via-red-200 to-red-400 bg-clip-text text-transparent">
                         Featured Songs
                       </h2>
-                      <div className="h-1 w-16 rounded bg-red-600 mx-auto sm:mx-0 mb-2" />
-                      <p className="text-white">Hand-picked tracks just for you</p>
+                      <div className="h-1 w-16 rounded-full bg-gradient-to-r from-red-500 to-red-600 mx-auto sm:mx-0 mb-2" />
+                      <p className="text-zinc-400">Hand-picked tracks just for you</p>
                     </div>
 
                     {musicStoreLoading ? (
@@ -482,12 +482,12 @@ const BrowsePage = () => {
 
                 <TabsContent value="trending" className="mt-0">
                   <div className="space-y-8">
-                    <div className="text-center py-4">
+                    <div className="text-center sm:text-left py-4">
                       <h2 className="text-2xl sm:text-3xl font-extrabold mb-3 bg-gradient-to-r from-white via-red-200 to-red-400 bg-clip-text text-transparent">
                         Trending Now
                       </h2>
-                      <div className="h-1 w-16 rounded bg-red-600 mx-auto sm:mx-0 mb-2" />
-                      <p className="text-white">
+                      <div className="h-1 w-16 rounded-full bg-gradient-to-r from-red-500 to-red-600 mx-auto sm:mx-0 mb-2" />
+                      <p className="text-zinc-400">
                         What everyone's listening to right now
                       </p>
                     </div>
@@ -546,12 +546,12 @@ const BrowsePage = () => {
 
                 <TabsContent value="for-you" className="mt-0">
                   <div className="space-y-8">
-                    <div className="text-center py-4">
+                    <div className="text-center sm:text-left py-4">
                       <h2 className="text-2xl sm:text-3xl font-extrabold mb-3 bg-gradient-to-r from-white via-red-200 to-red-400 bg-clip-text text-transparent">
                         Made For You
                       </h2>
-                      <div className="h-1 w-16 rounded bg-red-600 mx-auto sm:mx-0 mb-2" />
-                      <p className="text-white">Personalized recommendations</p>
+                      <div className="h-1 w-16 rounded-full bg-gradient-to-r from-red-500 to-red-600 mx-auto sm:mx-0 mb-2" />
+                      <p className="text-zinc-400">Personalized recommendations</p>
                     </div>
 
                     {musicStoreLoading ? (
@@ -608,12 +608,12 @@ const BrowsePage = () => {
 
                 <TabsContent value="recent" className="mt-0">
                   <div className="space-y-8">
-                    <div className="text-center py-4">
+                    <div className="text-center sm:text-left py-4">
                       <h2 className="text-2xl sm:text-3xl font-extrabold mb-3 bg-gradient-to-r from-white via-red-200 to-red-400 bg-clip-text text-transparent">
                         Recently Added
                       </h2>
-                      <div className="h-1 w-16 rounded bg-red-600 mx-auto sm:mx-0 mb-2" />
-                      <p className="text-white">
+                      <div className="h-1 w-16 rounded-full bg-gradient-to-r from-red-500 to-red-600 mx-auto sm:mx-0 mb-2" />
+                      <p className="text-zinc-400">
                         The newest additions to our collection
                       </p>
                     </div>
@@ -692,14 +692,13 @@ const BrowsePage = () => {
             <DialogTitle className="text-xl font-bold text-white">
               Add "{selectedSong?.title}" to Album
             </DialogTitle>
+            <DialogDescription className="text-zinc-400">
+              Select an album to add this song to your collection
+            </DialogDescription>
           </DialogHeader>
 
           {albums.length > 0 ? (
             <div className="space-y-4 max-h-96 overflow-y-auto py-2">
-              <p className="text-zinc-400 text-sm">
-                Select an album to add this song to:
-              </p>
-
               {albums.map((album: Album) => (
                 <div
                   key={album._id}

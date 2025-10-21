@@ -6,14 +6,16 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { useMusicStore } from "@/stores/useMusicStore";
 import { useEnhancedRoomStore } from "@/stores/useEnhancedRoomStore";
+import { useLikedSongsStore } from "@/stores/useLikedSongsStore";
 
-import { HomeIcon, Library, Radio, Search } from "lucide-react";
+import { HomeIcon, Library, Radio, Search, Users, Heart } from "lucide-react";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 
 const LeftSidebar = () => {
   const { albums, fetchAlbums, isLoading } = useMusicStore();
   const { isInRoom } = useEnhancedRoomStore();
+  const { likedSongs } = useLikedSongsStore();
 
   useEffect(() => {
     fetchAlbums();
@@ -51,6 +53,20 @@ const LeftSidebar = () => {
             <Search className="mr-3 size-5" />
             <span className="hidden md:inline font-medium">Browse</span>
           </Link>
+
+          <Link
+            to={"/activity"}
+            className={cn(
+              buttonVariants({
+                variant: "ghost",
+                className:
+                  "w-full justify-start text-white hover:bg-red-500/10 hover:text-red-300 transition-all duration-200 rounded-md tracking-wider",
+              })
+            )}
+          >
+            <Users className="mr-3 size-5" />
+            <span className="hidden md:inline font-medium">Activity</span>
+          </Link>
         </div>
       </div>
 
@@ -66,6 +82,24 @@ const LeftSidebar = () => {
         {/* Always show room controls, activity is handled in ActivityBar */}
         {!isInRoom && <EnhancedRoomControls />}
         {isInRoom && <LiveJamControls />}
+      </div>
+
+      {/* Liked Songs section */}
+      <div className="rounded-xl bg-zinc-950/80 backdrop-blur-sm p-4">
+        <Link
+          to="/library#liked"
+          className="flex items-center text-white px-2 hover:bg-red-500/10 rounded-md py-2 transition-all duration-200 group"
+        >
+          <Heart className="size-5 mr-3 text-red-500 group-hover:fill-red-500 transition-all" />
+          <div className="hidden md:block">
+            <span className="font-semibold tracking-widest block">
+              Liked Songs
+            </span>
+            <span className="text-xs text-zinc-400">
+              {likedSongs.length} {likedSongs.length === 1 ? 'song' : 'songs'}
+            </span>
+          </div>
+        </Link>
       </div>
 
       {/* Library section */}

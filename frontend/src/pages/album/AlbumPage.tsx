@@ -4,6 +4,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -274,6 +275,9 @@ const AddSongDialog = ({ albumId, onAddSong, onClose }: AddSongDialogProps) => {
         <DialogTitle className="text-xl font-bold text-white">
           Add Song to Album
         </DialogTitle>
+        <DialogDescription className="text-zinc-400">
+          Search and select songs to add to this album
+        </DialogDescription>
       </DialogHeader>
 
       {/* Search box */}

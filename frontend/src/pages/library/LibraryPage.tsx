@@ -1,13 +1,16 @@
 import Topbar from "@/components/Topbar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useMusicStore } from "@/stores/useMusicStore";
+import { useLikedSongsStore } from "@/stores/useLikedSongsStore";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import PlayButton from "@/pages/home/components/PlayButton";
 import GlassCard from "@/components/ui/GlassCard";
+import { Heart } from "lucide-react";
 
 const LibraryPage = () => {
   const { albums, songs, fetchAlbums, fetchSongs } = useMusicStore();
+  const { likedSongs } = useLikedSongsStore();
 
   useEffect(() => {
     fetchAlbums();
@@ -27,6 +30,40 @@ const LibraryPage = () => {
               Your music collection and saved albums
             </p>
           </div>
+
+          {/* Liked Songs Section */}
+          {likedSongs.length > 0 && (
+            <section id="liked" className="mb-8">
+              <div className="flex items-center gap-3 mb-4 sm:mb-6">
+                <Heart className="w-6 h-6 text-red-500 fill-red-500" />
+                <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white tracking-wide sm:tracking-widest">
+                  Liked Songs
+                </h2>
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4 md:gap-6">
+                {likedSongs.map((song) => (
+                  <GlassCard key={song._id}>
+                    <div className="relative mb-4">
+                      <div className="aspect-square rounded-xl shadow-2xl overflow-hidden">
+                        <img
+                          src={song.imageUrl}
+                          alt={song.title}
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                        />
+                      </div>
+                      <PlayButton song={song} className="absolute inset-0 m-auto w-10 h-10 flex items-center justify-center" />
+                    </div>
+                    <h3 className="font-semibold tracking-widest mb-2 truncate text-white group-hover:text-red-200 transition-colors">
+                      {song.title}
+                    </h3>
+                    <p className="text-sm text-zinc-500 truncate group-hover:text-zinc-400 transition-colors">
+                      {song.artist}
+                    </p>
+                  </GlassCard>
+                ))}
+              </div>
+            </section>
+          )}
 
           {/* Albums Section */}
           <section>
@@ -84,56 +121,6 @@ const LibraryPage = () => {
                   </p>
                 </GlassCard>
               ))}
-            </div>
-          </section>
-
-          {/* Quick Actions (hidden on small screens) */}
-          <section className="hidden sm:block">
-            <h2 className="text-2xl sm:text-3xl font-bold text-white mb-6">
-              Quick Actions
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              <div className="bg-black/30 backdrop-blur-sm rounded-2xl p-6 hover:bg-black/50 transition-all duration-300 cursor-pointer shadow-xl hover:shadow-2xl hover:shadow-red-500/10">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-red-600 rounded-xl flex items-center justify-center shadow-[0_0_10px_rgba(255,0,51,0.35)]">
-                    <span className="text-xl">❤️</span>
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-bold text-white">
-                      Liked Songs
-                    </h3>
-                    <p className="text-zinc-400 text-sm">
-                      Your favorite tracks
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-black/30 backdrop-blur-sm rounded-2xl p-6 hover:bg-black/50 transition-all duration-300 cursor-pointer shadow-xl hover:shadow-2xl hover:shadow-red-500/10">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-red-600 rounded-xl flex items-center justify-center shadow-[0_0_10px_rgba(255,0,51,0.35)]">
-                    <span className="text-xl">📝</span>
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-bold text-white">
-                      Create Playlist
-                    </h3>
-                    <p className="text-zinc-400 text-sm">Make your own mix</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-black/30 backdrop-blur-sm rounded-2xl p-6 hover:bg-black/50 transition-all duration-300 cursor-pointer shadow-xl hover:shadow-2xl hover:shadow-red-500/10">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-500 rounded-xl flex items-center justify-center">
-                    <span className="text-xl">📥</span>
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-bold text-white">Downloaded</h3>
-                    <p className="text-zinc-400 text-sm">Offline music</p>
-                  </div>
-                </div>
-              </div>
             </div>
           </section>
         </div>

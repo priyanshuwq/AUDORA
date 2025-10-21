@@ -11,9 +11,12 @@ import {
   Shuffle,
   Radio,
   Crown,
+  Wifi,
+  WifiOff,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Slider } from "@/components/ui/slider";
+import { AudioSyncManager, formatLatency } from "@/lib/jamSyncUtils";
 
 const LiveJamControls = () => {
   const {
@@ -35,6 +38,20 @@ const LiveJamControls = () => {
 
   const [localPosition, setLocalPosition] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
+  const [networkQuality, setNetworkQuality] = useState<
+    "excellent" | "good" | "fair" | "poor"
+  >("good");
+  const [lastSyncLatency, setLastSyncLatency] = useState(0);
+
+  const syncManagerRef = useRef<AudioSyncManager | null>(null);
+
+  // Initialize sync manager
+  useEffect(() => {
+    const audio = document.querySelector("audio") as HTMLAudioElement;
+    if (audio && !syncManagerRef.current) {
+      syncManagerRef.current = new AudioSyncManager(audio);
+    }
+  }, []);
 
   // Real-time sync with shared playback
   useEffect(() => {
@@ -43,43 +60,86 @@ const LiveJamControls = () => {
     }
   }, [sharedPosition, isJamSession, isDragging, isJamHost]);
 
-  // Listen for jam sync events - improved real-time sync
+  // Enhanced jam sync with adaptive sync manager
   useEffect(() => {
     const handleJamSync = (event: CustomEvent) => {
-      const { song, position, isPlaying: jamIsPlaying } = event.detail;
+      const syncData = event.detail;
+      const { song, position, isPlaying: jamIsPlaying, timestamp, serverTime } = syncData;
 
       if (isJamHost) return; // Host doesn't sync to others
+
+      // Calculate and display latency
+      if (serverTime) {
+        const latency = Date.now() - serverTime;
+        setLastSyncLatency(latency);
+      }
 
       // Immediate sync - switch to the synced song if different
       if (currentSong?._id !== song._id) {
         playAlbum([song], 0);
       }
 
-      // Real-time position and state sync
-      setLocalPosition(position);
-      if (jamIsPlaying !== isPlaying) {
-        // Immediate playback state sync without delays
-        const playerStore = usePlayerStore.getState();
-        playerStore.togglePlay();
+      // Use sync manager for improved synchronization
+      if (syncManagerRef.current) {
+        syncManagerRef.current.applySync({
+          song,
+          position,
+          isPlaying: jamIsPlaying,
+          timestamp,
+          serverTime,
+        });
+
+        // Update network quality indicator
+        setNetworkQuality(syncManagerRef.current.getNetworkQuality());
+      } else {
+        // Fallback to basic sync
+        setLocalPosition(position);
+        if (jamIsPlaying !== isPlaying) {
+          const playerStore = usePlayerStore.getState();
+          playerStore.togglePlay();
+        }
+
+        const audio = document.querySelector("audio") as HTMLAudioElement;
+        if (audio && Math.abs(audio.currentTime - position) > 1) {
+          audio.currentTime = position;
+        }
       }
 
-      // Force audio element sync for precise timing
-      const audio = document.querySelector("audio");
-      if (audio && Math.abs(audio.currentTime - position) > 1) {
-        audio.currentTime = position;
-      }
+      console.log(
+        "🎵 Sync received:",
+        song.title,
+        "playing:",
+        jamIsPlaying,
+        "at position:",
+        position.toFixed(2),
+        "latency:",
+        lastSyncLatency + "ms"
+      );
     };
 
     const handlePeriodicSync = (event: CustomEvent) => {
-      const { position } = event.detail;
+      const { position, isPlaying: jamIsPlaying } = event.detail;
 
       if (isJamHost || isDragging) return; // Don't sync when host or dragging
 
-      // Continuous position sync for smooth playback
-      const audio = document.querySelector("audio");
-      if (audio && Math.abs(audio.currentTime - position) > 2) {
-        // Only adjust if significantly out of sync (2 seconds)
-        audio.currentTime = position;
+      // Use sync manager for adaptive thresholds
+      if (syncManagerRef.current) {
+        const audio = document.querySelector("audio") as HTMLAudioElement;
+        if (audio) {
+          const threshold = syncManagerRef.current.getSyncThreshold();
+          
+          // Only adjust if significantly out of sync (adaptive threshold)
+          if (Math.abs(audio.currentTime - position) > threshold) {
+            audio.currentTime = position;
+          }
+
+          // Sync playback state
+          if (jamIsPlaying && audio.paused) {
+            audio.play().catch(() => {});
+          } else if (!jamIsPlaying && !audio.paused) {
+            audio.pause();
+          }
+        }
       }
 
       setLocalPosition(position);
@@ -98,7 +158,7 @@ const LiveJamControls = () => {
         handlePeriodicSync as EventListener
       );
     };
-  }, [currentSong, isPlaying, playAlbum, isJamHost, isDragging]);
+  }, [currentSong, isPlaying, playAlbum, isJamHost, isDragging, lastSyncLatency]);
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
@@ -120,6 +180,14 @@ const LiveJamControls = () => {
 
   const handleSliderEnd = () => {
     setIsDragging(false);
+  };
+
+  // Get network quality icon and color
+  const getNetworkIcon = () => {
+    if (networkQuality === "excellent" || networkQuality === "good") {
+      return <Wifi className="w-3 h-3 text-green-400" />;
+    }
+    return <WifiOff className="w-3 h-3 text-yellow-400" />;
   };
 
   if (!isJamSession) {
@@ -165,6 +233,12 @@ const LiveJamControls = () => {
             <div className="flex items-center gap-1 bg-red-500/20 px-2 py-1 rounded-full">
               <Crown className="w-3 h-3 text-red-400" />
               <span className="text-red-300 text-xs font-medium">HOST</span>
+            </div>
+          )}
+          {!isJamHost && (
+            <div className="flex items-center gap-1 bg-zinc-800/50 px-2 py-1 rounded-full" title={`Network: ${networkQuality} • Latency: ${formatLatency(lastSyncLatency)}`}>
+              {getNetworkIcon()}
+              <span className="text-zinc-400 text-xs">{formatLatency(lastSyncLatency)}</span>
             </div>
           )}
         </div>
