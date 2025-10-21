@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 import { Slider } from "@/components/ui/slider";
-import { AudioSyncManager, formatLatency } from "@/lib/jamSyncUtils";
+import { AudioSyncManager, formatLatency } from "../lib/jamSyncUtils";
 
 const LiveJamControls = () => {
   const {

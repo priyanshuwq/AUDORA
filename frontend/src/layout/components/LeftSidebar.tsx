@@ -6,16 +6,14 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { useMusicStore } from "@/stores/useMusicStore";
 import { useEnhancedRoomStore } from "@/stores/useEnhancedRoomStore";
-import { useLikedSongsStore } from "@/stores/useLikedSongsStore";
 
-import { HomeIcon, Library, Radio, Search, Users, Heart } from "lucide-react";
+import { HomeIcon, Library, Radio, Search } from "lucide-react";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 
 const LeftSidebar = () => {
   const { albums, fetchAlbums, isLoading } = useMusicStore();
   const { isInRoom } = useEnhancedRoomStore();
-  const { likedSongs } = useLikedSongsStore();
 
   useEffect(() => {
     fetchAlbums();
