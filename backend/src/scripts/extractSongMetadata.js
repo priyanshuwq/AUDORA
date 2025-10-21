@@ -13,8 +13,12 @@ ffmpeg.setFfmpegPath(ffmpegStatic);
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// Path to songs folder
+// Path to songs folders
 const songsFolder = path.resolve(__dirname, "../../../frontend/public/songs");
+const newSongsFolder = path.resolve(
+  __dirname,
+  "../../../frontend/public/New songs"
+);
 // Path to extracted covers folder
 const extractedCoversFolder = path.resolve(
   __dirname,
@@ -136,6 +140,48 @@ async function createCoverImageMapping() {
   return coverFiles;
 }
 
+// Try to find a matching cover inside "New songs/covers"
+function findCoverInNewSongsCovers(songFile, songTitle, artist) {
+  try {
+    const coversDir = path.resolve(
+      __dirname,
+      "../../../frontend/public/New songs/covers"
+    );
+    if (!fs.existsSync(coversDir)) return null;
+
+    const imageFiles = fs
+      .readdirSync(coversDir)
+      .filter((f) => /\.(png|jpe?g|webp)$/i.test(f));
+
+    if (imageFiles.length === 0) return null;
+
+    const baseName = songFile.replace(/\.[^/.]+$/, "").toLowerCase();
+    const cleanArtist = (artist || "").toLowerCase().trim();
+    const cleanTitle = (songTitle || "").toLowerCase().trim();
+
+    // Priority 1: exact base name match
+    const exact = imageFiles.find(
+      (f) => f.replace(/\.[^/.]+$/, "").toLowerCase() === baseName
+    );
+    if (exact) return `/New songs/covers/${exact}`;
+
+    // Priority 2: includes artist or title tokens
+    const match = imageFiles.find((f) => {
+      const n = f.toLowerCase();
+      return (
+        (cleanArtist && n.includes(cleanArtist)) ||
+        (cleanTitle && n.includes(cleanTitle)) ||
+        n.includes(baseName)
+      );
+    });
+    if (match) return `/New songs/covers/${match}`;
+
+    return null;
+  } catch (e) {
+    return null;
+  }
+}
+
 // Find the best matching cover image for a song
 function findCoverImage(songFile, songTitle, artist, coverFiles) {
   // Clean the artist and title for better matching
@@ -165,15 +211,32 @@ async function generateSongsData() {
       fs.mkdirSync(extractedCoversFolder, { recursive: true });
     }
 
-    // Read all files in the songs directory
-    const files = fs.readdirSync(songsFolder);
+    // Gather MP3 files from both legacy "songs" and new "New songs" folders
+    const collectMp3 = (folderPath) => {
+      try {
+        const files = fs.readdirSync(folderPath);
+        return files
+          .filter((file) => file.toLowerCase().endsWith(".mp3"))
+          .map((file) => ({
+            file,
+            folderPath,
+            // Base URL used by the frontend to serve static files
+            baseUrl:
+              path.basename(folderPath).toLowerCase() === "songs"
+                ? "/songs"
+                : "/New songs",
+          }));
+      } catch (e) {
+        return [];
+      }
+    };
 
-    // Filter for MP3 files only
-    const mp3Files = files.filter((file) =>
-      file.toLowerCase().endsWith(".mp3")
-    );
+    const mp3Files = [
+      ...collectMp3(songsFolder),
+      ...collectMp3(newSongsFolder),
+    ];
 
-    console.log(`Found ${mp3Files.length} MP3 files`);
+    console.log(`Found ${mp3Files.length} MP3 files across sources`);
 
     // Get all available cover images
     const coverFiles = await createCoverImageMapping();
@@ -182,8 +245,8 @@ async function generateSongsData() {
     const songs = [];
 
     for (let i = 0; i < mp3Files.length; i++) {
-      const file = mp3Files[i];
-      const filePath = path.join(songsFolder, file);
+      const { file, folderPath, baseUrl } = mp3Files[i];
+      const filePath = path.join(folderPath, file);
 
       // Get metadata from the file
       const metadata = await getSongMetadata(filePath);
@@ -206,7 +269,14 @@ async function generateSongsData() {
 
       // If no embedded cover art was found or saved, fall back to the previous method
       if (!coverImage) {
-        coverImage = findCoverImage(file, title, artist, coverFiles);
+        // First, if song is from "New songs", try to find a matching image under its covers directory
+        if (baseUrl === "/New songs") {
+          coverImage = findCoverInNewSongsCovers(file, title, artist);
+        }
+        // Then fallback to shared cover-images mapping
+        if (!coverImage) {
+          coverImage = findCoverImage(file, title, artist, coverFiles);
+        }
       }
 
       // Create song object
@@ -214,7 +284,7 @@ async function generateSongsData() {
         title: title,
         artist: artist,
         imageUrl: coverImage,
-        audioUrl: `/songs/${file}`,
+        audioUrl: `${baseUrl}/${file}`,
         duration: metadata.duration,
       };
 
