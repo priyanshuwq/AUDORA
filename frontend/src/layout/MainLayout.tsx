@@ -15,7 +15,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Users, X } from "lucide-react";
 import FullPlayer from "./components/FullPlayer";
-import MobileFullscreenPlayer from "./components/MobileFullscreenPlayer";
+import MobileFullscreenPlayer from "@/layout/components/MobileFullscreenPlayer";
 
 const MainLayout = () => {
   const [isMobile, setIsMobile] = useState(false);
