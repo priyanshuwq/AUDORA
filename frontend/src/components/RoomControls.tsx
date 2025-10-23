@@ -107,7 +107,7 @@ const RoomControls = () => {
         <DialogContent className="bg-zinc-950 border border-white/10 rounded-2xl backdrop-blur-xl">
           <DialogHeader>
             <DialogTitle className="text-white text-xl font-bold">
-              Create Jam Room
+              Create Room
             </DialogTitle>
           </DialogHeader>
           <div className="space-y-4">

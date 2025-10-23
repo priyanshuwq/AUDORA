@@ -117,14 +117,14 @@ const EnhancedRoomControls = () => {
             onClick={() => !isConnected && initSocket()}
           >
             <Plus className="mr-3 size-4 text-red-400 group-hover:rotate-90 transition-transform duration-300" />
-            <span className="font-medium tracking-wide">Create Jam Room</span>
+            <span className="font-medium tracking-wide">Create Room</span>
           </Button>
         </DialogTrigger>
         <DialogContent className="bg-zinc-950 border border-white/10 rounded-2xl backdrop-blur-xl max-w-md">
           <DialogHeader>
             <DialogTitle className="text-white text-xl font-bold flex items-center gap-2 tracking-wide">
               <Radio className="w-6 h-6 text-red-400" />
-              Create Jam Room
+              Create Room
             </DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
