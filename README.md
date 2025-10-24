@@ -16,7 +16,6 @@ A full-stack music streaming application with real-time jam sessions, collaborat
 - Shared queue management
 - Network quality indicators
 - Adaptive sync based on connection quality
-- See [JAM_SESSION_QUICK_START.md](./JAM_SESSION_QUICK_START.md) for details
 
 ### 👥 Social Features
 - Create and join music rooms
@@ -87,14 +86,6 @@ npm run dev
 
 Visit `http://localhost:5173` to see the app!
 
-## 📖 Documentation
-
-- **[Live Jam Session Guide](./JAM_SESSION_QUICK_START.md)** - How to use real-time music sync
-- **[Live Jam Technical Docs](./LIVE_JAM_SYNC.md)** - Deep dive into sync architecture
-- **[Room Features](./ROOM_FEATURE.md)** - Social listening features
-- **[Mobile Player](./MOBILE_PLAYER.md)** - Mobile-optimized player features
-- **[Deployment](./DEPLOYMENT.md)** - Production deployment guide
-
 ## 🛠️ Tech Stack
 
 ### Frontend
@@ -127,8 +118,6 @@ The standout feature of AUDORA is real-time music synchronization:
 **Sync Accuracy**: 50-300ms depending on connection quality
 
 **Technologies**: Socket.io WebSocket, Adaptive sync algorithms, Network latency compensation
-
-See [JAM_SESSION_QUICK_START.md](./JAM_SESSION_QUICK_START.md) for full guide.
 
 ### Music Library Management 📚
 
@@ -241,3 +230,4 @@ Contributions are welcome! Please:
 **Made with ❤️ for music lovers who want to listen together**
 
 🎵 Start a jam session and sync your music in real-time! 🎵
+
