@@ -1,6 +1,5 @@
 import PlaylistSkeleton from "@/components/skeletons/PlaylistSkeleton";
 import EnhancedRoomControls from "@/components/EnhancedRoomControls";
-import LiveJamControls from "@/components/LiveJamControls";
 import { buttonVariants } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
@@ -20,21 +19,21 @@ const LeftSidebar = () => {
   }, [fetchAlbums]);
 
   return (
-    <div className="h-full flex flex-col gap-3">
-      {/* Navigation menu */}
-      <div className="rounded-xl bg-zinc-950/80 backdrop-blur-sm p-4">
-        <div className="space-y-2">
+    <div className="h-full flex flex-col gap-2">
+      {/* Navigation menu - Floating Card */}
+      <div className="rounded-2xl bg-black/95 backdrop-blur-xl border border-white/5 shadow-2xl p-4 hover:border-white/10 transition-all duration-300">
+        <div className="space-y-1">
           <Link
             to={"/"}
             className={cn(
               buttonVariants({
                 variant: "ghost",
                 className:
-                  "w-full justify-start text-white hover:bg-red-500/10 hover:text-red-300 transition-all duration-200 rounded-md tracking-wider",
+                  "w-full justify-start text-white hover:bg-gradient-to-r hover:from-red-500/20 hover:to-red-600/10 hover:text-red-300 transition-all duration-300 rounded-xl tracking-wide group",
               })
             )}
           >
-            <HomeIcon className="mr-3 size-5" />
+            <HomeIcon className="mr-3 size-5 group-hover:scale-110 transition-transform" />
             <span className="hidden md:inline font-medium">Home</span>
           </Link>
 
@@ -44,46 +43,51 @@ const LeftSidebar = () => {
               buttonVariants({
                 variant: "ghost",
                 className:
-                  "w-full justify-start text-white hover:bg-red-500/10 hover:text-red-300 transition-all duration-200 rounded-md tracking-wider",
+                  "w-full justify-start text-white hover:bg-gradient-to-r hover:from-red-500/20 hover:to-red-600/10 hover:text-red-300 transition-all duration-300 rounded-xl tracking-wide group",
               })
             )}
           >
-            <Search className="mr-3 size-5" />
+            <Search className="mr-3 size-5 group-hover:scale-110 transition-transform" />
             <span className="hidden md:inline font-medium">Browse</span>
           </Link>
-
-          {/* Activity is accessible from Rooms - removed to avoid duplication */}
         </div>
       </div>
 
-      {/* Jam Rooms section - Clean version */}
-      <div className="rounded-xl bg-zinc-950/80 backdrop-blur-sm p-4">
-        <div className="flex items-center text-white px-2 mb-3">
-          <Radio className="size-5 mr-3 text-red-500" />
-          <span className="hidden md:inline font-semibold tracking-widest">
+      {/* Jam Rooms section - Floating Card */}
+      <div className="rounded-2xl bg-black/95 backdrop-blur-xl border border-white/5 shadow-2xl p-4 hover:border-white/10 transition-all duration-300">
+        <div className="flex items-center text-white px-2 mb-4">
+          <div className="w-10 h-10 rounded-xl bg-red-500/10 flex items-center justify-center mr-3">
+            <Radio className="size-5 text-red-400" />
+          </div>
+          <span className="hidden md:inline font-semibold tracking-wider text-red-300">
             Jam Rooms
           </span>
         </div>
 
-        {/* Always show room controls, activity is handled in ActivityBar */}
+        {/* Room controls moved to Activity Bar, show create/join options only */}
         {!isInRoom && <EnhancedRoomControls />}
-        {isInRoom && <LiveJamControls />}
+        {isInRoom && (
+          <div className="bg-green-500/10 border border-green-500/20 rounded-xl p-3 text-center">
+            <p className="text-green-300 text-sm font-medium">✓ Connected to Room</p>
+            <p className="text-zinc-400 text-xs mt-1">Check Activity tab →</p>
+          </div>
+        )}
       </div>
 
-      {/* Liked Songs removed from sidebar (now in Library) */}
-
-      {/* Library section */}
-      <div className="flex-1 rounded-xl bg-zinc-950/80 backdrop-blur-sm p-4">
+      {/* Library section - Floating Card with Glassmorphism */}
+      <div className="flex-1 rounded-2xl bg-black/95 backdrop-blur-xl border border-white/5 shadow-2xl p-4 hover:border-white/10 transition-all duration-300 overflow-hidden">
         <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center text-white px-2">
-            <Library className="size-5 mr-3 text-red-500" />
-            <span className="hidden md:inline font-semibold tracking-widest">
+          <div className="flex items-center text-white">
+            <div className="w-10 h-10 rounded-xl bg-red-500/10 flex items-center justify-center mr-3">
+              <Library className="size-5 text-red-400" />
+            </div>
+            <span className="hidden md:inline font-semibold tracking-wider text-white">
               Your Library
             </span>
           </div>
         </div>
 
-        <ScrollArea className="flex-1 overflow-y-auto">
+        <ScrollArea className="h-[calc(100%-3.5rem)] overflow-y-auto scrollbar-hide">
           <div className="space-y-2">
             {isLoading ? (
               <PlaylistSkeleton />
@@ -92,19 +96,22 @@ const LeftSidebar = () => {
                 <Link
                   to={`/albums/${album._id}`}
                   key={album._id}
-                  className="p-3 hover:bg-white/5 rounded-md flex items-center gap-3 group cursor-pointer transition-all duration-200 hover:scale-[1.02]"
+                  className="p-3 hover:bg-gradient-to-r hover:from-white/5 hover:to-red-500/5 rounded-xl flex items-center gap-3 group cursor-pointer transition-all duration-300 hover:scale-[1.02] border border-transparent hover:border-white/10"
                 >
-                  <img
-                    src={album.imageUrl}
-                    alt="Playlist img"
-                    className="size-12 rounded-full flex-shrink-0 object-cover shadow-md"
-                  />
+                  <div className="relative">
+                    <img
+                      src={album.imageUrl}
+                      alt="Playlist img"
+                      className="size-12 rounded-xl flex-shrink-0 object-cover shadow-lg group-hover:shadow-red-500/20 transition-shadow"
+                    />
+                    <div className="absolute inset-0 rounded-xl bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                  </div>
 
                   <div className="flex-1 min-w-0 hidden md:block">
-                    <p className="font-semibold tracking-widest truncate text-white group-hover:text-red-300 transition-colors">
+                    <p className="font-semibold tracking-wide truncate text-white group-hover:text-red-300 transition-colors">
                       {album.title}
                     </p>
-                    <p className="text-sm text-zinc-500 truncate group-hover:text-zinc-400 transition-colors">
+                    <p className="text-sm text-zinc-400 truncate group-hover:text-zinc-300 transition-colors">
                       Album • {album.artist}
                     </p>
                   </div>
