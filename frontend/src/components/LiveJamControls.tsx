@@ -17,6 +17,7 @@ import {
 import { useEffect, useState, useRef } from "react";
 import { Slider } from "@/components/ui/slider";
 import { AudioSyncManager, formatLatency } from "../lib/jamSyncUtils";
+import ScrollingText from "./ScrollingText";
 
 const LiveJamControls = () => {
   const {
@@ -30,7 +31,12 @@ const LiveJamControls = () => {
     stopJamSession,
     toggleSharedPlayback,
     seekSharedSong,
-    playSharedSong,
+    isLocalPlaybackMode,
+    toggleLocalPlaybackMode,
+    // WebRTC additions
+    isStreamingAudio,
+    remoteAudioStream,
+    audioQuality,
   } = useEnhancedRoomStore();
 
   const { currentSong, isPlaying, playAlbum, playNext, playPrevious } =
@@ -190,15 +196,41 @@ const LiveJamControls = () => {
     return <WifiOff className="w-3 h-3 text-yellow-400" />;
   };
 
+  // WebRTC stream quality indicators
+  const getStreamQualityIcon = () => {
+    if (!audioQuality) return <Wifi className="w-3 h-3 text-zinc-400" />;
+    
+    if (audioQuality.packetLoss > 5 || audioQuality.latency > 200) {
+      return <WifiOff className="w-3 h-3 text-yellow-400" />;
+    } else if (audioQuality.latency > 100) {
+      return <Wifi className="w-3 h-3 text-yellow-400" />;
+    }
+    return <Wifi className="w-3 h-3 text-green-400" />;
+  };
+
+  const getStreamQualityText = () => {
+    if (!audioQuality) return "Connecting...";
+    
+    const latency = Math.round(audioQuality.latency);
+    const packetLoss = audioQuality.packetLoss.toFixed(1);
+    
+    if (audioQuality.packetLoss > 5 || audioQuality.latency > 200) {
+      return `Poor (${latency}ms, ${packetLoss}% loss)`;
+    } else if (audioQuality.latency > 100) {
+      return `Good (${latency}ms)`;
+    }
+    return `Excellent (${latency}ms)`;
+  };
+
   if (!isJamSession) {
     return (
       <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-4 mb-4">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-red-500/20 rounded-full flex items-center justify-center mx-auto">
+            <div className="w-10 h-10 bg-red-500/20 rounded-full flex items-center justify-center flex-shrink-0">
               <Radio className="w-5 h-5 text-red-400" />
             </div>
-            <div>
+            <div className="min-w-0">
               <h3 className="text-white font-semibold text-sm">
                 Start Jam Session
               </h3>
@@ -209,7 +241,7 @@ const LiveJamControls = () => {
           </div>
           <Button
             onClick={startJamSession}
-            className="bg-red-600 hover:bg-red-500 text-white rounded-xl shadow-[0_0_10px_rgba(255,0,51,0.35)]"
+            className="bg-red-600 hover:bg-red-500 text-white rounded-xl shadow-[0_0_10px_rgba(255,0,51,0.35)] w-full sm:w-auto flex-shrink-0"
             size="sm"
           >
             <Radio className="w-4 h-4 mr-2" />
@@ -223,32 +255,69 @@ const LiveJamControls = () => {
   return (
     <div className="bg-red-500/10 border border-red-500/40 rounded-xl p-3 md:p-4 mb-4 backdrop-blur-sm">
       {/* Jam Session Header */}
-      <div className="flex items-center justify-between mb-3 md:mb-4">
-        <div className="flex items-center gap-2">
-          <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
-          <span className="text-white font-semibold text-sm">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-3 md:mb-4">
+        <div className="flex items-center gap-2 flex-wrap">
+          <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse flex-shrink-0"></div>
+          <span className="text-white font-semibold text-xs sm:text-sm">
             LIVE JAM SESSION
           </span>
           {isJamHost && (
-            <div className="flex items-center gap-1 bg-red-500/20 px-2 py-1 rounded-full">
+            <div className="flex items-center gap-1 bg-red-500/20 px-2 py-1 rounded-full flex-shrink-0">
               <Crown className="w-3 h-3 text-red-400" />
               <span className="text-red-300 text-xs font-medium">HOST</span>
             </div>
           )}
           {!isJamHost && (
-            <div className="flex items-center gap-1 bg-zinc-800/50 px-2 py-1 rounded-full" title={`Network: ${networkQuality} • Latency: ${formatLatency(lastSyncLatency)}`}>
+            <button
+              onClick={toggleLocalPlaybackMode}
+              className={`flex items-center gap-1 px-2 py-1 rounded-full flex-shrink-0 transition-all ${
+                isLocalPlaybackMode
+                  ? "bg-blue-500/20 hover:bg-blue-500/30 border border-blue-500/40"
+                  : "bg-zinc-800/50 hover:bg-zinc-700/50 border border-white/10"
+              }`}
+              title={isLocalPlaybackMode ? "Independent playback - your music won't affect others" : "Synced to room playback"}
+            >
+              {isLocalPlaybackMode ? (
+                <>
+                  <Users className="w-3 h-3 text-blue-400" />
+                  <span className="text-blue-300 text-xs font-medium">INDEPENDENT</span>
+                </>
+              ) : (
+                <>
+                  <Radio className="w-3 h-3 text-zinc-400" />
+                  <span className="text-zinc-300 text-xs font-medium">SYNCED</span>
+                </>
+              )}
+            </button>
+          )}
+          {isJamHost && isStreamingAudio && (
+            <div className="flex items-center gap-1 bg-green-500/20 px-2 py-1 rounded-full flex-shrink-0">
+              <Radio className="w-3 h-3 text-green-400" />
+              <span className="text-green-300 text-xs font-medium hidden md:inline">STREAMING</span>
+            </div>
+          )}
+          {!isJamHost && remoteAudioStream && (
+            <div className="flex items-center gap-1 bg-blue-500/20 px-2 py-1 rounded-full flex-shrink-0" title={getStreamQualityText()}>
+              {getStreamQualityIcon()}
+              <span className="text-blue-300 text-xs font-medium hidden md:inline">
+                {getStreamQualityText().split(' ')[0]}
+              </span>
+            </div>
+          )}
+          {!isJamHost && !remoteAudioStream && (
+            <div className="flex items-center gap-1 bg-zinc-800/50 px-2 py-1 rounded-full flex-shrink-0" title={`Network: ${networkQuality} • Latency: ${formatLatency(lastSyncLatency)}`}>
               {getNetworkIcon()}
-              <span className="text-zinc-400 text-xs">{formatLatency(lastSyncLatency)}</span>
+              <span className="text-zinc-400 text-xs hidden sm:inline">{formatLatency(lastSyncLatency)}</span>
             </div>
           )}
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 w-full sm:w-auto">
           {isJamHost && (
             <Button
               onClick={stopJamSession}
               variant="ghost"
               size="sm"
-              className="text-red-400 hover:text-red-300 hover:bg-red-500/20 text-xs"
+              className="text-red-400 hover:text-red-300 hover:bg-red-500/20 text-xs w-full sm:w-auto"
             >
               Stop Jam
             </Button>
@@ -258,25 +327,26 @@ const LiveJamControls = () => {
 
       {/* Current Shared Song */}
       {currentSharedSong && (
-        <div className="bg-black/30 rounded-lg p-2 md:p-3 mb-3 md:mb-4">
-          <div className="flex items-center gap-2 md:gap-3 mb-2 md:mb-3">
+        <div className="bg-black/40 rounded-xl p-3 mb-3 border border-white/5">
+          <div className="flex items-center gap-3 mb-3">
             <img
               src={currentSharedSong.imageUrl}
               alt="Album cover"
-              className="w-12 h-12 rounded-lg"
+              className="w-12 h-12 rounded-lg flex-shrink-0"
             />
             <div className="flex-1 min-w-0">
-              <p className="text-white font-medium text-sm truncate">
-                {currentSharedSong.title}
-              </p>
-              <p className="text-zinc-400 text-xs truncate">
+              <ScrollingText 
+                text={currentSharedSong.title}
+                className="text-white font-medium text-sm"
+              />
+              <p className="text-zinc-400 text-xs truncate mt-0.5">
                 {currentSharedSong.artist}
               </p>
             </div>
-            <div className="flex items-center gap-2">
-              <Users className="w-4 h-4 text-red-400" />
-              <span className="text-red-300 text-sm font-medium">
-                {sharedQueue.length} queued
+            <div className="flex items-center gap-1 flex-shrink-0">
+              <Users className="w-3 h-3 text-red-400" />
+              <span className="text-red-300 text-xs font-medium">
+                {sharedQueue.length}
               </span>
             </div>
           </div>
@@ -302,11 +372,11 @@ const LiveJamControls = () => {
       )}
 
       {/* Playback Controls */}
-      <div className="flex items-center justify-center gap-4">
+      <div className="flex items-center justify-center gap-3">
         <Button
           variant="ghost"
           size="sm"
-          className="text-zinc-400 hover:text-white"
+          className="text-zinc-400 hover:text-white p-2"
           disabled={!isJamHost}
         >
           <Shuffle className="w-4 h-4" />
@@ -315,108 +385,61 @@ const LiveJamControls = () => {
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => isJamHost && playPrevious()}
-          disabled={!isJamHost}
-          className="text-zinc-400 hover:text-white"
+          onClick={() => {
+            if (isJamHost || isLocalPlaybackMode) {
+              playPrevious();
+            }
+          }}
+          disabled={!isJamHost && !isLocalPlaybackMode}
+          className="text-zinc-400 hover:text-white p-2"
         >
-          <SkipBack className="w-5 h-5" />
+          <SkipBack className="w-4 h-4" />
         </Button>
 
         <Button
           onClick={() => {
             if (isJamHost) {
               toggleSharedPlayback();
+            } else if (isLocalPlaybackMode) {
+              // Guest in independent mode - toggle local playback
+              const playerStore = usePlayerStore.getState();
+              playerStore.togglePlay();
             }
           }}
-          disabled={!isJamHost}
-          className="w-10 h-10 md:w-12 md:h-12 bg-red-600 hover:bg-red-500 rounded-full flex items-center justify-center shadow-[0_0_10px_rgba(255,0,51,0.35)] transform hover:scale-105 transition-all duration-200 disabled:opacity-50"
+          disabled={!isJamHost && !isLocalPlaybackMode}
+          className="w-10 h-10 bg-red-600 hover:bg-red-500 rounded-full flex items-center justify-center shadow-[0_0_10px_rgba(255,0,51,0.35)] transform hover:scale-105 transition-all duration-200 disabled:opacity-50"
         >
-          {sharedIsPlaying ? (
-            <Pause className="w-4 h-4 md:w-6 md:h-6 text-white" />
+          {(isJamHost ? sharedIsPlaying : isPlaying) ? (
+            <Pause className="w-4 h-4 text-white" />
           ) : (
-            <Play className="w-4 h-4 md:w-6 md:h-6 text-white ml-1" />
+            <Play className="w-4 h-4 text-white ml-0.5" />
           )}
         </Button>
 
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => isJamHost && playNext()}
-          disabled={!isJamHost}
-          className="text-zinc-400 hover:text-white"
+          onClick={() => {
+            if (isJamHost || isLocalPlaybackMode) {
+              playNext();
+            }
+          }}
+          disabled={!isJamHost && !isLocalPlaybackMode}
+          className="text-zinc-400 hover:text-white p-2"
         >
-          <SkipForward className="w-5 h-5" />
+          <SkipForward className="w-4 h-4" />
         </Button>
 
         <Button
           variant="ghost"
           size="sm"
-          className="text-zinc-400 hover:text-white"
+          className="text-zinc-400 hover:text-white p-2"
         >
           <Volume2 className="w-4 h-4" />
         </Button>
       </div>
 
-      {/* Queue Preview */}
-      {sharedQueue.length > 0 && (
-        <div className="mt-4 pt-4 border-t border-white/10">
-          <div className="flex items-center gap-2 mb-2">
-            <Users className="w-4 h-4 text-red-400" />
-            <span className="text-white font-medium text-sm">Shared Queue</span>
-            <span className="text-zinc-400 text-xs">
-              ({sharedQueue.length} songs)
-            </span>
-          </div>
-          <div className="space-y-2">
-            {sharedQueue.slice(0, 3).map((song, index) => (
-              <div
-                key={song._id}
-                className="flex items-center gap-2 bg-black/20 rounded-lg p-2"
-              >
-                <span className="text-zinc-500 text-xs w-4">{index + 1}</span>
-                <img
-                  src={song.imageUrl}
-                  alt="Album cover"
-                  className="w-8 h-8 rounded"
-                />
-                <div className="flex-1 min-w-0">
-                  <p className="text-white text-xs font-medium truncate">
-                    {song.title}
-                  </p>
-                  <p className="text-zinc-400 text-xs truncate">
-                    {song.artist}
-                  </p>
-                </div>
-                {isJamHost && (
-                  <Button
-                    onClick={() => playSharedSong(song)}
-                    variant="ghost"
-                    size="sm"
-                    className="text-red-400 hover:text-red-300"
-                  >
-                    <Play className="w-3 h-3" />
-                  </Button>
-                )}
-              </div>
-            ))}
-            {sharedQueue.length > 3 && (
-              <p className="text-zinc-500 text-xs text-center">
-                +{sharedQueue.length - 3} more songs
-              </p>
-            )}
-          </div>
-        </div>
-      )}
 
-      {!isJamHost && (
-        <div className="mt-3 md:mt-4 pt-3 md:pt-4 border-t border-white/10">
-          <div className="flex items-center gap-2 text-zinc-400 text-xs">
-            <Crown className="w-3 h-3" />
-            <span className="hidden md:inline">Host controls playback</span>
-            <span className="md:hidden">Host mode</span>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
