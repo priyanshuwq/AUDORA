@@ -1,4 +1,5 @@
 import { Server } from "socket.io";
+import { setupWebRTCHandlers } from "../socket/webrtcHandlers.js";
 
 export const initializeSocket = (server) => {
   // Get allowed origins from environment or use defaults
@@ -68,22 +69,32 @@ export const initializeSocket = (server) => {
     return code;
   };
 
-  // Periodic sync for jam sessions - more frequent updates
+  // Periodic sync for jam sessions - optimized for smooth playback
   setInterval(() => {
     rooms.forEach((room) => {
       if (room.isJamSession && room.jamHost && room.currentSharedSong) {
+        // Calculate expected position based on time elapsed
+        const now = Date.now();
+        const timeSinceUpdate = (now - (room.lastUpdateTime || now)) / 1000;
+        const expectedPosition = room.sharedIsPlaying 
+          ? room.sharedPosition + timeSinceUpdate 
+          : room.sharedPosition;
+        
         // Send periodic sync updates to ensure all clients stay in sync
         io.to(room.id).emit("periodic_sync", {
           song: room.currentSharedSong,
-          position: room.sharedPosition,
+          position: expectedPosition,
           isPlaying: room.sharedIsPlaying,
-          serverTime: Date.now(),
+          serverTime: now,
         });
       }
     });
-  }, 2000); // Every 2 seconds for better sync
+  }, 5000); // Every 5 seconds - less frequent to avoid stuttering
 
   io.on("connection", (socket) => {
+    // Setup WebRTC handlers for this socket connection
+    setupWebRTCHandlers(io, socket, rooms, userSockets);
+
     socket.on("user_connected", (userId) => {
       userSockets.set(userId, socket.id);
       userActivities.set(userId, "Idle");
@@ -208,6 +219,7 @@ export const initializeSocket = (server) => {
         if (userIndex === -1) return;
 
         const leavingUser = room.users[userIndex];
+        const wasHost = room.jamSession?.hostUserId === leavingUser.user._id;
         room.users.splice(userIndex, 1);
 
         // Remove user from tracking
@@ -224,6 +236,7 @@ export const initializeSocket = (server) => {
           socket.to(roomId).emit("user_left_room", {
             userId: leavingUser.user._id,
             userName: leavingUser.user.fullName,
+            wasHost,
           });
         }
 
@@ -349,11 +362,11 @@ export const initializeSocket = (server) => {
             return;
           }
 
-          // Check if user is the host
+          // Allow any user in jam session to control playback
           const user = room.users.find(
             (u) => userSockets.get(u.user._id) === socket.id
           );
-          if (!user || room.jamHost !== user.user._id) {
+          if (!user) {
             return;
           }
 
@@ -361,15 +374,17 @@ export const initializeSocket = (server) => {
           room.currentSharedSong = song;
           room.sharedPosition = position;
           room.sharedIsPlaying = isPlaying;
-          const syncTimestamp = Date.now();
+          room.lastUpdateTime = Date.now();
+          const syncTimestamp = room.lastUpdateTime;
 
-          // Immediate broadcast to all other users in room with accurate timing
-          socket.to(roomId).emit("shared_playback_sync", {
+          // Immediate broadcast to all users in room with accurate timing
+          io.to(roomId).emit("shared_playback_sync", {
             song,
             position,
             isPlaying,
             timestamp: syncTimestamp,
-            serverTime: syncTimestamp, // Add server time for better sync
+            serverTime: syncTimestamp,
+            controlledBy: user.user.fullName, // Add who controlled playback
           });
 
           // Also update the user's own state in the room
@@ -382,6 +397,8 @@ export const initializeSocket = (server) => {
             room.users[userIndex].position = position;
             room.users[userIndex].lastUpdateTime = syncTimestamp;
           }
+          
+          console.log(`🎵 ${user.user.fullName} synced playback: ${song.title} at ${position.toFixed(1)}s`);
         } catch (error) {
           console.error("Error syncing playback:", error);
         }
@@ -446,6 +463,7 @@ export const initializeSocket = (server) => {
             );
             if (userIndex !== -1) {
               const leavingUser = room.users[userIndex];
+              const wasHost = room.jamSession?.hostUserId === disconnectedUserId;
               room.users.splice(userIndex, 1);
 
               if (room.users.length === 0) {
@@ -455,6 +473,11 @@ export const initializeSocket = (server) => {
                 socket.to(roomId).emit("user_left_room", {
                   userId: disconnectedUserId,
                   userName: leavingUser.user.fullName,
+                  wasHost,
+                });
+                // Notify WebRTC peers that this peer disconnected
+                socket.to(roomId).emit("peer_disconnected", {
+                  peerId: socket.id,
                 });
               }
             }
