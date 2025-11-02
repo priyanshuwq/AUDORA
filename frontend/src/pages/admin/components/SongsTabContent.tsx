@@ -25,7 +25,7 @@ const SongsTabContent = () => {
         </div>
       </CardHeader>
       <CardContent>
-        <div className="max-h-[60vh] overflow-y-auto">
+        <div className="max-h-[60vh] overflow-y-auto scrollbar-hide">
           <SongsTable />
         </div>
       </CardContent>

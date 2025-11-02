@@ -19,7 +19,7 @@ const AlbumsTable = () => {
   }, [fetchAlbums]);
 
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto scrollbar-hide max-h-[60vh] overflow-y-auto">
       <Table className="min-w-[700px]">
         <TableHeader>
           <TableRow className="hover:bg-zinc-800/50">
