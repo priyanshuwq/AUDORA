@@ -14,6 +14,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import toast from "react-hot-toast";
+import LiveJamControls from "./LiveJamControls";
+import ScrollingText from "./ScrollingText";
 
 interface UserActivity {
   id: string;
@@ -76,7 +78,7 @@ const ActivityBar = () => {
 
   if (!currentRoom) {
     return (
-      <div className="w-full h-full bg-gradient-to-b from-zinc-900/90 to-zinc-950/90 backdrop-blur-xl border-l border-white/10 flex flex-col animate-slideInFromRight">
+      <div className="w-full h-full rounded-2xl bg-gradient-to-b from-zinc-900/90 to-zinc-950/90 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.6)] flex flex-col animate-slideInFromRight overflow-hidden">
         <div className="p-4 border-b border-white/10">
           <div className="flex items-center justify-between">
             <h2 className="text-white font-semibold text-lg flex items-center gap-3">
@@ -144,11 +146,11 @@ const ActivityBar = () => {
 
   if (activities.length === 0) {
     return (
-      <div className="w-full h-full bg-gradient-to-b from-zinc-900/90 to-zinc-950/90 backdrop-blur-xl border-l border-white/10 flex flex-col animate-slideInFromRight">
-        <div className="p-4 border-b border-white/10">
+      <div className="w-full h-full rounded-2xl bg-black backdrop-blur-xl border-none sm:border sm:border-white/5 shadow-[0_8px_32px_rgba(0,0,0,0.6)] flex flex-col animate-slideInFromRight overflow-hidden">
+        <div className="p-3 sm:p-4 border-b border-white/10 flex-shrink-0">
           <div className="flex items-center justify-between">
-            <h2 className="text-white font-semibold text-lg flex items-center gap-3">
-              <Users className="w-5 h-5 text-red-400" />
+            <h2 className="text-white font-semibold text-base md:text-lg flex items-center gap-2">
+              <Users className="w-4 h-4 md:w-5 md:h-5 text-red-400" />
               <span>Activity</span>
             </h2>
             <div className="flex items-center gap-2 text-green-400">
@@ -160,10 +162,10 @@ const ActivityBar = () => {
 
         {/* Room Info */}
         {currentRoom && (
-          <div className="p-4 border-b border-white/10 animate-fadeInUp">
-            <div className="bg-zinc-900/60 rounded-xl p-4 border border-white/6 shadow-sm">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-2 h-2 bg-red-400 rounded-full animate-pulse"></div>
+          <div className="p-3 sm:p-4 border-b border-white/10 animate-fadeInUp">
+          <div className="bg-black/40 rounded-2xl p-4 border border-white/5 shadow-sm">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-2 h-2 bg-red-400 rounded-full animate-pulse"></div>
                 <span className="text-red-300 font-medium text-sm">
                   {currentRoom.isJamSession ? "JAM ROOM" : "MUSIC ROOM"}
                 </span>
@@ -173,7 +175,7 @@ const ActivityBar = () => {
               </p>
               <p className="text-zinc-300 text-sm flex items-center gap-2">
                 <span>Code:</span>
-                <span className="font-mono bg-black/30 px-2 py-1 rounded text-xs">
+                <span className="font-mono bg-black/40 px-2 py-1 rounded text-xs">
                   {currentRoom.code}
                 </span>
               </p>
@@ -183,24 +185,27 @@ const ActivityBar = () => {
 
         <div className="flex-1 flex items-center justify-center p-6 min-h-0">
           <div className="text-center space-y-6 animate-fadeInUp max-w-xs">
-            <div className="w-16 h-16 bg-red-500/10 rounded-full flex items-center justify-center mx-auto animate-float">
-              <Users className="w-8 h-8 text-red-400" />
+            <div className="w-20 h-20 bg-red-500/10 rounded-full flex items-center justify-center mx-auto animate-float border border-red-500/20">
+              <Users className="w-10 h-10 text-red-400" />
             </div>
-            <div className="space-y-3">
-              <p className="text-white font-medium text-base">
+            <div className="space-y-4">
+              <p className="text-white font-semibold text-lg">
                 Waiting for Others
               </p>
               <p className="text-zinc-400 text-sm leading-relaxed">
                 You're alone in this room. Share the room code with friends to
                 see their activity!
               </p>
-              <div className="text-xs text-red-300 bg-red-500/10 rounded-lg p-3 border border-red-500/20 text-left">
-                <span className="block">
-                  🎵 <strong>Share:</strong>
-                </span>
-                <span className="block mt-1">
-                  Invite friends with code: <strong>{currentRoom?.code}</strong>
-                </span>
+              <div className="bg-black/40 rounded-2xl p-4 border border-white/5">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-xs text-red-300 font-medium">🎵 SHARE CODE</span>
+                </div>
+                <div className="flex items-center justify-center gap-2">
+                  <span className="text-zinc-400 text-xs">Code:</span>
+                  <span className="font-mono bg-red-500/10 px-3 py-1.5 rounded-lg text-base font-bold text-white border border-red-500/20">
+                    {currentRoom?.code}
+                  </span>
+                </div>
               </div>
             </div>
           </div>
@@ -210,13 +215,13 @@ const ActivityBar = () => {
   }
 
   return (
-    <div className="w-full h-full bg-gradient-to-b from-zinc-900/90 to-zinc-950/90 backdrop-blur-xl border-l border-white/10 flex flex-col animate-slideInFromRight">
+    <div className="w-full h-full rounded-2xl bg-black backdrop-blur-xl border-none sm:border sm:border-white/5 shadow-[0_8px_32px_rgba(0,0,0,0.6)] flex flex-col animate-slideInFromRight overflow-hidden">
       {/* Header */}
-      <div className="p-3 md:p-4 border-b border-white/10">
+      <div className="p-3 sm:p-4 border-b border-white/10 flex-shrink-0">
         <div className="flex items-center justify-between">
           <h2 className="text-white font-semibold text-base md:text-lg flex items-center gap-2">
             <Users className="w-4 h-4 md:w-5 md:h-5 text-red-400" />
-            <span className="hidden sm:inline">Activity</span>
+            <span>Activity</span>
           </h2>
           <div className="flex items-center gap-2">
             <div
@@ -245,10 +250,11 @@ const ActivityBar = () => {
         </div>
       </div>
 
-      {/* Room Info & Controls */}
-      {currentRoom && (
-        <div className="p-4 border-b border-white/10 animate-fadeInUp">
-          <div className="bg-zinc-900/60 rounded-xl p-4 border border-white/6 shadow-sm">
+      <ScrollArea className="flex-1 overflow-y-auto scrollbar-hide">
+        {/* Room Info & Controls */}
+        {currentRoom && (
+          <div className="p-3 sm:p-4 border-b border-white/10 animate-fadeInUp space-y-3">
+          <div className="bg-black/40 rounded-2xl p-4 border border-white/5 shadow-sm">
             <div className="flex items-center gap-3 mb-3">
               <div className="w-2 h-2 bg-red-400 rounded-full animate-pulse"></div>
               <span className="text-red-300 font-medium text-sm">
@@ -296,12 +302,18 @@ const ActivityBar = () => {
               </div>
             </div>
           </div>
-        </div>
-      )}
 
-      {/* Activities List */}
-      <ScrollArea className="flex-1 min-h-0">
-        <div className="p-4 space-y-4 min-h-full">
+          {/* Jam Session Controls - Moved from Sidebar */}
+          {currentRoom.isJamSession && (
+            <div className="animate-fadeInUp">
+              <LiveJamControls />
+            </div>
+          )}
+        </div>
+        )}
+
+        {/* Activities List */}
+        <div className="p-3 sm:p-4 space-y-3">
           {activities.map((activity, index) => (
             <div
               key={activity.id}
@@ -311,9 +323,9 @@ const ActivityBar = () => {
                 animationFillMode: "forwards",
               }}
             >
-              <div className="bg-zinc-900/50 rounded-xl p-4 border border-white/6 hover:border-white/10 transition-all duration-300 shadow-sm">
-                {/* User Info */}
-                <div className="flex items-center gap-3 mb-4">
+              <div className="bg-black/40 rounded-2xl p-3 sm:p-4 border border-white/5 hover:border-white/10 transition-all duration-300 shadow-sm">
+              {/* User Info */}
+              <div className="flex items-center gap-3 mb-4">
                   <div className="relative flex-shrink-0">
                     <div className="w-10 h-10 rounded-full bg-gradient-to-br from-red-500 to-red-600 flex items-center justify-center text-white text-sm font-bold border-2 border-red-500/30 hover:border-red-500/50 transition-colors">
                       {activity.name
@@ -347,7 +359,7 @@ const ActivityBar = () => {
                 {/* Current Song */}
                 {activity.currentSong ? (
                   <div
-                    className={`bg-zinc-900/60 rounded-lg p-4 border border-white/6 ${
+                    className={`bg-black/40 rounded-lg p-3 border border-white/5 ${
                       activity.isPlaying ? "animate-pulseSubtle" : ""
                     }`}
                   >
@@ -366,14 +378,15 @@ const ActivityBar = () => {
                           ) : (
                             <Pause className="w-3 h-3 text-zinc-400" />
                           )}
-                          <Music className="w-3 h-3 text-red-400" />
                         </div>
-                        <p className="text-white text-sm font-medium truncate leading-tight">
-                          {activity.currentSong.title}
-                        </p>
-                        <p className="text-zinc-400 text-xs truncate mt-1">
-                          by {activity.currentSong.artist}
-                        </p>
+                        <ScrollingText 
+                          text={activity.currentSong.title}
+                          className="text-white text-sm font-medium leading-tight mb-1"
+                        />
+                        <ScrollingText 
+                          text={`by ${activity.currentSong.artist}`}
+                          className="text-zinc-400 text-xs"
+                        />
                       </div>
                     </div>
 
@@ -392,7 +405,7 @@ const ActivityBar = () => {
                     )}
                   </div>
                 ) : (
-                  <div className="bg-zinc-900/50 rounded-lg p-4 border border-white/10">
+                  <div className="bg-black/40 rounded-lg p-3 border border-white/5">
                     <div className="flex items-center gap-3 text-zinc-500">
                       <Music className="w-4 h-4 flex-shrink-0" />
                       <span className="text-sm">Not playing anything</span>
