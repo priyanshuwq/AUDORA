@@ -9,7 +9,7 @@ const AudioPlayer = () => {
   const syncTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const { currentSong, isPlaying, playNext, isFullscreenPlayer } = usePlayerStore();
-  const { isJamSession, isJamHost } = useEnhancedRoomStore();
+  const { isJamSession, isJamHost, isStreamingAudio, startAudioStream } = useEnhancedRoomStore();
 
   // handle play/pause logic
   useEffect(() => {
@@ -49,7 +49,29 @@ const AudioPlayer = () => {
     }
   }, [currentSong, isPlaying]);
 
-  // Handle room sync events
+  // Auto-start WebRTC streaming when host plays music in jam session
+  useEffect(() => {
+    const audio = audioRef.current;
+    
+    // Only for jam session hosts
+    if (!isJamSession || !isJamHost || !audio) return;
+    
+    // If audio is playing but WebRTC streaming is not active, start it
+    if (currentSong && isPlaying && !isStreamingAudio) {
+      console.log('🎵 Host playing music - starting WebRTC stream...');
+      
+      // Small delay to ensure audio element is ready
+      const startTimeout = setTimeout(() => {
+        if (audio && !audio.paused) {
+          startAudioStream(audio);
+        }
+      }, 300);
+      
+      return () => clearTimeout(startTimeout);
+    }
+  }, [isJamSession, isJamHost, currentSong, isPlaying, isStreamingAudio, startAudioStream]);
+
+  // Handle room sync events with smooth drift correction
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
@@ -77,23 +99,72 @@ const AudioPlayer = () => {
           clearTimeout(syncTimeoutRef.current);
         }
 
-        // Set position and play state
+        // Smooth sync with drift tolerance
         syncTimeoutRef.current = setTimeout(() => {
-          audio.currentTime = adjustedPosition;
-          if (syncIsPlaying) {
-            audio.play();
-          } else {
+          const drift = Math.abs(audio.currentTime - adjustedPosition);
+          
+          // Only hard sync if drift is significant (> 3 seconds)
+          if (drift > 3) {
+            console.log(`⚡ Hard sync: drift ${drift.toFixed(2)}s`);
+            audio.currentTime = adjustedPosition;
+          } else if (drift > 0.5) {
+            // Smooth correction for smaller drifts using playback rate
+            const correction = drift > 1.5 ? 0.1 : 0.05;
+            audio.playbackRate = audio.currentTime < adjustedPosition 
+              ? 1 + correction  // Speed up slightly
+              : 1 - correction; // Slow down slightly
+            
+            // Reset playback rate after correction
+            setTimeout(() => {
+              if (audio) audio.playbackRate = 1.0;
+            }, 2000);
+          }
+          
+          // Update play state
+          if (syncIsPlaying && audio.paused) {
+            audio.play().catch(e => console.warn('Play interrupted:', e));
+          } else if (!syncIsPlaying && !audio.paused) {
             audio.pause();
           }
         }, 50);
       }
     };
 
+    // Handle periodic sync updates (less aggressive)
+    const handlePeriodicSync = (event: CustomEvent) => {
+      const { position, isPlaying: syncIsPlaying, serverTime } = event.detail;
+      
+      if (!isJamHost && isJamSession && audio && !audio.seeking) {
+        const timeDiff = (Date.now() - serverTime) / 1000;
+        const expectedPosition = position + timeDiff;
+        const drift = Math.abs(audio.currentTime - expectedPosition);
+        
+        // Only apply gentle corrections during periodic sync
+        if (drift > 2.5) {
+          console.log(`📊 Periodic correction: drift ${drift.toFixed(2)}s`);
+          // Use smooth playback rate adjustment
+          audio.playbackRate = audio.currentTime < expectedPosition ? 1.08 : 0.92;
+          setTimeout(() => {
+            if (audio) audio.playbackRate = 1.0;
+          }, 3000);
+        }
+        
+        // Sync play state
+        if (syncIsPlaying && audio.paused) {
+          audio.play().catch(() => {});
+        } else if (!syncIsPlaying && !audio.paused) {
+          audio.pause();
+        }
+      }
+    };
+
     // Listen for sync events from enhanced room store
     window.addEventListener("room-sync", handleSyncEvent as EventListener);
+    window.addEventListener("periodicSync", handlePeriodicSync as EventListener);
 
     return () => {
       window.removeEventListener("room-sync", handleSyncEvent as EventListener);
+      window.removeEventListener("periodicSync", handlePeriodicSync as EventListener);
       if (syncTimeoutRef.current) {
         clearTimeout(syncTimeoutRef.current);
       }
