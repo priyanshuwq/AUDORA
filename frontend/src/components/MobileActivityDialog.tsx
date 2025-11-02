@@ -27,14 +27,14 @@ const MobileActivityDialog = () => {
           {joinedUsers.length}
         </Button>
       </DialogTrigger>
-      <DialogContent className="bg-zinc-950 border border-white/10 rounded-2xl backdrop-blur-xl max-w-full h-[90vh] w-full p-0">
-        <DialogHeader className="p-4 border-b border-white/10">
+      <DialogContent className="bg-black border border-white/10 rounded-2xl backdrop-blur-xl max-w-full h-[90vh] w-[95vw] p-0 flex flex-col">
+        <DialogHeader className="p-4 border-b border-white/10 flex-shrink-0">
           <DialogTitle className="text-white text-xl font-bold flex items-center gap-2">
             <Users className="w-6 h-6 text-red-400" />
             Live Activity
           </DialogTitle>
         </DialogHeader>
-        <div className="h-full overflow-hidden">
+        <div className="flex-1 overflow-hidden min-h-0">
           <ActivityBar />
         </div>
       </DialogContent>
