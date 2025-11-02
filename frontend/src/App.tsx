@@ -17,7 +17,7 @@ import { useEffect } from "react";
 
 function App() {
   const { user } = useUser();
-  const { initSocket } = useEnhancedRoomStore();
+  const { initSocket, connectUser, isConnected } = useEnhancedRoomStore();
 
   // Initialize socket connection when user is signed in
   useEffect(() => {
@@ -25,6 +25,13 @@ function App() {
       initSocket();
     }
   }, [user, initSocket]);
+
+  // Connect user to socket when both user and socket are ready
+  useEffect(() => {
+    if (user && isConnected) {
+      connectUser(user.id);
+    }
+  }, [user, isConnected, connectUser]);
 
   return (
     <>
