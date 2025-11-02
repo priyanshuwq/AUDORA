@@ -21,7 +21,7 @@ const LeftSidebar = () => {
   return (
     <div className="h-full flex flex-col gap-2">
       {/* Navigation menu - Floating Card */}
-      <div className="rounded-2xl bg-black/95 backdrop-blur-xl border border-white/5 shadow-2xl p-4 hover:border-white/10 transition-all duration-300">
+      <div className="rounded-2xl bg-black/40 backdrop-blur-xl border border-white/5 shadow-[0_8px_32px_rgba(0,0,0,0.6)] p-4">
         <div className="space-y-1">
           <Link
             to={"/"}
@@ -54,7 +54,7 @@ const LeftSidebar = () => {
       </div>
 
       {/* Jam Rooms section - Floating Card */}
-      <div className="rounded-2xl bg-black/95 backdrop-blur-xl border border-white/5 shadow-2xl p-4 hover:border-white/10 transition-all duration-300">
+      <div className="rounded-2xl bg-black/40 backdrop-blur-xl border border-white/5 shadow-[0_8px_32px_rgba(0,0,0,0.6)] p-4">
         <div className="flex items-center text-white px-2 mb-4">
           <div className="w-10 h-10 rounded-xl bg-red-500/10 flex items-center justify-center mr-3">
             <Radio className="size-5 text-red-400" />
@@ -75,7 +75,7 @@ const LeftSidebar = () => {
       </div>
 
       {/* Library section - Floating Card with Glassmorphism */}
-      <div className="flex-1 rounded-2xl bg-black/95 backdrop-blur-xl border border-white/5 shadow-2xl p-4 hover:border-white/10 transition-all duration-300 overflow-hidden">
+      <div className="flex-1 rounded-2xl bg-black/40 backdrop-blur-xl border border-white/5 shadow-[0_8px_32px_rgba(0,0,0,0.6)] p-4 overflow-hidden">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center text-white">
             <div className="w-10 h-10 rounded-xl bg-red-500/10 flex items-center justify-center mr-3">
@@ -96,22 +96,21 @@ const LeftSidebar = () => {
                 <Link
                   to={`/albums/${album._id}`}
                   key={album._id}
-                  className="p-3 hover:bg-gradient-to-r hover:from-white/5 hover:to-red-500/5 rounded-xl flex items-center gap-3 group cursor-pointer transition-all duration-300 hover:scale-[1.02] border border-transparent hover:border-white/10"
+                  className="p-2.5 hover:bg-red-500/10 rounded-lg flex items-center gap-3 group cursor-pointer transition-all duration-200 border border-transparent hover:border-red-500/20"
                 >
-                  <div className="relative">
+                  <div className="relative flex-shrink-0">
                     <img
                       src={album.imageUrl}
                       alt="Playlist img"
-                      className="size-12 rounded-xl flex-shrink-0 object-cover shadow-lg group-hover:shadow-red-500/20 transition-shadow"
+                      className="size-12 rounded-lg object-cover"
                     />
-                    <div className="absolute inset-0 rounded-xl bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                   </div>
 
                   <div className="flex-1 min-w-0 hidden md:block">
-                    <p className="font-semibold tracking-wide truncate text-white group-hover:text-red-300 transition-colors">
+                    <p className="font-medium truncate text-white group-hover:text-red-300 transition-colors text-sm">
                       {album.title}
                     </p>
-                    <p className="text-sm text-zinc-400 truncate group-hover:text-zinc-300 transition-colors">
+                    <p className="text-xs text-zinc-400 truncate">
                       Album • {album.artist}
                     </p>
                   </div>
