@@ -85,6 +85,39 @@
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
   }
+  
+  /* Scrolling text animation for long titles */
+  .scrolling-text {
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .scrolling-text-content {
+    display: inline-block;
+    padding-right: 2rem;
+    animation: scroll-text 15s linear infinite;
+  }
+  
+  .scrolling-text:hover .scrolling-text-content {
+    animation-play-state: running;
+  }
+  
+  @keyframes scroll-text {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+  
+  /* Only apply animation if text is truncated */
+  .text-scroll-if-needed {
+    position: relative;
+    overflow: hidden;
+  }
 }
 
 /* Force existing `text-zinc-400` usages to render white globally.
@@ -415,3 +448,20 @@
     line-height: 2rem;
   }
 }
+
+/* Smooth tab content transitions */
+[data-state="active"][role="tabpanel"] {
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
