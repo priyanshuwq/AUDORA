@@ -32,7 +32,7 @@ const SongsTable = () => {
   return (
     <div>
       {/* Mobile: stacked card list */}
-      <div className="md:hidden grid gap-3">
+      <div className="md:hidden grid gap-3 scrollbar-hide">
         {songs.map((song) => (
           <div
             key={song._id}
@@ -66,7 +66,7 @@ const SongsTable = () => {
       </div>
 
       {/* Desktop/tablet: original table but without heavy borders */}
-      <div className="hidden md:block overflow-x-auto">
+      <div className="hidden md:block overflow-x-auto scrollbar-hide">
         <Table className="min-w-[700px] bg-transparent">
           <TableHeader>
             <TableRow className="bg-transparent">
