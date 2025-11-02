@@ -184,27 +184,32 @@ export const PlaybackControls = () => {
   if (isFullscreenPlayer) return null;
 
   return (
-    <footer className="hidden md:block h-16 sm:h-20 md:h-24 bg-zinc-950/95 backdrop-blur-xl px-2 sm:px-4 shadow-lg md:relative fixed bottom-20 md:bottom-0 left-0 right-0 z-50">
-      <div className="flex justify-between items-center h-full max-w-[1800px] mx-auto">
+    <footer className="hidden md:block h-16 sm:h-20 md:h-24 md:relative fixed bottom-20 md:bottom-0 left-0 right-0 z-50 px-2">
+      <div className="h-full rounded-2xl bg-black/95 backdrop-blur-xl border border-white/5 shadow-[0_8px_32px_rgba(0,0,0,0.6)] px-2 sm:px-4">
+        <div className="flex justify-between items-center h-full max-w-[1800px] mx-auto">
         {/* currently playing song */}
-        <div className="hidden lg:flex items-center gap-3 min-w-[180px] w-[30%]">
+        <div 
+          className="hidden lg:flex items-center gap-3 min-w-[180px] w-[30%] cursor-pointer group"
+          onClick={() => usePlayerStore.getState().setIsFullscreenPlayer(true)}
+          title="Open fullscreen player"
+        >
           {currentSong && (
             <>
               <div className="relative">
                 <img
                   src={currentSong.imageUrl}
                   alt={currentSong.title}
-                  className="w-14 h-14 object-cover rounded-xl shadow-lg transition-transform duration-300 hover:scale-105"
+                  className="w-14 h-14 object-cover rounded-xl shadow-lg transition-transform duration-300 group-hover:scale-105"
                 />
                 {isPlaying && (
                   <div className="absolute inset-0 bg-red-500/15 rounded-xl animate-pulse" />
                 )}
               </div>
               <div className="flex-1 min-w-0">
-                <div className="font-semibold tracking-widest truncate hover:underline cursor-pointer text-white hover:text-red-300 transition-colors">
+                <div className="font-semibold tracking-widest truncate text-white group-hover:text-red-300 transition-colors">
                   {currentSong.title}
                 </div>
-                <div className="text-sm text-zinc-400 truncate hover:underline cursor-pointer hover:text-zinc-300 transition-colors">
+                <div className="text-sm text-zinc-400 truncate group-hover:text-zinc-300 transition-colors">
                   {currentSong.artist}
                 </div>
                 {isPlaying && (
@@ -321,6 +326,31 @@ export const PlaybackControls = () => {
             className="w-24 hover:cursor-grab active:cursor-grabbing [&_[role=slider]]:bg-red-500 [&_[role=slider]]:border-0 [&_[role=slider]]:shadow-[0_0_10px_rgba(255,0,51,0.35)] [&>span:first-child]:bg-red-500/30 [&_[role=slider]:focus-visible]:ring-red-500/50 [&_[role=slider]]:hover:scale-110 [&_[role=slider]]:transition-transform"
             onValueChange={handleVolumeChange}
           />
+
+          {/* Fullscreen toggle button */}
+          <Button
+            size="icon"
+            variant="ghost"
+            onClick={() =>
+              usePlayerStore.getState().setIsFullscreenPlayer(true)
+            }
+            className="text-red-400 hover:text-white hover:bg-red-500/10"
+            title="Expand player"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-4 w-4"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <path d="M8 3H5a2 2 0 0 0-2 2v3" />
+              <path d="M16 3h3a2 2 0 0 1 2 2v3" />
+              <path d="M8 21H5a2 2 0 0 1-2-2v-3" />
+              <path d="M16 21h3a2 2 0 0 0 2-2v-3" />
+            </svg>
+          </Button>
         </div>
         {/* Fullscreen toggle visible on mobile */}
         <div className="flex items-center md:hidden ml-2">
@@ -347,6 +377,7 @@ export const PlaybackControls = () => {
               <path d="M16 21h3a2 2 0 0 0 2-2v-3" />
             </svg>
           </Button>
+        </div>
         </div>
       </div>
     </footer>
