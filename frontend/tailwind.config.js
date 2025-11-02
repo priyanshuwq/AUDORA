@@ -50,6 +50,15 @@ export default {
     				'4': 'hsl(var(--chart-4))',
     				'5': 'hsl(var(--chart-5))'
     			}
+    		},
+    		keyframes: {
+    			'scroll-text': {
+    				'0%': { transform: 'translateX(0)' },
+    				'100%': { transform: 'translateX(-50%)' }
+    			}
+    		},
+    		animation: {
+    			'scroll-text': 'scroll-text 15s linear infinite'
     		}
     	}
     },
