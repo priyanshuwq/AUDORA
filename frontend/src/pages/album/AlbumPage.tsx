@@ -60,8 +60,8 @@ const AlbumPage = () => {
   };
 
   return (
-    <div className="h-full flex flex-col overflow-hidden">
-      <ScrollArea className="flex-1 rounded-md overflow-y-auto">
+    <div className="h-full flex flex-col overflow-hidden rounded-2xl bg-black/95 backdrop-blur-xl border border-white/5 shadow-2xl">
+      <ScrollArea className="flex-1 rounded-2xl overflow-y-auto scrollbar-hide">
         {/* Main Content */}
         <div className="relative min-h-full">
           {/* bg gradient */}
