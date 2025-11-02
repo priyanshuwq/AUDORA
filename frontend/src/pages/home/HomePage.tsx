@@ -85,39 +85,85 @@ const HomePage = () => {
     return timeMessages[Math.floor(Math.random() * timeMessages.length)];
   };
 
-  // Golden Ratio formatting for "Good night Priyanshu"
-  const phi = 1.6180339887;
-  const baseGoldenSize = 34; // px for salutation; name scales by φ
-  const isNightPriyanshu = (() => {
-    const hour = new Date().getHours();
-    const isNight = hour >= 22 || hour < 5;
-    const firstName =
-      (user?.firstName || user?.fullName?.split(" ")[0] || "").toLowerCase();
-    return isNight && firstName === "priyanshu";
-  })();
+  // Golden Ratio (φ) for perfect visual harmony
+  const phi = 1.618033988749;
+  
+  // Calculate responsive golden ratio sizes
+  const getGoldenSizes = () => {
+    // Base sizes that work well across devices
+    const baseSalutation = {
+      mobile: 28,      // Smaller screens
+      tablet: 36,      // Medium screens
+      desktop: 44,     // Large screens
+    };
+    
+    return {
+      mobile: {
+        salutation: baseSalutation.mobile,
+        name: baseSalutation.mobile * phi,
+      },
+      tablet: {
+        salutation: baseSalutation.tablet,
+        name: baseSalutation.tablet * phi,
+      },
+      desktop: {
+        salutation: baseSalutation.desktop,
+        name: baseSalutation.desktop * phi,
+      },
+    };
+  };
+
+  const goldenSizes = getGoldenSizes();
 
   return (
-    <main className="rounded-none sm:rounded-xl overflow-hidden h-full bg-zinc-950/90 backdrop-blur-sm flex flex-col mb-32 md:mb-0">
+    <main className="rounded-2xl overflow-hidden h-full bg-black/95 backdrop-blur-xl border border-white/5 shadow-2xl flex flex-col mb-32 md:mb-0">
       <Topbar />
-      <ScrollArea className="flex-1 overflow-y-auto">
+      <ScrollArea className="flex-1 overflow-y-auto scrollbar-hide">
         <div className="p-3 sm:p-4 md:p-6 space-y-6 sm:space-y-8">
           <div className="mb-6 sm:mb-8 animate-slideInFromTop">
             <h1 className="mb-3 sm:mb-4">
+              {/* Salutation with golden ratio sizing */}
               <span
-                className="block text-3xl sm:text-4xl md:text-5xl lg:text-5xl font-medium text-zinc-200 leading-tight"
-                style={isNightPriyanshu ? { fontSize: baseGoldenSize } : undefined}
+                className="block font-extrabold text-zinc-200 leading-tight transition-all duration-300"
+                style={{
+                  fontSize: `${goldenSizes.mobile.salutation}px`,
+                }}
               >
-                {getSalutation()}
+                <style>{`
+                  @media (min-width: 640px) {
+                    .golden-salutation {
+                      font-size: ${goldenSizes.tablet.salutation}px !important;
+                    }
+                  }
+                  @media (min-width: 1024px) {
+                    .golden-salutation {
+                      font-size: ${goldenSizes.desktop.salutation}px !important;
+                    }
+                  }
+                `}</style>
+                <span className="golden-salutation">{getSalutation()}</span>
               </span>
+              
+              {/* Username with golden ratio sizing (φ times salutation) */}
               <span
-                className="block text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mt-1 bg-gradient-to-r from-red-400 via-rose-300 to-white bg-clip-text text-transparent tracking-tight leading-none"
-                style={
-                  isNightPriyanshu
-                    ? { fontSize: baseGoldenSize * phi }
-                    : undefined
-                }
+                className="block font-bold mt-2 bg-gradient-to-r from-red-400 via-rose-300 to-white bg-clip-text text-transparent tracking-tight leading-none transition-all duration-300"
+                style={{
+                  fontSize: `${goldenSizes.mobile.name}px`,
+                }}
               >
-                {getUserName()}
+                <style>{`
+                  @media (min-width: 640px) {
+                    .golden-name {
+                      font-size: ${goldenSizes.tablet.name}px !important;
+                    }
+                  }
+                  @media (min-width: 1024px) {
+                    .golden-name {
+                      font-size: ${goldenSizes.desktop.name}px !important;
+                    }
+                  }
+                `}</style>
+                <span className="golden-name">{getUserName()}</span>
               </span>
             </h1>
             <p
