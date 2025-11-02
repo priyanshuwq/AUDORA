@@ -1,8 +1,3 @@
-import {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from "@/components/ui/resizable";
 import { Outlet } from "react-router-dom";
 import LeftSidebar from "./components/LeftSidebar";
 import AudioPlayer from "./components/AudioPlayer";
@@ -16,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Users, X } from "lucide-react";
 import FullPlayer from "./components/FullPlayer";
 import MobileFullscreenPlayer from "@/layout/components/MobileFullscreenPlayer";
+import AlbumBackdrop from "@/components/AlbumBackdrop";
 
 const MainLayout = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -42,36 +38,21 @@ const MainLayout = () => {
 
   return (
     <>
-      <div className="h-screen bg-zinc-950 text-white flex flex-col overflow-hidden animate-fadeInUp mobile-safe-area">
-        <ResizablePanelGroup
-          direction="horizontal"
-          className="flex-1 flex h-full overflow-hidden p-1 md:p-2 min-h-0"
-        >
+      {/* Album Cover Backdrop - Blurred background */}
+      <AlbumBackdrop />
+      
+      <div className="h-screen bg-black/50 text-white flex flex-col overflow-hidden animate-fadeInUp mobile-safe-area relative z-10">
+        <div className="flex-1 flex h-full overflow-hidden p-2 min-h-0 gap-2">
           <AudioPlayer />
-          {/* left sidebar */}
+          {/* left sidebar - fixed width */}
           {!isMobile && (
-            <ResizablePanel
-              defaultSize={20}
-              minSize={15}
-              maxSize={30}
-              className="animate-slideInFromLeft"
-            >
+            <div className="w-64 flex-shrink-0 animate-slideInFromLeft">
               <LeftSidebar />
-            </ResizablePanel>
-          )}
-
-          {!isMobile && (
-            <ResizableHandle className="w-1 md:w-2 bg-red-500/10 rounded-lg transition-all duration-300 hover:bg-red-500/25 hover:w-3" />
+            </div>
           )}
 
           {/* Main content */}
-          <ResizablePanel
-            defaultSize={
-              isMobile ? 100 : isInRoom && isActivityBarVisible ? 50 : 80
-            }
-            minSize={isMobile ? 100 : 40}
-            className="animate-fadeInUp h-full relative"
-          >
+          <div className="flex-1 animate-fadeInUp h-full relative min-w-0">
             <Outlet />
 
             {/* Activity Bar Toggle Button - Show when in room but activity bar is hidden */}
@@ -84,32 +65,24 @@ const MainLayout = () => {
                 <Users className="w-4 h-4" />
               </Button>
             )}
-          </ResizablePanel>
+          </div>
 
-          {/* Activity Bar - Show only when in room and visible */}
+          {/* Activity Bar - Show only when in room and visible - fixed width */}
           {isInRoom && isActivityBarVisible && !isMobile && (
-            <>
-              <ResizableHandle className="w-1 md:w-2 bg-red-500/10 rounded-lg transition-all duration-300 hover:bg-red-500/25 hover:w-3" />
-              <ResizablePanel
-                defaultSize={30}
-                minSize={25}
-                maxSize={35}
-                className="animate-slideInFromRight h-full relative"
+            <div className="w-[400px] flex-shrink-0 animate-slideInFromRight h-full relative">
+              {/* Close Button */}
+              <Button
+                onClick={() => setIsActivityBarVisible(false)}
+                className="absolute top-2 right-2 z-10 bg-black/20 hover:bg-black/40 text-white rounded-full p-1 opacity-70 hover:opacity-100 transition-opacity"
+                size="sm"
+                variant="ghost"
               >
-                {/* Close Button */}
-                <Button
-                  onClick={() => setIsActivityBarVisible(false)}
-                  className="absolute top-2 right-2 z-10 bg-black/20 hover:bg-black/40 text-white rounded-full p-1 opacity-70 hover:opacity-100 transition-opacity"
-                  size="sm"
-                  variant="ghost"
-                >
-                  <X className="w-3 h-3" />
-                </Button>
-                <ActivityBar />
-              </ResizablePanel>
-            </>
+                <X className="w-3 h-3" />
+              </Button>
+              <ActivityBar />
+            </div>
           )}
-        </ResizablePanelGroup>
+        </div>
 
         {/* Mobile Activity Dialog */}
         {isMobile && <MobileActivityDialog />}
