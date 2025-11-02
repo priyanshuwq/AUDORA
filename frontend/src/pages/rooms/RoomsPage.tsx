@@ -15,7 +15,7 @@ const RoomsPage = () => {
   const [showHint, setShowHint] = useState(true);
 
   return (
-    <main className="min-h-screen rounded-none sm:rounded-xl overflow-hidden bg-zinc-950/90 backdrop-blur-sm flex flex-col mb-32 md:mb-0">
+    <main className="min-h-screen rounded-2xl overflow-hidden bg-black/95 backdrop-blur-xl border border-white/5 shadow-2xl flex flex-col mb-32 md:mb-0">
       <Topbar />
 
       <div className="px-4 pt-3 pb-2">
@@ -41,49 +41,53 @@ const RoomsPage = () => {
         </div>
       </div>
 
-      <ScrollArea className="flex-1 overflow-y-auto">
-        <div className="p-4 sm:p-6 md:p-8 mx-auto max-w-3xl">
-          <div className="rounded-2xl overflow-hidden bg-neutral-900/60 backdrop-blur-sm">
-            <div className="p-3">
+      <ScrollArea className="flex-1 overflow-y-auto scrollbar-hide">
+        <div className="p-3 sm:p-6 md:p-8 mx-auto max-w-3xl">
+          <div className="rounded-2xl overflow-hidden bg-black/40 backdrop-blur-sm border border-white/10">
+            <div className="p-3 sm:p-4">
               {/* Tabs: Room / Activity */}
               {isInRoom ? (
                 <div className="space-y-4">
-                  <div className="flex items-center gap-2 mb-2">
+                  <div className="flex items-center gap-2 p-1 bg-zinc-900/50 rounded-xl border border-white/5">
                     <button
                       onClick={() => setTab("room")}
-                      className={`flex items-center gap-2 px-3 py-1 rounded-full transition-all duration-150 ${
-                        tab === "room" ? "bg-white/6" : "hover:bg-white/3"
+                      className={`flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-lg transition-all duration-200 ${
+                        tab === "room" 
+                          ? "bg-red-600/20 text-white border border-red-500/30" 
+                          : "text-zinc-400 hover:bg-white/5 hover:text-white"
                       }`}
                     >
-                      <Music className="w-4 h-4 text-red-400" />
-                      <span className="text-sm text-white">Room</span>
+                      <Music className="w-4 h-4" />
+                      <span className="text-sm font-medium">Room</span>
                     </button>
                     <button
                       onClick={() => setTab("activity")}
-                      className={`flex items-center gap-2 px-3 py-1 rounded-full transition-all duration-150 ${
-                        tab === "activity" ? "bg-white/6" : "hover:bg-white/3"
+                      className={`flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-lg transition-all duration-200 ${
+                        tab === "activity" 
+                          ? "bg-red-600/20 text-white border border-red-500/30" 
+                          : "text-zinc-400 hover:bg-white/5 hover:text-white"
                       }`}
                     >
-                      <Users className="w-4 h-4 text-red-400" />
-                      <span className="text-sm text-white">Activity</span>
+                      <Users className="w-4 h-4" />
+                      <span className="text-sm font-medium">Activity</span>
                     </button>
                   </div>
 
                   {/* Mobile-only short description for using the room */}
                   {tab === "room" && showHint && (
-                    <div className="block sm:hidden bg-neutral-900/60 border border-white/8 p-3 rounded-lg relative">
+                    <div className="block sm:hidden bg-zinc-900/60 border border-white/10 p-4 rounded-xl relative">
                       <button
                         aria-label="Dismiss"
                         onClick={() => setShowHint(false)}
-                        className="absolute top-2 right-2 text-zinc-400 hover:text-zinc-200"
+                        className="absolute top-3 right-3 text-zinc-400 hover:text-white transition-colors w-6 h-6 flex items-center justify-center rounded-full hover:bg-white/10"
                       >
                         ✕
                       </button>
 
-                      <p className="text-sm font-semibold text-white">
-                        How this room works
+                      <p className="text-sm font-semibold text-white mb-2">
+                        💡 How this room works
                       </p>
-                      <p className="mt-1 text-xs text-zinc-300">
+                      <p className="text-xs text-zinc-300 leading-relaxed pr-6">
                         The host controls playback — when the host plays or
                         seeks, everyone syncs. Tap the play button to play/pause
                         and open the full player for more controls. Use the
@@ -99,7 +103,7 @@ const RoomsPage = () => {
                       <LiveJamControls />
                     </>
                   ) : (
-                    <div>
+                    <div className="rounded-xl border border-white/5 overflow-hidden" style={{ height: 'calc(100vh - 300px)', minHeight: '400px' }}>
                       <ActivityBar />
                     </div>
                   )}
