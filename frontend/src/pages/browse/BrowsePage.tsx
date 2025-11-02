@@ -151,118 +151,107 @@ const BrowsePage = () => {
 
   return (
     <ErrorBoundary>
-      <main className="rounded-none sm:rounded-xl overflow-hidden h-full bg-gradient-to-br from-zinc-900/95 to-black/95 backdrop-blur-sm flex flex-col mb-32 md:mb-0">
+      <main className="rounded-2xl overflow-hidden h-full bg-black/40 backdrop-blur-xl border border-white/5 shadow-[0_8px_32px_rgba(0,0,0,0.6)] flex flex-col mb-32 md:mb-0">
         <Topbar />
 
-        <div className="flex-1 overflow-hidden">
+        <div className="flex-1 overflow-hidden flex flex-col">
+          {/* Header Section */}
+          <div className="px-4 sm:px-6 pt-6 pb-4">
+            <h1 className="text-3xl sm:text-4xl font-extrabold mb-2 bg-gradient-to-r from-red-400 via-rose-300 to-white bg-clip-text text-transparent">
+              Browse Music
+            </h1>
+            <p className="text-sm text-zinc-400">Discover and explore music</p>
+          </div>
+
+          {/* Tabs Navigation */}
           <Tabs
             value={activeTab}
             onValueChange={setActiveTab}
-            className="h-full flex flex-col"
+            className="flex-1 flex flex-col overflow-hidden"
           >
-            <div className="flex-shrink-0 px-4 sm:px-6 md:px-8 pt-4 sm:pt-6">
-              <div className="max-w-full">
-                <div className="mb-6 sm:mb-8 text-center sm:text-left">
-                  <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 sm:mb-3 bg-gradient-to-r from-white via-red-100 to-red-200 bg-clip-text text-transparent">
-                    Browse Music
-                  </h1>
-                  <p className="text-sm sm:text-base text-zinc-400">
-                    Discover and explore music
-                  </p>
-                </div>
-
-                <TabsList className="inline-flex w-full items-center justify-center gap-1 bg-zinc-900/40 backdrop-blur-sm border border-zinc-800/50 rounded-xl p-1.5 mb-6 sm:mb-8">
-                  <TabsTrigger
-                    value="search"
-                    className="flex flex-1 flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 bg-transparent text-zinc-400 border-0 data-[state=active]:text-white data-[state=active]:bg-red-600/25 data-[state=active]:shadow-lg data-[state=active]:shadow-red-500/20 hover:data-[state=inactive]:bg-zinc-800/30 hover:data-[state=inactive]:text-zinc-300 transition-all duration-200 py-2.5 sm:py-3 rounded-lg"
-                  >
-                    <Search className="w-3 h-3 sm:w-4 sm:h-4" />
-                    <span className="text-xs sm:text-sm font-medium">Search</span>
-                  </TabsTrigger>
-                  <TabsTrigger
-                    value="featured"
-                    className="flex flex-1 flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 bg-transparent text-zinc-400 border-0 data-[state=active]:text-white data-[state=active]:bg-red-600/25 data-[state=active]:shadow-lg data-[state=active]:shadow-red-500/20 hover:data-[state=inactive]:bg-zinc-800/30 hover:data-[state=inactive]:text-zinc-300 transition-all duration-200 py-2.5 sm:py-3 rounded-lg"
-                  >
-                    <Sparkles className="w-3 h-3 sm:w-4 sm:h-4" />
-                    <span className="text-xs sm:text-sm font-medium">Featured</span>
-                  </TabsTrigger>
-                  <TabsTrigger
-                    value="trending"
-                    className="flex flex-1 flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 bg-transparent text-zinc-400 border-0 data-[state=active]:text-white data-[state=active]:bg-red-600/25 data-[state=active]:shadow-lg data-[state=active]:shadow-red-500/20 hover:data-[state=inactive]:bg-zinc-800/30 hover:data-[state=inactive]:text-zinc-300 transition-all duration-200 py-2.5 sm:py-3 rounded-lg"
-                  >
-                    <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4" />
-                    <span className="text-xs sm:text-sm font-medium">Trending</span>
-                  </TabsTrigger>
-                  <TabsTrigger
-                    value="for-you"
-                    className="flex flex-1 flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 bg-transparent text-zinc-400 border-0 data-[state=active]:text-white data-[state=active]:bg-red-600/25 data-[state=active]:shadow-lg data-[state=active]:shadow-red-500/20 hover:data-[state=inactive]:bg-zinc-800/30 hover:data-[state=inactive]:text-zinc-300 transition-all duration-200 py-2.5 sm:py-3 rounded-lg"
-                  >
-                    <Music className="w-3 h-3 sm:w-4 sm:h-4" />
-                    <span className="text-xs sm:text-sm font-medium">For You</span>
-                  </TabsTrigger>
-                  <TabsTrigger
-                    value="recent"
-                    className="flex flex-1 flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 bg-transparent text-zinc-400 border-0 data-[state=active]:text-white data-[state=active]:bg-red-600/25 data-[state=active]:shadow-lg data-[state=active]:shadow-red-500/20 hover:data-[state=inactive]:bg-zinc-800/30 hover:data-[state=inactive]:text-zinc-300 transition-all duration-200 py-2.5 sm:py-3 rounded-lg"
-                  >
-                    <Clock className="w-3 h-3 sm:w-4 sm:h-4" />
-                    <span className="text-xs sm:text-sm font-medium">Recent</span>
-                  </TabsTrigger>
-                </TabsList>
-              </div>
+            <div className="px-4 sm:px-6 pb-4 flex justify-center">
+              <TabsList className="grid grid-cols-5 w-full md:w-3/4 lg:w-2/3 xl:w-1/2 h-auto bg-zinc-900/50 p-1 rounded-xl border border-white/10">
+                <TabsTrigger
+                  value="search"
+                  className="flex flex-col items-center justify-center gap-1.5 py-3 px-2 rounded-lg data-[state=active]:bg-red-600 data-[state=active]:text-white data-[state=inactive]:text-zinc-400 transition-all hover:text-zinc-200"
+                >
+                  <Search className="w-5 h-5" />
+                  <span className="text-xs font-medium hidden sm:block">Search</span>
+                </TabsTrigger>
+                <TabsTrigger
+                  value="featured"
+                  className="flex flex-col items-center justify-center gap-1.5 py-3 px-2 rounded-lg data-[state=active]:bg-red-600 data-[state=active]:text-white data-[state=inactive]:text-zinc-400 transition-all hover:text-zinc-200"
+                >
+                  <Sparkles className="w-5 h-5" />
+                  <span className="text-xs font-medium hidden sm:block">Featured</span>
+                </TabsTrigger>
+                <TabsTrigger
+                  value="trending"
+                  className="flex flex-col items-center justify-center gap-1.5 py-3 px-2 rounded-lg data-[state=active]:bg-red-600 data-[state=active]:text-white data-[state=inactive]:text-zinc-400 transition-all hover:text-zinc-200"
+                >
+                  <TrendingUp className="w-5 h-5" />
+                  <span className="text-xs font-medium hidden sm:block">Trending</span>
+                </TabsTrigger>
+                <TabsTrigger
+                  value="for-you"
+                  className="flex flex-col items-center justify-center gap-1.5 py-3 px-2 rounded-lg data-[state=active]:bg-red-600 data-[state=active]:text-white data-[state=inactive]:text-zinc-400 transition-all hover:text-zinc-200"
+                >
+                  <Music className="w-5 h-5" />
+                  <span className="text-xs font-medium hidden sm:block">For You</span>
+                </TabsTrigger>
+                <TabsTrigger
+                  value="recent"
+                  className="flex flex-col items-center justify-center gap-1.5 py-3 px-2 rounded-lg data-[state=active]:bg-red-600 data-[state=active]:text-white data-[state=inactive]:text-zinc-400 transition-all hover:text-zinc-200"
+                >
+                  <Clock className="w-5 h-5" />
+                  <span className="text-xs font-medium hidden sm:block">Recent</span>
+                </TabsTrigger>
+              </TabsList>
             </div>
 
-            <ScrollArea className="flex-1 px-4 sm:px-6 md:px-8">
+            <ScrollArea className="flex-1 px-4 sm:px-6 scrollbar-hide">
               <div className="pb-8">
                 <TabsContent value="search" className="mt-0 space-y-6">
-                  {/* Clean Search Input */}
-                  <div className="sticky top-0 z-10 py-4">
-                    <div className="relative group">
-                      {/* Search container */}
+                  {/* Search Input */}
+                  <div className="mb-6 flex justify-center">
+                    <div
+                      className={`relative border rounded-xl transition-all duration-300 px-4 py-3 flex items-center bg-zinc-900/50 w-full md:w-3/4 lg:w-2/3 xl:w-1/2 ${
+                        isSearchFocused
+                          ? "border-red-500/60 shadow-lg shadow-red-500/10"
+                          : "border-zinc-800/50 hover:border-zinc-700/70"
+                      }`}
+                    >
                       <div
-                        className={`relative border rounded-full transition-all duration-300 px-5 py-3.5 flex items-center ${
-                          isSearchFocused
-                            ? "border-red-500/60 shadow-[0_0_20px_rgba(239,68,68,0.15)]"
-                            : "border-zinc-700/50 hover:border-zinc-600/70"
+                        className={`flex items-center mr-3 transition-colors duration-200 ${
+                          isSearchFocused ? "text-red-400" : "text-zinc-500"
                         }`}
                       >
-                        {/* Search icon */}
-                        <div
-                          className={`flex items-center pointer-events-none mr-3 transition-colors duration-200 ${
-                            isSearchFocused ? "text-red-400" : "text-zinc-500"
-                          }`}
-                        >
-                          <Search
-                            className={`h-5 w-5 transition-all duration-150 ${
-                              searchLoading ? "opacity-0" : "opacity-100"
-                            }`}
-                          />
-                          {searchLoading && (
-                            <Loader2 className="h-5 w-5 animate-spin text-red-400 absolute" />
-                          )}
-                        </div>
-
-                        {/* Input field */}
-                        <input
-                          ref={searchInputRef}
-                          type="text"
-                          value={searchQuery}
-                          onChange={(e) => handleSearch(e.target.value)}
-                          onFocus={() => setIsSearchFocused(true)}
-                          onBlur={() => setIsSearchFocused(false)}
-                          placeholder="What do you want to play?"
-                          className="flex-1 bg-transparent text-white text-base placeholder-zinc-500 focus:outline-none"
-                        />
-
-                        {/* Clear button */}
-                        {searchQuery && (
-                          <button
-                            onClick={handleClearSearch}
-                            className="ml-2 p-1 rounded-full text-zinc-500 hover:text-white hover:bg-red-500/20 transition-all duration-200"
-                          >
-                            <X className="h-4 w-4" />
-                          </button>
+                        {searchLoading ? (
+                          <Loader2 className="h-5 w-5 animate-spin" />
+                        ) : (
+                          <Search className="h-5 w-5" />
                         )}
                       </div>
+
+                      <input
+                        ref={searchInputRef}
+                        type="text"
+                        value={searchQuery}
+                        onChange={(e) => handleSearch(e.target.value)}
+                        onFocus={() => setIsSearchFocused(true)}
+                        onBlur={() => setIsSearchFocused(false)}
+                        placeholder="Search for songs, artists, albums..."
+                        className="flex-1 bg-transparent text-white placeholder-zinc-500 focus:outline-none"
+                      />
+
+                      {searchQuery && (
+                        <button
+                          onClick={handleClearSearch}
+                          className="ml-2 p-1.5 rounded-lg text-zinc-500 hover:text-white hover:bg-red-500/20 transition-all duration-200"
+                        >
+                          <X className="h-4 w-4" />
+                        </button>
+                      )}
                     </div>
                   </div>
 
@@ -291,32 +280,34 @@ const BrowsePage = () => {
                             </span>
                           </div>
 
-                          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4 md:gap-6">
+                          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-4 sm:gap-5 md:gap-6">
                             {searchResults.map((song, index) => (
                               <GlassCard
                                 key={song._id}
                                 className="search-result-item"
                                 style={{ animationDelay: `${index * 50}ms` }}
                               >
-                                <div className="relative mb-3 sm:mb-4">
-                                  <div className="aspect-square rounded-lg sm:rounded-xl shadow-2xl overflow-hidden">
+                                <div className="relative mb-2 group">
+                                  <div className="aspect-square rounded-md overflow-hidden bg-zinc-900">
                                     <img
                                       src={song.imageUrl}
                                       alt={song.title}
-                                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                      className="w-full h-full object-cover"
                                     />
                                   </div>
                                   <PlayButton
                                     song={song}
-                                    className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-12 h-12 opacity-0 group-hover:opacity-100 transition-all duration-200 scale-90 group-hover:scale-100"
+                                    className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300"
                                   />
                                 </div>
-                                <h3 className="font-semibold text-sm sm:text-base tracking-wide mb-1 sm:mb-2 truncate text-white group-hover:text-red-200 transition-colors">
-                                  {song.title}
-                                </h3>
-                                <p className="text-xs sm:text-sm text-zinc-500 truncate group-hover:text-zinc-400 transition-colors">
-                                  {song.artist}
-                                </p>
+                                <div className="space-y-0.5 px-0.5">
+                                  <h3 className="text-sm font-medium text-white truncate">
+                                    {song.title}
+                                  </h3>
+                                  <p className="text-xs text-zinc-400 truncate">
+                                    {song.artist}
+                                  </p>
+                                </div>
                               </GlassCard>
                             ))}
                           </div>
@@ -373,32 +364,34 @@ const BrowsePage = () => {
                             <Sparkles className="w-4 h-4 text-red-400" />
                             You might also like
                           </h3>
-                          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4 md:gap-6">
+                          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-4 sm:gap-5 md:gap-6">
                             {featuredSongs.slice(0, 6).map((song, index) => (
                               <GlassCard
                                 key={`related-${song._id}`}
                                 className="search-result-item opacity-80 hover:opacity-100"
                                 style={{ animationDelay: `${index * 100}ms` }}
                               >
-                                <div className="relative mb-3 sm:mb-4">
-                                  <div className="aspect-square rounded-lg sm:rounded-xl shadow-2xl overflow-hidden">
+                                <div className="relative mb-2 group">
+                                  <div className="aspect-square rounded-md overflow-hidden bg-zinc-900">
                                     <img
                                       src={song.imageUrl}
                                       alt={song.title}
-                                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                      className="w-full h-full object-cover"
                                     />
                                   </div>
                                   <PlayButton
                                     song={song}
-                                    className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-12 h-12 opacity-0 group-hover:opacity-100 transition-all duration-200 scale-90 group-hover:scale-100"
+                                    className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300"
                                   />
                                 </div>
-                                <h3 className="font-semibold text-sm sm:text-base tracking-wide mb-1 sm:mb-2 truncate text-white group-hover:text-red-200 transition-colors">
-                                  {song.title}
-                                </h3>
-                                <p className="text-xs sm:text-sm text-zinc-500 truncate group-hover:text-zinc-400 transition-colors">
-                                  {song.artist}
-                                </p>
+                                <div className="space-y-0.5 px-0.5">
+                                  <h3 className="text-sm font-medium text-white truncate">
+                                    {song.title}
+                                  </h3>
+                                  <p className="text-xs text-zinc-400 truncate">
+                                    {song.artist}
+                                  </p>
+                                </div>
                               </GlassCard>
                             ))}
                           </div>
@@ -419,13 +412,12 @@ const BrowsePage = () => {
                 </TabsContent>
 
                 <TabsContent value="featured" className="mt-0">
-                  <div className="space-y-8">
-                    <div className="text-center sm:text-left py-4">
-                      <h2 className="text-2xl sm:text-3xl font-extrabold mb-3 bg-gradient-to-r from-white via-red-200 to-red-400 bg-clip-text text-transparent">
+                  <div className="space-y-6">
+                    <div>
+                      <h2 className="text-2xl font-bold mb-1 text-white">
                         Featured Songs
                       </h2>
-                      <div className="h-1 w-16 rounded-full bg-gradient-to-r from-red-500 to-red-600 mx-auto sm:mx-0 mb-2" />
-                      <p className="text-zinc-400">Hand-picked tracks just for you</p>
+                      <p className="text-sm text-zinc-400">Hand-picked tracks just for you</p>
                     </div>
 
                     {musicStoreLoading ? (
@@ -451,28 +443,30 @@ const BrowsePage = () => {
                         </div>
                       </div>
                     ) : (
-                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4 md:gap-6">
+                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-4 sm:gap-5 md:gap-6">
                         {featuredSongs.map((song) => (
                           <GlassCard key={song._id}>
-                            <div className="relative mb-3 sm:mb-4">
-                              <div className="aspect-square rounded-lg sm:rounded-xl shadow-2xl overflow-hidden">
+                            <div className="relative mb-2 group">
+                              <div className="aspect-square rounded-md overflow-hidden bg-zinc-900">
                                 <img
                                   src={song.imageUrl}
                                   alt={song.title}
-                                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                  className="w-full h-full object-cover"
                                 />
                               </div>
                               <PlayButton
                                 song={song}
-                                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-12 h-12 opacity-0 group-hover:opacity-100 transition-all duration-200 scale-90 group-hover:scale-100"
+                                className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300"
                               />
                             </div>
-                            <h3 className="font-semibold text-sm sm:text-base tracking-wide mb-1 sm:mb-2 truncate text-white group-hover:text-red-200 transition-colors">
-                              {song.title}
-                            </h3>
-                            <p className="text-xs sm:text-sm text-zinc-500 truncate group-hover:text-zinc-400 transition-colors">
-                              {song.artist}
-                            </p>
+                            <div className="space-y-0.5 px-0.5">
+                              <h3 className="text-sm font-medium text-white truncate">
+                                {song.title}
+                              </h3>
+                              <p className="text-xs text-zinc-400 truncate">
+                                {song.artist}
+                              </p>
+                            </div>
                           </GlassCard>
                         ))}
                       </div>
@@ -481,15 +475,12 @@ const BrowsePage = () => {
                 </TabsContent>
 
                 <TabsContent value="trending" className="mt-0">
-                  <div className="space-y-8">
-                    <div className="text-center sm:text-left py-4">
-                      <h2 className="text-2xl sm:text-3xl font-extrabold mb-3 bg-gradient-to-r from-white via-red-200 to-red-400 bg-clip-text text-transparent">
+                  <div className="space-y-6">
+                    <div>
+                      <h2 className="text-2xl font-bold mb-1 text-white">
                         Trending Now
                       </h2>
-                      <div className="h-1 w-16 rounded-full bg-gradient-to-r from-red-500 to-red-600 mx-auto sm:mx-0 mb-2" />
-                      <p className="text-zinc-400">
-                        What everyone's listening to right now
-                      </p>
+                      <p className="text-sm text-zinc-400">What everyone's listening to right now</p>
                     </div>
 
                     {musicStoreLoading ? (
@@ -515,28 +506,30 @@ const BrowsePage = () => {
                         </div>
                       </div>
                     ) : (
-                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4 md:gap-6">
+                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-4 sm:gap-5 md:gap-6">
                         {trendingSongs.map((song) => (
                           <GlassCard key={song._id}>
-                            <div className="relative mb-3 sm:mb-4">
-                              <div className="aspect-square rounded-lg sm:rounded-xl shadow-2xl overflow-hidden">
+                            <div className="relative mb-2 group">
+                              <div className="aspect-square rounded-md overflow-hidden bg-zinc-900">
                                 <img
                                   src={song.imageUrl}
                                   alt={song.title}
-                                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                  className="w-full h-full object-cover"
                                 />
                               </div>
                               <PlayButton
                                 song={song}
-                                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-12 h-12 opacity-0 group-hover:opacity-100 transition-all duration-200 scale-90 group-hover:scale-100"
+                                className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300"
                               />
                             </div>
-                            <h3 className="font-semibold text-sm sm:text-base tracking-wide mb-1 sm:mb-2 truncate text-white group-hover:text-red-200 transition-colors">
-                              {song.title}
-                            </h3>
-                            <p className="text-xs sm:text-sm text-zinc-500 truncate group-hover:text-zinc-400 transition-colors">
-                              {song.artist}
-                            </p>
+                            <div className="space-y-0.5 px-0.5">
+                              <h3 className="text-sm font-medium text-white truncate">
+                                {song.title}
+                              </h3>
+                              <p className="text-xs text-zinc-400 truncate">
+                                {song.artist}
+                              </p>
+                            </div>
                           </GlassCard>
                         ))}
                       </div>
@@ -545,13 +538,12 @@ const BrowsePage = () => {
                 </TabsContent>
 
                 <TabsContent value="for-you" className="mt-0">
-                  <div className="space-y-8">
-                    <div className="text-center sm:text-left py-4">
-                      <h2 className="text-2xl sm:text-3xl font-extrabold mb-3 bg-gradient-to-r from-white via-red-200 to-red-400 bg-clip-text text-transparent">
+                  <div className="space-y-6">
+                    <div>
+                      <h2 className="text-2xl font-bold mb-1 text-white">
                         Made For You
                       </h2>
-                      <div className="h-1 w-16 rounded-full bg-gradient-to-r from-red-500 to-red-600 mx-auto sm:mx-0 mb-2" />
-                      <p className="text-zinc-400">Personalized recommendations</p>
+                      <p className="text-sm text-zinc-400">Personalized recommendations</p>
                     </div>
 
                     {musicStoreLoading ? (
@@ -577,28 +569,30 @@ const BrowsePage = () => {
                         </div>
                       </div>
                     ) : (
-                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4 md:gap-6">
+                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-4 sm:gap-5 md:gap-6">
                         {madeForYouSongs.map((song) => (
                           <GlassCard key={song._id}>
-                            <div className="relative mb-3 sm:mb-4">
-                              <div className="aspect-square rounded-lg sm:rounded-xl shadow-2xl overflow-hidden">
+                            <div className="relative mb-2 group">
+                              <div className="aspect-square rounded-md overflow-hidden bg-zinc-900">
                                 <img
                                   src={song.imageUrl}
                                   alt={song.title}
-                                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                  className="w-full h-full object-cover"
                                 />
                               </div>
                               <PlayButton
                                 song={song}
-                                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-12 h-12 opacity-0 group-hover:opacity-100 transition-all duration-200 scale-90 group-hover:scale-100"
+                                className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300"
                               />
                             </div>
-                            <h3 className="font-semibold text-sm sm:text-base tracking-wide mb-1 sm:mb-2 truncate text-white group-hover:text-red-200 transition-colors">
-                              {song.title}
-                            </h3>
-                            <p className="text-xs sm:text-sm text-zinc-500 truncate group-hover:text-zinc-400 transition-colors">
-                              {song.artist}
-                            </p>
+                            <div className="space-y-0.5 px-0.5">
+                              <h3 className="text-sm font-medium text-white truncate">
+                                {song.title}
+                              </h3>
+                              <p className="text-xs text-zinc-400 truncate">
+                                {song.artist}
+                              </p>
+                            </div>
                           </GlassCard>
                         ))}
                       </div>
@@ -607,15 +601,12 @@ const BrowsePage = () => {
                 </TabsContent>
 
                 <TabsContent value="recent" className="mt-0">
-                  <div className="space-y-8">
-                    <div className="text-center sm:text-left py-4">
-                      <h2 className="text-2xl sm:text-3xl font-extrabold mb-3 bg-gradient-to-r from-white via-red-200 to-red-400 bg-clip-text text-transparent">
+                  <div className="space-y-6">
+                    <div>
+                      <h2 className="text-2xl font-bold mb-1 text-white">
                         Recently Added
                       </h2>
-                      <div className="h-1 w-16 rounded-full bg-gradient-to-r from-red-500 to-red-600 mx-auto sm:mx-0 mb-2" />
-                      <p className="text-zinc-400">
-                        The newest additions to our collection
-                      </p>
+                      <p className="text-sm text-zinc-400">The newest additions to our collection</p>
                     </div>
 
                     {musicStoreLoading ? (
@@ -645,27 +636,27 @@ const BrowsePage = () => {
                         songs={recentSongs}
                         renderItem={(song) => (
                           <GlassCard>
-                            <div className="relative mb-3 sm:mb-4">
-                              <div className="aspect-square rounded-lg sm:rounded-xl shadow-2xl overflow-hidden">
+                            <div className="relative mb-2 group">
+                              <div className="aspect-square rounded-md overflow-hidden bg-zinc-900">
                                 <img
                                   src={song.imageUrl}
                                   alt={song.title}
-                                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                  className="w-full h-full object-cover"
                                 />
                               </div>
                               <PlayButton
                                 song={song}
-                                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-12 h-12 opacity-0 group-hover:opacity-100 transition-all duration-200 scale-90 group-hover:scale-100"
+                                className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300"
                               />
                             </div>
-                            <div className="space-y-1">
-                              <h3 className="font-semibold text-sm sm:text-base tracking-wide truncate text-white group-hover:text-red-200 transition-colors">
+                            <div className="space-y-0.5 px-0.5">
+                              <h3 className="text-sm font-medium text-white truncate">
                                 {song.title}
                               </h3>
-                              <p className="text-xs sm:text-sm text-zinc-500 truncate group-hover:text-zinc-400 transition-colors">
+                              <p className="text-xs text-zinc-400 truncate">
                                 {song.artist}
                               </p>
-                              <div className="flex items-center text-xs text-zinc-600">
+                              <div className="flex items-center text-xs text-zinc-500">
                                 <Clock className="w-3 h-3 mr-1" />
                                 <span>Recently added</span>
                               </div>
