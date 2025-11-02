@@ -18,30 +18,30 @@ const FeaturedSection = () => {
         </h2>
         <div className="h-1 w-16 rounded bg-red-600 mb-2" />
       </div>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-8">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-4 sm:gap-5 md:gap-6 mb-8">
         {featuredSongs.map((song) => (
-          <GlassCard
-            key={song._id}
-            className="overflow-hidden bg-gradient-to-b from-zinc-900/60 to-black/40 shadow-md"
-          >
-            <div className="w-full aspect-w-1 aspect-h-1 relative group">
-              <img
-                src={song.imageUrl}
-                alt={song.title}
-                className="w-full h-full object-cover rounded-md transform group-hover:scale-105 transition-transform duration-300"
-              />
+          <GlassCard key={song._id}>
+            <div className="relative mb-2 group">
+              <div className="aspect-square rounded-md overflow-hidden bg-zinc-900">
+                <img
+                  src={song.imageUrl}
+                  alt={song.title}
+                  className="w-full h-full object-cover"
+                />
+              </div>
               <PlayButton
                 song={song}
-                className="absolute inset-0 m-auto w-12 h-12 flex items-center justify-center"
+                className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300"
               />
             </div>
-            <div className="p-2">
-              <p className="text-sm font-semibold text-white truncate">
+            <div className="space-y-0.5 px-0.5">
+              <p className="text-sm font-medium text-white truncate">
                 {song.title}
               </p>
-              <p className="text-xs text-zinc-400 truncate">{song.artist}</p>
+              <p className="text-xs text-zinc-400 truncate">
+                {song.artist}
+              </p>
             </div>
-            {/* Removed duplicate top-right play button to avoid alignment conflicts */}
           </GlassCard>
         ))}
       </div>
