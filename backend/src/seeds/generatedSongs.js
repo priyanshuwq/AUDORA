@@ -1742,13 +1742,6 @@ const songs = [
     "duration": 295
   },
   {
-    "title": "2 Khatole (Lofi)",
-    "artist": "Masoom Sharma",
-    "imageUrl": "/extracted-covers/masoom_sharma___2_khatole__lofi__cover.jpeg",
-    "audioUrl": "/songs/Masoom Sharma - 2 Khatole (Lofi).mp3",
-    "duration": 198
-  },
-  {
     "title": "Ek Khtola Jail Ke Bhitar",
     "artist": "Masoom Sharma",
     "imageUrl": "/extracted-covers/masoom_sharma___ek_khtola_jail_ke_bhitar_cover.jpeg",
@@ -4001,6 +3994,13 @@ const songs = [
     "imageUrl": "/extracted-covers/one_direction___perfect_cover.jpeg",
     "audioUrl": "/New songs/One Direction - Perfect.mp3",
     "duration": 230
+  },
+  {
+    "title": "PAN INDIA",
+    "artist": "Guru Randhawa",
+    "imageUrl": "/extracted-covers/pan_india___guru_randhawa_cover.jpeg",
+    "audioUrl": "/New songs/PAN INDIA - Guru Randhawa.mp3",
+    "duration": 131
   },
   {
     "title": "Make You Mine",
