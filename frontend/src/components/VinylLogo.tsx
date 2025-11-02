@@ -168,7 +168,6 @@ const VinylLogo = ({
             textSizeClasses[size],
             // subtle entrance + shimmer + glow, respect user's motion settings
             "motion-safe:animate-shimmerText motion-safe:animate-glow motion-safe:animate-fadeInUp transition-transform duration-300",
-            "hover:scale-105"
           )}
           style={{ fontWeight: '900', fontFamily: 'inherit' }}
         >
