@@ -10,15 +10,23 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useMusicStore } from "@/stores/useMusicStore";
 import { usePlayerStore } from "@/stores/usePlayerStore";
-import { Clock, Pause, Play, Plus, Search } from "lucide-react";
+import { useAuthStore } from "@/stores/useAuthStore";
+import { Pause, Play, Plus, Search, Trash2, Clock, Calendar } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
+import GlassCard from "@/components/ui/GlassCard";
+import PlayButton from "@/pages/home/components/PlayButton";
 
 export const formatDuration = (seconds: number) => {
   const minutes = Math.floor(seconds / 60);
   const remainingSeconds = seconds % 60;
   return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
+};
+
+// Helper function to get release year
+const getReleaseYear = (dateString: string) => {
+  return new Date(dateString).getFullYear();
 };
 
 const AlbumPage = () => {
@@ -29,14 +37,23 @@ const AlbumPage = () => {
     isLoading,
     fetchSongs,
     addSongToAlbum,
+    removeSongFromAlbum,
   } = useMusicStore();
-  const { currentSong, isPlaying, playAlbum, togglePlay } = usePlayerStore();
+  const { currentSong, isPlaying, playAlbum, togglePlay, initializeQueue } = usePlayerStore();
+  const { isAdmin } = useAuthStore();
   const [isAddSongDialogOpen, setIsAddSongDialogOpen] = useState(false);
 
   useEffect(() => {
     if (albumId) fetchAlbumById(albumId);
     fetchSongs(); // Fetch all songs for the add song dialog
   }, [fetchAlbumById, fetchSongs, albumId]);
+
+  // Initialize queue when album songs are loaded
+  useEffect(() => {
+    if (currentAlbum?.songs && currentAlbum.songs.length > 0) {
+      initializeQueue(currentAlbum.songs);
+    }
+  }, [currentAlbum?.songs, initializeQueue]);
 
   if (isLoading) return null;
 
@@ -51,12 +68,6 @@ const AlbumPage = () => {
       // start playing the album from the beginning
       playAlbum(currentAlbum?.songs, 0);
     }
-  };
-
-  const handlePlaySong = (index: number) => {
-    if (!currentAlbum) return;
-
-    playAlbum(currentAlbum?.songs, index);
   };
 
   return (
@@ -135,95 +146,72 @@ const AlbumPage = () => {
               </Dialog>
             </div>
 
-            {/* Table Section */}
-            <div className="bg-black/40 rounded-t-2xl">
-              {/* desktop header */}
-              <div className="hidden sm:grid grid-cols-[16px_4fr_2fr_1fr] gap-4 px-10 py-4 text-sm text-zinc-400">
-                <div>#</div>
-                <div>Title</div>
-                <div>Released Date</div>
-                <div>
-                  <Clock className="h-4 w-4" />
-                </div>
-              </div>
-
-              {/* songs list */}
-              <div className="px-4 sm:px-6">
-                <div className="space-y-3 py-4">
-                  {currentAlbum?.songs.map((song, index) => {
-                    const isCurrentSong = currentSong?._id === song._id;
-                    return (
-                      <div key={song._id}>
-                        {/* Desktop / tablet row */}
-                        <div
-                          onClick={() => handlePlaySong(index)}
-                          className="hidden sm:grid grid-cols-[16px_4fr_2fr_1fr] gap-4 px-4 py-2 text-sm text-zinc-400 rounded-lg bg-black/10 hover:bg-white/5 group cursor-pointer transition-all"
-                        >
-                          <div className="flex items-center justify-center">
-                            {isCurrentSong && isPlaying ? (
-                              <div className="size-4 text-red-500">♫</div>
-                            ) : (
-                              <span className="group-hover:hidden">
-                                {index + 1}
-                              </span>
-                            )}
-                            {!isCurrentSong && (
-                              <Play className="h-4 w-4 hidden group-hover:block" />
-                            )}
-                          </div>
-
-                          <div className="flex items-center gap-3">
-                            <img
-                              src={song.imageUrl}
-                              alt={song.title}
-                              className="h-10 w-10 rounded-md object-cover"
-                            />
-                            <div>
-                              <div className="font-medium text-white">
-                                {song.title}
-                              </div>
-                              <div className="text-zinc-400 text-sm">
-                                {song.artist}
-                              </div>
-                            </div>
-                          </div>
-                          <div className="flex items-center">
-                            {song.createdAt.split("T")[0]}
-                          </div>
-                          <div className="flex items-center">
-                            {formatDuration(song.duration)}
-                          </div>
-                        </div>
-
-                        {/* Mobile stacked row */}
-                        <div
-                          onClick={() => handlePlaySong(index)}
-                          className="sm:hidden flex items-center gap-3 px-3 py-3 rounded-lg bg-black/10 hover:bg-white/5 cursor-pointer transition-all"
-                        >
-                          <div className="w-8 text-center text-zinc-300">
-                            {index + 1}
-                          </div>
+            {/* Songs Grid Section */}
+            <div className="bg-black/40 rounded-t-2xl px-4 sm:px-6 py-6">
+              <h3 className="text-lg sm:text-xl font-extrabold mb-4 px-2 bg-gradient-to-r from-white via-red-200 to-red-400 bg-clip-text text-transparent">
+                Songs
+              </h3>
+              
+              {/* Modern Card Grid Layout - Same as HomePage */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-4 sm:gap-5 md:gap-6">
+                {currentAlbum?.songs.map((song) => {
+                  const isCurrentSong = currentSong?._id === song._id;
+                  return (
+                    <GlassCard key={song._id}>
+                      <div className="relative mb-2 group">
+                        <div className="aspect-square rounded-md overflow-hidden bg-zinc-900">
                           <img
                             src={song.imageUrl}
                             alt={song.title}
-                            className="h-12 w-12 rounded-md object-cover"
+                            className="w-full h-full object-cover"
                           />
-                          <div className="flex-1 min-w-0">
-                            <div className="font-medium text-white truncate">
-                              {song.title}
-                            </div>
-                            <div className="text-xs text-zinc-400 truncate">
-                              {song.artist}
-                            </div>
+                        </div>
+                        <PlayButton 
+                          song={song} 
+                          className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300"
+                        />
+                        {isCurrentSong && isPlaying && (
+                          <div className="absolute top-2 left-2 w-3 h-3 bg-red-500 rounded-full animate-pulse" />
+                        )}
+                        {isAdmin && (
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="absolute top-2 right-2 h-8 w-8 bg-black/60 hover:bg-red-500/80 text-white opacity-0 group-hover:opacity-100 transition-all duration-300"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              if (window.confirm(`Remove "${song.title}" from this album?`)) {
+                                removeSongFromAlbum(albumId || "", song._id);
+                              }
+                            }}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        )}
+                      </div>
+                      <div className="space-y-0.5 px-0.5">
+                        <h3 className="text-sm font-medium text-white truncate">
+                          {song.title}
+                        </h3>
+                        <p className="text-xs text-zinc-400 truncate">
+                          {song.artist}
+                        </p>
+                        {/* Duration and Release Year */}
+                        <div className="flex items-center gap-2 text-xs text-zinc-500 pt-1">
+                          <div className="flex items-center gap-1">
+                            <Clock className="w-3 h-3" />
+                            <span>{formatDuration(song.duration)}</span>
                           </div>
-                          <div className="text-xs text-zinc-400">
-                            {formatDuration(song.duration)}
+                          <span>•</span>
+                          <div className="flex items-center gap-1">
+                            <Calendar className="w-3 h-3" />
+                            <span>{getReleaseYear(song.createdAt)}</span>
                           </div>
                         </div>
                       </div>
-                    );
-                  })}
-                </div>
+                    </GlassCard>
+                  );
+                })}
               </div>
             </div>
           </div>
