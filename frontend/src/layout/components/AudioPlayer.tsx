@@ -1,14 +1,22 @@
 import { usePlayerStore } from "@/stores/usePlayerStore";
 import { useEnhancedRoomStore } from "@/stores/useEnhancedRoomStore";
-import { useEffect, useRef } from "react";
-import { Play, Pause, SkipForward } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { Play, Pause, ChevronLeft, ChevronRight } from "lucide-react";
 
 const AudioPlayer = () => {
   const audioRef = useRef<HTMLAudioElement>(null);
   const prevSongRef = useRef<string | null>(null);
   const syncTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [dominantColor, setDominantColor] = useState<string>("rgba(82, 82, 91, 0.7)"); // zinc-700 fallback
+  const [progress, setProgress] = useState(0);
+  
+  // Swipe gesture state
+  const touchStartX = useRef<number>(0);
+  const touchEndX = useRef<number>(0);
+  const [swipeOffset, setSwipeOffset] = useState(0);
+  const [isSwiping, setIsSwiping] = useState(false);
 
-  const { currentSong, isPlaying, playNext, isFullscreenPlayer } = usePlayerStore();
+  const { currentSong, isPlaying, playNext, playPrevious, isFullscreenPlayer } = usePlayerStore();
   const { isJamSession, isJamHost, isStreamingAudio, startAudioStream } = useEnhancedRoomStore();
 
   // handle play/pause logic
@@ -48,6 +56,73 @@ const AudioPlayer = () => {
       if (isPlaying) audio.play();
     }
   }, [currentSong, isPlaying]);
+
+  // Extract dominant color from album art
+  useEffect(() => {
+    if (!currentSong?.imageUrl) {
+      setDominantColor("rgba(82, 82, 91, 0.7)"); // zinc-700 fallback
+      return;
+    }
+
+    const img = new Image();
+    img.crossOrigin = "Anonymous";
+    img.src = currentSong.imageUrl;
+
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
+
+      canvas.width = img.width;
+      canvas.height = img.height;
+      ctx.drawImage(img, 0, 0);
+
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const data = imageData.data;
+
+      let r = 0, g = 0, b = 0;
+      const step = 10; // Sample every 10th pixel for performance
+      let count = 0;
+
+      for (let i = 0; i < data.length; i += 4 * step) {
+        r += data[i];
+        g += data[i + 1];
+        b += data[i + 2];
+        count++;
+      }
+
+      r = Math.floor(r / count);
+      g = Math.floor(g / count);
+      b = Math.floor(b / count);
+
+      // Make it slightly darker and more saturated for better contrast
+      const darkenFactor = 0.7;
+      r = Math.floor(r * darkenFactor);
+      g = Math.floor(g * darkenFactor);
+      b = Math.floor(b * darkenFactor);
+
+      setDominantColor(`rgba(${r}, ${g}, ${b}, 1)`);
+    };
+
+    img.onerror = () => {
+      setDominantColor("rgba(82, 82, 91, 0.7)");
+    };
+  }, [currentSong?.imageUrl]);
+
+  // Track progress for the progress bar
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    const updateProgress = () => {
+      if (audio.duration) {
+        setProgress((audio.currentTime / audio.duration) * 100);
+      }
+    };
+
+    audio.addEventListener("timeupdate", updateProgress);
+    return () => audio.removeEventListener("timeupdate", updateProgress);
+  }, []);
 
   // Auto-start WebRTC streaming when host plays music in jam session
   useEffect(() => {
@@ -174,6 +249,41 @@ const AudioPlayer = () => {
   const togglePlay = usePlayerStore.getState().togglePlay;
   const setIsFullscreen = usePlayerStore.getState().setIsFullscreenPlayer;
 
+  // Swipe gesture handlers
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    setIsSwiping(true);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!isSwiping) return;
+    touchEndX.current = e.touches[0].clientX;
+    const diff = touchEndX.current - touchStartX.current;
+    
+    // Limit swipe offset to prevent excessive dragging
+    const limitedDiff = Math.max(-150, Math.min(150, diff));
+    setSwipeOffset(limitedDiff);
+  };
+
+  const handleTouchEnd = () => {
+    const swipeDistance = touchEndX.current - touchStartX.current;
+    const minSwipeDistance = 80; // Minimum distance to trigger song change
+
+    if (swipeDistance > minSwipeDistance) {
+      // Swiped right - previous song
+      playPrevious();
+    } else if (swipeDistance < -minSwipeDistance) {
+      // Swiped left - next song
+      playNext();
+    }
+
+    // Reset swipe state
+    setIsSwiping(false);
+    setSwipeOffset(0);
+    touchStartX.current = 0;
+    touchEndX.current = 0;
+  };
+
   return (
     <>
       <audio ref={audioRef} />
@@ -182,14 +292,48 @@ const AudioPlayer = () => {
       {!isFullscreenPlayer && (
         <div
           className="md:hidden fixed left-3 right-3 bottom-24 z-50"
-          onClick={() => setIsFullscreen(true)}
-          role="button"
-          aria-label="Open full player"
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+          style={{
+            transform: `translateX(${swipeOffset}px)`,
+            transition: isSwiping ? 'none' : 'transform 0.3s ease-out',
+          }}
         >
-          <div className="flex items-center justify-between p-3 rounded-2xl shadow-lg border border-white/6 bg-zinc-900/70 backdrop-blur-sm backdrop-saturate-90">
+          <div 
+            className="relative flex items-center justify-between p-3 backdrop-blur-xl rounded-2xl shadow-lg border border-white/10 overflow-hidden"
+            style={{ 
+              backgroundColor: dominantColor,
+              opacity: isSwiping ? 0.7 : 0.90, // slight fade when swiping -translucent effect
+              transition: 'opacity 0.3s',
+            }}
+            onClick={() => !isSwiping && setIsFullscreen(true)}
+            role="button"
+            aria-label="Open full player"
+          >
+            {/* Thin white progress bar at the top */}
+            <div className="absolute top-0 left-0 right-0 h-[2px] bg-white/20">
+              <div 
+                className="h-full bg-white transition-all duration-300 ease-linear"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+
+            {/* Swipe direction indicators */}
+            {isSwiping && swipeOffset > 30 && (
+              <div className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                <ChevronLeft className="w-8 h-8 text-white drop-shadow-lg animate-pulse" />
+              </div>
+            )}
+            {isSwiping && swipeOffset < -30 && (
+              <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                <ChevronRight className="w-8 h-8 text-white drop-shadow-lg animate-pulse" />
+              </div>
+            )}
+
             {/* small poster */}
             <div className="flex items-center gap-3 min-w-0">
-              <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0">
+              <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0 shadow-md">
                 {currentSong && currentSong.imageUrl ? (
                   // stopPropagation so clicking the image doesn't open the full player
                   <img
@@ -204,39 +348,26 @@ const AudioPlayer = () => {
               </div>
 
               <div className="flex-1 min-w-0">
-                <div className="text-sm font-semibold text-white truncate">
+                <div className="text-sm font-semibold text-white truncate drop-shadow-md">
                   {currentSong ? currentSong.title : "Nothing playing"}
                 </div>
-                <div className="text-xs text-zinc-400 truncate">
+                <div className="text-xs text-white/70 truncate drop-shadow-sm">
                   {currentSong ? currentSong.artist : ""}
                 </div>
               </div>
             </div>
 
-            {/* controls: play/pause + next */}
-            <div className="flex items-center gap-3 ml-4">
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  togglePlay();
-                }}
-                aria-label={isPlaying ? "Pause" : "Play"}
-                className="bg-red-600 hover:bg-red-500 text-white rounded-full p-3 shadow-lg flex items-center justify-center"
-              >
-                {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
-              </button>
-
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  playNext();
-                }}
-                aria-label="Next"
-                className="bg-white/3 hover:bg-white/6 text-white rounded-md p-2 flex items-center justify-center"
-              >
-                <SkipForward className="w-4 h-4 text-white" />
-              </button>
-            </div>
+            {/* controls: centered play/pause button */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                togglePlay();
+              }}
+              aria-label={isPlaying ? "Pause" : "Play"}
+              className="bg-white hover:bg-white/90 text-black rounded-full p-3 shadow-xl flex items-center justify-center transition-all duration-200 flex-shrink-0 hover:scale-105"
+            >
+              {isPlaying ? <Pause className="w-5 h-5 fill-black" /> : <Play className="w-5 h-5 fill-black" />}
+            </button>
           </div>
         </div>
       )}
