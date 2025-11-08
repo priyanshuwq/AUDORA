@@ -10,6 +10,7 @@ import {
   Shuffle,
   List,
   Volume2,
+  VolumeX,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useEffect, useRef, useState } from "react";
@@ -54,6 +55,9 @@ const MobileFullscreenPlayer = () => {
   const [isLiked, setIsLiked] = useState(false);
   const [volume, setVolume] = useState(75);
   const [showVolumeBar, setShowVolumeBar] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
+  const [previousVolume, setPreviousVolume] = useState(75);
+  const volumeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   
   // Touch/swipe state for dismissal
   const touchStartY = useRef<number | null>(null);
@@ -84,9 +88,10 @@ const MobileFullscreenPlayer = () => {
   useEffect(() => {
     const audio = audioRef.current;
     if (audio) {
-      audio.volume = volume / 100;
+      audio.volume = isMuted ? 0 : volume / 100;
+      audio.muted = isMuted;
     }
-  }, [volume]);
+  }, [volume, isMuted]);
 
   // Extract dominant color from cover image
   useEffect(() => {
@@ -170,6 +175,28 @@ const MobileFullscreenPlayer = () => {
     }
   }, [showQueue]);
 
+  // Auto-hide volume bar after 3 seconds of inactivity
+  useEffect(() => {
+    if (showVolumeBar) {
+      // Clear existing timeout
+      if (volumeTimeoutRef.current) {
+        clearTimeout(volumeTimeoutRef.current);
+      }
+      
+      // Set new timeout to hide volume bar
+      volumeTimeoutRef.current = setTimeout(() => {
+        setShowVolumeBar(false);
+      }, 3000);
+    }
+    
+    // Cleanup on unmount or when showVolumeBar changes
+    return () => {
+      if (volumeTimeoutRef.current) {
+        clearTimeout(volumeTimeoutRef.current);
+      }
+    };
+  }, [showVolumeBar, volume]); // Re-run when volume changes to reset the timer
+
   if (!isFullscreenPlayer || !currentSong) return null;
 
   const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -251,30 +278,71 @@ const MobileFullscreenPlayer = () => {
             <ChevronDown className="w-7 h-7" />
           </Button>
 
-          <div className="flex-1 text-center">
+          {/* <div className="flex-1 text-center">
             <p className="text-xs text-white-400/80 uppercase tracking-wider font-medium">
-              Playing from Library
+              Playing from library
             </p>
-          </div>
+          </div> */}
 
           <div className="relative">
             <Button
               size="icon"
               variant="ghost"
               onClick={() => {
+                hapticFeedback("medium");
+                if (isMuted) {
+                  // Unmute and restore previous volume
+                  setIsMuted(false);
+                  setVolume(previousVolume);
+                } else {
+                  // Mute and save current volume
+                  setPreviousVolume(volume);
+                  setIsMuted(true);
+                  setVolume(0);
+                }
+              }}
+              onContextMenu={(e) => {
+                e.preventDefault();
                 hapticFeedback("light");
                 setShowVolumeBar(!showVolumeBar);
               }}
-              className="text-white hover:bg-white/10"
+              onTouchStart={(e) => {
+                // Long press to show volume bar
+                const timer = setTimeout(() => {
+                  hapticFeedback("light");
+                  setShowVolumeBar(true);
+                }, 500);
+                
+                const touchEnd = () => {
+                  clearTimeout(timer);
+                  e.currentTarget.removeEventListener('touchend', touchEnd);
+                  e.currentTarget.removeEventListener('touchcancel', touchEnd);
+                };
+                
+                e.currentTarget.addEventListener('touchend', touchEnd);
+                e.currentTarget.addEventListener('touchcancel', touchEnd);
+              }}
+              className={cn(
+                "text-white hover:bg-white/10 transition-colors",
+                isMuted && "text-red-400"
+              )}
             >
-              <Volume2 className="w-6 h-6" />
+              {isMuted ? (
+                <VolumeX className="w-6 h-6" />
+              ) : (
+                <Volume2 className="w-6 h-6" />
+              )}
             </Button>
             
             {/* Volume Slider */}
             {showVolumeBar && (
               <div className="absolute top-12 right-0 bg-black/80 backdrop-blur-md rounded-xl p-3 shadow-lg border border-white/10 min-w-[180px]">
                 <div className="flex items-center gap-3">
-                  <Volume2 className="w-4 h-4 text-red-400 flex-shrink-0" />
+                  {isMuted || volume === 0 ? (
+                    <VolumeX className="w-4 h-4 text-red-400 flex-shrink-0" />
+                  ) : (
+                    <Volume2 className="w-4 h-4 text-red-400 flex-shrink-0" />
+                  )}
                   <div className="flex-1">
                     <input
                       type="range"
@@ -283,7 +351,23 @@ const MobileFullscreenPlayer = () => {
                       value={volume}
                       onChange={(e) => {
                         hapticFeedback("light");
-                        setVolume(Number(e.target.value));
+                        const newVolume = Number(e.target.value);
+                        setVolume(newVolume);
+                        
+                        // Unmute if volume is increased from 0
+                        if (newVolume > 0 && isMuted) {
+                          setIsMuted(false);
+                        }
+                        
+                        // Mute if volume is set to 0
+                        if (newVolume === 0) {
+                          setIsMuted(true);
+                        }
+                        
+                        // Update previous volume if not muted
+                        if (newVolume > 0) {
+                          setPreviousVolume(newVolume);
+                        }
                       }}
                       className="w-full h-1 bg-white/20 rounded-full appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-red-500 [&::-webkit-slider-thumb]:cursor-pointer [&::-moz-range-thumb]:w-3 [&::-moz-range-thumb]:h-3 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-red-500 [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:cursor-pointer"
                       style={{
