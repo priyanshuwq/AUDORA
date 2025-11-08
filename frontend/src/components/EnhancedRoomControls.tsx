@@ -307,7 +307,7 @@ const EnhancedRoomControls = () => {
 
       {/* Current Room Status */}
       {currentRoom && (
-        <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-3 mt-4">
+        <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-3">
           <div className="flex items-center gap-2 mb-2">
             <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
             <span
