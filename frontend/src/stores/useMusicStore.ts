@@ -26,6 +26,7 @@ interface MusicStore {
   deleteSong: (id: string) => Promise<void>;
   deleteAlbum: (id: string) => Promise<void>;
   addSongToAlbum: (albumId: string, songId: string) => Promise<void>;
+  removeSongFromAlbum: (albumId: string, songId: string) => Promise<void>;
 }
 
 export const useMusicStore = create<MusicStore>((set) => ({
@@ -197,6 +198,27 @@ export const useMusicStore = create<MusicStore>((set) => ({
       });
       toast.error(
         error.response?.data?.message || "Failed to add song to album"
+      );
+    } finally {
+      set({ isLoading: false });
+    }
+  },
+
+  removeSongFromAlbum: async (albumId, songId) => {
+    set({ isLoading: true, error: null });
+    try {
+      const response = await axiosInstance.delete(
+        `/albums/${albumId}/songs/${songId}`
+      );
+      set({ currentAlbum: response.data.album });
+      toast.success("Song removed from album successfully");
+    } catch (error: any) {
+      set({
+        error:
+          error.response?.data?.message || "Failed to remove song from album",
+      });
+      toast.error(
+        error.response?.data?.message || "Failed to remove song from album"
       );
     } finally {
       set({ isLoading: false });
