@@ -7,22 +7,12 @@ import { Button } from "@/components/ui/button";
 import { DoorOpen, Users, Music } from "lucide-react";
 import ActivityBar from "@/components/ActivityBar";
 import LiveJamControls from "@/components/LiveJamControls";
-import { useState, useEffect } from "react";
-import Lottie from "lottie-react";
+import { useState } from "react";
 
 const RoomsPage = () => {
   const { isInRoom, currentRoom, leaveRoom } = useEnhancedRoomStore();
   const [tab, setTab] = useState<"room" | "activity">("room");
   const [showHint, setShowHint] = useState(true);
-  const [catAnimation, setCatAnimation] = useState<any>(null);
-
-  // Load animation data
-  useEffect(() => {
-    fetch('/8-bit-cat.json')
-      .then(res => res.json())
-      .then(data => setCatAnimation(data))
-      .catch(err => console.error('Failed to load animation:', err));
-  }, []);
 
   return (
     <main className="min-h-screen rounded-2xl overflow-hidden bg-black/95 backdrop-blur-xl border border-white/5 shadow-2xl flex flex-col mb-32 md:mb-0">
@@ -123,49 +113,6 @@ const RoomsPage = () => {
               ) : (
                 <>
                   <EnhancedRoomControls />
-                  
-                  {/* Mobile Preview Section - Enhanced Visual */}
-                  <div className="mt-6 mb-32 md:hidden">
-                    <div className="relative rounded-2xl overflow-hidden border border-red-500/20 bg-gradient-to-br from-zinc-900/80 to-black shadow-2xl shadow-red-500/10">
-                      <div className="p-6 space-y-6">
-                        {/* 8-bit Cat Animation */}
-                        <div className="flex justify-center">
-                          <div className="w-48 h-48">
-                            {catAnimation ? (
-                              <Lottie 
-                                animationData={catAnimation} 
-                                loop={true}
-                                autoplay={true}
-                              />
-                            ) : (
-                              <div className="w-full h-full flex items-center justify-center">
-                                <Music className="w-16 h-16 text-red-500/50 animate-pulse" />
-                              </div>
-                            )}
-                          </div>
-                        </div>
-
-                        {/* Quote */}
-                        <div className="text-center space-y-3">
-                          <h3 className="text-2xl font-bold bg-white bg-clip-text text-transparent">
-                            Join a Room
-                          </h3>
-                          <p className="text-base text-zinc-300 leading-relaxed px-4 italic">
-                            "Music sounds better when we listen together"
-                          </p>
-                          <p className="text-sm text-zinc-500 px-6">
-                            Create or join a room above to start your live jam session
-                          </p>
-                        </div>
-
-                        {/* Call to Action Hint */}
-                        <div className="flex items-center justify-center gap-2 text-xs text-zinc-400">
-                          <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
-                          <span>Enter a room code or create your own room</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
                 </>
               )}
             </div>
