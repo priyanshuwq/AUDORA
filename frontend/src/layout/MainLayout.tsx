@@ -41,8 +41,8 @@ const MainLayout = () => {
       {/* Album Cover Backdrop - Blurred background */}
       <AlbumBackdrop />
       
-      <div className="h-screen bg-black/50 text-white flex flex-col overflow-hidden animate-fadeInUp mobile-safe-area relative z-10">
-        <div className="flex-1 flex h-full overflow-hidden p-2 min-h-0 gap-2">
+      <div className="h-screen bg-black/50 text-white flex flex-col overflow-hidden animate-fadeInUp mobile-safe-area relative z-10 theme-transition">
+        <div className="flex-1 flex h-full overflow-hidden p-2 min-h-0 gap-2 theme-transition">
           <AudioPlayer />
           {/* left sidebar - fixed width */}
           {!isMobile && (
@@ -59,7 +59,7 @@ const MainLayout = () => {
             {isInRoom && !isActivityBarVisible && !isMobile && (
               <Button
                 onClick={() => setIsActivityBarVisible(true)}
-                className="fixed top-4 right-4 z-50 bg-red-600 hover:bg-red-500 text-white rounded-full p-3 shadow-[0_0_10px_rgba(255,0,51,0.35)] animate-fadeInUp"
+                className="fixed top-4 right-4 z-50 bg-[rgb(var(--theme-primary))] hover:bg-[rgb(var(--theme-accent))] text-white rounded-full p-3 shadow-[0_0_20px_rgba(var(--theme-primary),0.5)] animate-fadeInUp theme-transition theme-glow-pulse hover:scale-110 transition-transform duration-300"
                 size="sm"
               >
                 <Users className="w-4 h-4" />
@@ -69,11 +69,11 @@ const MainLayout = () => {
 
           {/* Activity Bar - Show only when in room and visible - fixed width */}
           {isInRoom && isActivityBarVisible && !isMobile && (
-            <div className="w-[400px] flex-shrink-0 animate-slideInFromRight h-full relative">
+            <div className="w-[400px] flex-shrink-0 animate-slideInFromRight h-full relative theme-transition">
               {/* Close Button */}
               <Button
                 onClick={() => setIsActivityBarVisible(false)}
-                className="absolute top-2 right-2 z-10 bg-black/20 hover:bg-black/40 text-white rounded-full p-1 opacity-70 hover:opacity-100 transition-opacity"
+                className="absolute top-2 right-2 z-10 bg-black/20 hover:bg-[rgb(var(--theme-primary))]/30 text-white rounded-full p-1 opacity-70 hover:opacity-100 transition-all duration-300 hover:scale-110 theme-transition theme-glow-hover"
                 size="sm"
                 variant="ghost"
               >
