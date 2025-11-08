@@ -252,29 +252,35 @@ const AudioPlayer = () => {
   // Swipe gesture handlers
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.touches[0].clientX;
-    setIsSwiping(true);
+    touchEndX.current = e.touches[0].clientX;
+    // Don't set isSwiping yet - wait for actual movement
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
-    if (!isSwiping) return;
     touchEndX.current = e.touches[0].clientX;
     const diff = touchEndX.current - touchStartX.current;
     
-    // Limit swipe offset to prevent excessive dragging
-    const limitedDiff = Math.max(-150, Math.min(150, diff));
-    setSwipeOffset(limitedDiff);
+    // Only consider it a swipe if movement is more than 10px
+    if (Math.abs(diff) > 10) {
+      setIsSwiping(true);
+      // Limit swipe offset to prevent excessive dragging
+      const limitedDiff = Math.max(-150, Math.min(150, diff));
+      setSwipeOffset(limitedDiff);
+    }
   };
 
   const handleTouchEnd = () => {
     const swipeDistance = touchEndX.current - touchStartX.current;
     const minSwipeDistance = 80; // Minimum distance to trigger song change
 
-    if (swipeDistance > minSwipeDistance) {
-      // Swiped right - previous song
-      playPrevious();
-    } else if (swipeDistance < -minSwipeDistance) {
-      // Swiped left - next song
-      playNext();
+    if (Math.abs(swipeDistance) > minSwipeDistance) {
+      if (swipeDistance > 0) {
+        // Swiped right - previous song
+        playPrevious();
+      } else {
+        // Swiped left - next song
+        playNext();
+      }
     }
 
     // Reset swipe state
