@@ -412,75 +412,118 @@
         flex-wrap: wrap;
         justify-content: center;
         align-items: center;
-        gap: 8px;
+        gap: 16px;
         position: relative;
+        padding: 8px;
       }
       .oneko-variant-button {
-        width: 56px;
-        height: 56px;
+        width: 64px;
+        height: 64px;
         cursor: pointer;
-        background-size: 800%;
-        border-radius: 8px;
-        transition: all 0.15s ease;
-        background-position: var(--idle-x) var(--idle-y);
+        /* background-size and position are computed dynamically per-image for robustness */
+        background-repeat: no-repeat;
+        border-radius: 12px;
+        transition: opacity 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
         image-rendering: pixelated;
-        border: 2px solid rgba(255, 255, 255, 0.1);
-        opacity: 0.7;
+        border: 2px solid rgba(255, 255, 255, 0.15);
+        opacity: 0.95;
         position: relative;
+        display: inline-block;
+        overflow: visible; /* allow tooltip to appear outside the tile */
+        background-color: rgba(0,0,0,0.45);
       }
       .oneko-variant-button:hover {
         opacity: 1;
-        border-color: rgba(239, 68, 68, 0.5);
-        transform: scale(1.05);
-        background-position: var(--active-x) var(--active-y);
+        border-color: rgba(239, 68, 68, 0.6);
+        transform: scale(1.1);
       }
       .oneko-variant-button-selected {
         opacity: 1;
         border-color: rgb(239, 68, 68);
-        box-shadow: 0 0 12px rgba(239, 68, 68, 0.5);
+        box-shadow: 0 0 16px rgba(239, 68, 68, 0.6);
       }
       .oneko-tooltip {
         position: absolute;
-        bottom: -28px;
+        /* place tooltip above the tile: 100% of tile height + 8px gap */
+        bottom: calc(100% + 8px);
         left: 50%;
-        transform: translateX(-50%);
-        background: rgba(0, 0, 0, 0.9);
+        transform: translateX(-50%) translateY(6px);
+        background: rgba(0, 0, 0, 0.92);
         color: white;
-        padding: 4px 10px;
+        padding: 6px 10px;
         border-radius: 6px;
         font-size: 12px;
-        font-weight: 500;
+        font-weight: 600;
         white-space: nowrap;
         pointer-events: none;
         opacity: 0;
-        transition: opacity 0.2s ease;
-        z-index: 10;
-        border: 1px solid rgba(239, 68, 68, 0.3);
+        transition: opacity 0.12s ease, transform 0.12s ease;
+        z-index: 60;
+        border: 1px solid rgba(239, 68, 68, 0.35);
+        transform-origin: bottom center;
       }
+
+      /* small pointer triangle under the tooltip */
+      .oneko-tooltip::after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        bottom: -6px;
+        transform: translateX(-50%);
+        width: 0;
+        height: 0;
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+        border-top: 6px solid rgba(0, 0, 0, 0.92);
+      }
+
       .oneko-variant-button:hover .oneko-tooltip {
         opacity: 1;
+        transform: translateX(-50%) translateY(0);
       }
     `;
     container.appendChild(style);
-
-    const [idle, active] = getRandomSprite();
 
     function variantButton(variantEnum) {
       const div = document.createElement("div");
 
       div.className = "oneko-variant-button";
       div.id = variantEnum[0];
-      div.style.backgroundImage = `url('/oneko/oneko-${variantEnum[0]}.gif')`;
-      div.style.setProperty("--idle-x", `${idle[0] * 64}px`);
-      div.style.setProperty("--idle-y", `${idle[1] * 64}px`);
-      div.style.setProperty("--active-x", `${active[0] * 64}px`);
-      div.style.setProperty("--active-y", `${active[1] * 64}px`);
+      const url = `/oneko/oneko-${variantEnum[0]}.gif`;
+      div.style.backgroundImage = `url('${url}')`;
 
-      // Add tooltip
-      const tooltip = document.createElement("div");
-      tooltip.className = "oneko-tooltip";
-      tooltip.textContent = variantEnum[1];
-      div.appendChild(tooltip);
+      // compute background-size and -position based on the GIF's natural size so
+      // we always show the single idle frame (no tiling / multiple cats)
+      // sprite tiles are 32px in source; display tile size is 64px
+      const DISPLAY_TILE = 64;
+      const idleSprite = spriteSets.idle[0]; // e.g. [-3, -3]
+      const img = new Image();
+      img.src = url;
+      img.onload = () => {
+        // number of columns/rows in source sprite sheet
+        const cols = img.naturalWidth / 32;
+        const rows = img.naturalHeight / 32;
+        const bgW = cols * DISPLAY_TILE;
+        const bgH = rows * DISPLAY_TILE;
+        // spriteSets use negative indices like [-3, -3], multiply by DISPLAY_TILE
+        const posX = idleSprite[0] * DISPLAY_TILE;
+        const posY = idleSprite[1] * DISPLAY_TILE;
+        div.style.backgroundSize = `${bgW}px ${bgH}px`;
+        div.style.backgroundPosition = `${posX}px ${posY}px`;
+      };
+      // if image fails to load, fall back to a centered cover
+      img.onerror = () => {
+        div.style.backgroundSize = `cover`;
+        div.style.backgroundPosition = `center`;
+      };
+
+  // Add tooltip (visible name on hover) and accessibility attributes
+  div.title = variantEnum[1];
+  div.setAttribute('aria-label', variantEnum[1]);
+  const tooltip = document.createElement("div");
+  tooltip.className = "oneko-tooltip";
+  tooltip.textContent = variantEnum[1];
+  div.appendChild(tooltip);
 
       div.onclick = () => {
         setVariant(variantEnum);
@@ -524,12 +567,13 @@
     // Create modal content - minimal compact design
     const modal = document.createElement("div");
     modal.style.cssText = `
-      background: rgba(24, 24, 27, 0.98);
-      border: 1px solid rgba(239, 68, 68, 0.3);
-      border-radius: 12px;
-      padding: 16px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8);
+      background: rgba(18, 18, 20, 0.98);
+      border: 1px solid rgba(239, 68, 68, 0.25);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.9);
       animation: slideUp 0.2s ease-out;
+      max-width: 90vw;
     `;
 
     // Add picker content
