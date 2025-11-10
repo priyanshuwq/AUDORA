@@ -414,11 +414,21 @@
         align-items: center;
         gap: 16px;
         position: relative;
-        padding: 8px;
+        padding: 4px;
       }
+      
+      @media (max-width: 640px) {
+        .oneko-variant-container {
+          gap: 16px;
+          padding: 4px;
+        }
+      }
+      
       .oneko-variant-button {
         width: 64px;
         height: 64px;
+        min-width: 64px;
+        min-height: 64px;
         cursor: pointer;
         /* background-size and position are computed dynamically per-image for robustness */
         background-repeat: no-repeat;
@@ -431,6 +441,16 @@
         display: inline-block;
         overflow: visible; /* allow tooltip to appear outside the tile */
         background-color: rgba(0,0,0,0.45);
+      }
+      
+      @media (max-width: 640px) {
+        .oneko-variant-button {
+          width: 48px;
+          height: 48px;
+          min-width: 48px;
+          min-height: 48px;
+          border-radius: 8px;
+        }
       }
       .oneko-variant-button:hover {
         opacity: 1;
@@ -494,28 +514,33 @@
 
       // compute background-size and -position based on the GIF's natural size so
       // we always show the single idle frame (no tiling / multiple cats)
-      // sprite tiles are 32px in source; display tile size is 64px
-      const DISPLAY_TILE = 64;
-      const idleSprite = spriteSets.idle[0]; // e.g. [-3, -3]
-      const img = new Image();
-      img.src = url;
-      img.onload = () => {
-        // number of columns/rows in source sprite sheet
-        const cols = img.naturalWidth / 32;
-        const rows = img.naturalHeight / 32;
-        const bgW = cols * DISPLAY_TILE;
-        const bgH = rows * DISPLAY_TILE;
-        // spriteSets use negative indices like [-3, -3], multiply by DISPLAY_TILE
-        const posX = idleSprite[0] * DISPLAY_TILE;
-        const posY = idleSprite[1] * DISPLAY_TILE;
-        div.style.backgroundSize = `${bgW}px ${bgH}px`;
-        div.style.backgroundPosition = `${posX}px ${posY}px`;
+      // sprite tiles are 32px in source; display tile size is 64px (48px on mobile)
+      const updateSpriteSize = () => {
+        const isMobile = window.innerWidth <= 640;
+        const DISPLAY_TILE = isMobile ? 48 : 64;
+        const idleSprite = spriteSets.idle[0]; // e.g. [-3, -3]
+        const img = new Image();
+        img.src = url;
+        img.onload = () => {
+          // number of columns/rows in source sprite sheet
+          const cols = img.naturalWidth / 32;
+          const rows = img.naturalHeight / 32;
+          const bgW = cols * DISPLAY_TILE;
+          const bgH = rows * DISPLAY_TILE;
+          // spriteSets use negative indices like [-3, -3], multiply by DISPLAY_TILE
+          const posX = idleSprite[0] * DISPLAY_TILE;
+          const posY = idleSprite[1] * DISPLAY_TILE;
+          div.style.backgroundSize = `${bgW}px ${bgH}px`;
+          div.style.backgroundPosition = `${posX}px ${posY}px`;
+        };
+        // if image fails to load, fall back to a centered cover
+        img.onerror = () => {
+          div.style.backgroundSize = `cover`;
+          div.style.backgroundPosition = `center`;
+        };
       };
-      // if image fails to load, fall back to a centered cover
-      img.onerror = () => {
-        div.style.backgroundSize = `cover`;
-        div.style.backgroundPosition = `center`;
-      };
+      
+      updateSpriteSize();
 
   // Add tooltip (visible name on hover) and accessibility attributes
   div.title = variantEnum[1];
@@ -570,10 +595,11 @@
       background: rgba(18, 18, 20, 0.98);
       border: 1px solid rgba(239, 68, 68, 0.25);
       border-radius: 16px;
-      padding: 20px;
+      padding: 16px;
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.9);
       animation: slideUp 0.2s ease-out;
-      max-width: 90vw;
+      max-width: min(90vw, 500px);
+      width: 100%;
     `;
 
     // Add picker content
