@@ -17,6 +17,7 @@ import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import GlassCard from "@/components/ui/GlassCard";
 import PlayButton from "@/pages/home/components/PlayButton";
+import BouncingBall from "@/components/BouncingBall";
 
 export const formatDuration = (seconds: number) => {
   const minutes = Math.floor(seconds / 60);
@@ -286,7 +287,7 @@ const AddSongDialog = ({ albumId, onAddSong, onClose }: AddSongDialogProps) => {
       <div className="overflow-y-auto max-h-96">
         {isLoading ? (
           <div className="flex justify-center p-4">
-            <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-white"></div>
+            <BouncingBall size="sm" />
           </div>
         ) : filteredSongs.length > 0 ? (
           <div className="space-y-2 mt-2">
@@ -325,7 +326,9 @@ const AddSongDialog = ({ albumId, onAddSong, onClose }: AddSongDialogProps) => {
           disabled={!selectedSongId || isAddingLoading}
         >
           {isAddingLoading ? (
-            <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-white mr-2"></div>
+            <div className="mr-2 scale-50">
+              <BouncingBall size="sm" />
+            </div>
           ) : null}
           Add to Album
         </Button>

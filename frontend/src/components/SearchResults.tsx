@@ -1,9 +1,10 @@
 import { useEffect, useRef } from "react";
-import { Loader2, Music, AlertCircle, PlusCircle } from "lucide-react";
+import { Music, AlertCircle, PlusCircle } from "lucide-react";
 import { Song } from "@/types";
 import SongCard from "./SongCard";
 import VirtualizedList from "./VirtualizedList";
 import { Button } from "./ui/button";
+import BouncingBall from "./BouncingBall";
 
 interface SearchResultsProps {
   songs: Song[];
@@ -60,10 +61,7 @@ const SearchResults = ({
   if (isLoading) {
     return (
       <div className="flex flex-col items-center justify-center py-12 space-y-6 animate-fade-in">
-        <div className="relative">
-          <Loader2 className="w-12 h-12 text-red-500 animate-spin" />
-          <div className="absolute inset-0 w-12 h-12 border-2 border-red-500/20 rounded-full animate-pulse-slow" />
-        </div>
+        <BouncingBall size="md" />
         <div className="text-center space-y-3">
           <h3 className="text-xl font-semibold text-white animate-slide-in-top">
             Searching for "{query}"
@@ -214,9 +212,9 @@ const SearchResults = ({
       {hasMore && (
         <div ref={loadMoreRef} className="flex justify-center py-8">
           {isLoadingMore ? (
-            <div className="flex items-center gap-2 text-zinc-400">
-              <Loader2 className="w-5 h-5 animate-spin" />
-              <span>Loading more songs...</span>
+            <div className="flex flex-col items-center gap-2">
+              <BouncingBall size="sm" />
+              <span className="text-zinc-400 text-sm">Loading more songs...</span>
             </div>
           ) : (
             <Button

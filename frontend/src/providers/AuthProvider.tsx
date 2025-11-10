@@ -1,8 +1,8 @@
 import { axiosInstance } from "@/lib/axios";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useAuth } from "@clerk/clerk-react";
-import { Loader } from "lucide-react";
 import { useEffect, useState } from "react";
+import BouncingBall from "@/components/BouncingBall";
 
 const updateApiToken = (token: string | null) => {
   if (token) {
@@ -54,7 +54,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   if (loading) {
     return (
       <div className="h-screen w-full flex flex-col items-center justify-center bg-black gap-4">
-        <Loader className="size-8 text-emerald-500 animate-spin" />
+        <BouncingBall size="md" />
         <p className="text-zinc-400 text-sm">Loading your session...</p>
       </div>
     );

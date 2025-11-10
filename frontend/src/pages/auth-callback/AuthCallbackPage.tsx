@@ -1,21 +1,22 @@
-import { Card, CardContent } from "@/components/ui/card";
 import { axiosInstance } from "@/lib/axios";
 import { useUser } from "@clerk/clerk-react";
-import { Loader } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import AudoraLogo from "@/components/AudoraLogo";
+import BouncingBall from "@/components/BouncingBall";
 
 const AuthCallbackPage = () => {
   const { isLoaded, user } = useUser();
   const navigate = useNavigate();
   const syncAttempted = useRef(false);
-  const [error, setError] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(true);
   const [retryCount, setRetryCount] = useState(0);
+  const [visible, setVisible] = useState(false);
   const maxRetries = 3;
 
   useEffect(() => {
+    // Trigger entrance animation
+    const enter = setTimeout(() => setVisible(true), 20);
+
     const syncUser = async () => {
       if (!isLoaded) {
         console.log("⏳ Clerk not loaded yet...");
@@ -33,7 +34,6 @@ const AuthCallbackPage = () => {
       try {
         syncAttempted.current = true;
         setIsProcessing(true);
-        setError(null);
 
         console.log("🔐 Syncing user with backend:", user.id);
 
@@ -63,8 +63,8 @@ const AuthCallbackPage = () => {
       } catch (error: any) {
         console.error("❌ Error in auth callback:", error);
 
-        // Retry logic for network errors
-        if (retryCount < maxRetries && error.code === "ECONNABORTED" || error.code === "ERR_NETWORK") {
+        // Retry logic for network errors (with correct operator grouping)
+        if (retryCount < maxRetries && (error.code === "ECONNABORTED" || error.code === "ERR_NETWORK")) {
           console.log(`🔄 Retrying... (${retryCount + 1}/${maxRetries})`);
           setRetryCount(retryCount + 1);
           syncAttempted.current = false; // Allow retry
@@ -80,7 +80,7 @@ const AuthCallbackPage = () => {
                            error.message || 
                            "Authentication failed";
         
-        setError(errorMessage);
+        console.error("Auth error:", errorMessage);
 
         // Navigate to home after showing error
         setTimeout(() => {
@@ -103,51 +103,20 @@ const AuthCallbackPage = () => {
     }, 15000); // 15 second fallback
 
     return () => clearTimeout(timeout);
+    // cleanup entrance timer
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    return () => clearTimeout(enter);
   }, [isLoaded, user, navigate, retryCount]);
 
   return (
     <div className="h-screen w-full bg-black flex items-center justify-center">
-      <Card className="w-[90%] max-w-md bg-zinc-900 border-zinc-800">
-        <CardContent className="flex flex-col items-center gap-4 pt-6">
-          <AudoraLogo size="lg" />
-          <div className="flex items-center gap-2">
-            {isProcessing ? (
-              <Loader className="size-6 text-emerald-500 animate-spin" />
-            ) : error ? (
-              <div className="text-red-500 text-2xl">⚠️</div>
-            ) : (
-              <div className="text-green-500 text-2xl">✓</div>
-            )}
-            <h3 className="text-white text-xl font-bold">
-              {error ? "Authentication Error" : "Logging you in"}
-            </h3>
-          </div>
-          
-          {retryCount > 0 && (
-            <p className="text-zinc-500 text-sm">
-              Retry {retryCount}/{maxRetries}
-            </p>
-          )}
-          
-          <p className="text-zinc-400 text-sm text-center">
-            {error ? (
-              <>
-                {error}
-                <br />
-                <span className="text-zinc-500">Redirecting...</span>
-              </>
-            ) : (
-              "Please wait while we set up your account..."
-            )}
-          </p>
-
-          {!isLoaded && (
-            <p className="text-zinc-600 text-xs">
-              Initializing authentication...
-            </p>
-          )}
-        </CardContent>
-      </Card>
+      <div
+        className={`transform transition-all duration-450 ease-out ${
+          visible ? "opacity-100 scale-100" : "opacity-0 scale-95"
+        }`}
+      >
+        <BouncingBall size="lg" />
+      </div>
     </div>
   );
 };

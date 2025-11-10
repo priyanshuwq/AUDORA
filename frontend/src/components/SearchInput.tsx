@@ -5,9 +5,10 @@ import {
   forwardRef,
   useImperativeHandle,
 } from "react";
-import { Search, X, Loader2 } from "lucide-react";
+import { Search, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import SearchSuggestions from "./SearchSuggestions";
+import BouncingBall from "./BouncingBall";
 
 interface SearchInputProps {
   onSearch: (query: string) => void;
@@ -106,7 +107,9 @@ const SearchInput = forwardRef<SearchInputRef, SearchInputProps>(
         <div className="relative group">
           <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
             {isLoading ? (
-              <Loader2 className="h-5 w-5 text-zinc-400 animate-spin" />
+              <div className="scale-50">
+                <BouncingBall size="sm" />
+              </div>
             ) : (
               <Search className="h-5 w-5 text-zinc-400 group-focus-within:text-red-400 transition-colors duration-200" />
             )}

@@ -15,7 +15,6 @@ import {
   Music,
   Sparkles,
   X,
-  Loader2,
   PlusCircle,
   Clock,
 } from "lucide-react";
@@ -30,6 +29,7 @@ import { useKeyboardNavigation } from "@/hooks/useKeyboardNavigation";
 import { usePlayerStore } from "@/stores/usePlayerStore";
 import { useMusicStore } from "@/stores/useMusicStore";
 import { Album, Song } from "@/types";
+import BouncingBall from "@/components/BouncingBall";
 
 const BrowsePage = () => {
   const location = useLocation();
@@ -227,7 +227,9 @@ const BrowsePage = () => {
                         }`}
                       >
                         {searchLoading ? (
-                          <Loader2 className="h-5 w-5 animate-spin" />
+                          <div className="scale-50">
+                            <BouncingBall size="sm" />
+                          </div>
                         ) : (
                           <Search className="h-5 w-5" />
                         )}
@@ -323,7 +325,9 @@ const BrowsePage = () => {
                               >
                                 {isLoadingMore ? (
                                   <>
-                                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                                    <div className="mr-2 scale-50">
+                                      <BouncingBall size="sm" />
+                                    </div>
                                     Loading...
                                   </>
                                 ) : (
