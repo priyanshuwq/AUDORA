@@ -8,12 +8,13 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { useEnhancedRoomStore } from "@/stores/useEnhancedRoomStore";
-import { useUser, SignInButton } from "@clerk/clerk-react";
+import { useUser, useSignIn } from "@clerk/clerk-react";
 import { Plus, DoorOpen, Loader2, Radio, Music, Crown } from "lucide-react";
 import { useState } from "react";
 
 const EnhancedRoomControls = () => {
   const { user, isSignedIn } = useUser();
+  const { signIn } = useSignIn();
   const {
     createRoom,
     joinRoom,
@@ -78,6 +79,20 @@ const EnhancedRoomControls = () => {
     setRoomCode(value);
   };
 
+  // Handle Google Sign-in directly
+  const handleGoogleSignIn = async () => {
+    if (!signIn) return;
+    try {
+      await signIn.authenticateWithRedirect({
+        strategy: "oauth_google",
+        redirectUrl: "/sso-callback",
+        redirectUrlComplete: "/rooms",
+      });
+    } catch (error) {
+      console.error("Error signing in with Google:", error);
+    }
+  };
+
   if (!isSignedIn) {
     return (
       <div className="bg-zinc-900/60 border border-red-500/30 rounded-2xl p-4 text-center backdrop-blur-sm shadow-[0_0_30px_rgba(255,0,51,0.08)]">
@@ -90,17 +105,16 @@ const EnhancedRoomControls = () => {
               Live Jam Rooms
             </h3>
             <p className="text-zinc-400 text-xs mt-1">
-              Join 4-digit rooms and jam live with friends
+              Join room and jam live with friends
             </p>
           </div>
-          <SignInButton mode="modal">
-            <Button
-              size="sm"
-              className="w-full bg-red-600 hover:bg-red-500 text-white font-medium rounded-xl shadow-[0_0_20px_rgba(255,0,51,0.2)]"
-            >
-              Login to Join Rooms
-            </Button>
-          </SignInButton>
+          <Button
+            size="sm"
+            onClick={handleGoogleSignIn}
+            className="w-full bg-red-600 hover:bg-red-500 text-white font-medium rounded-xl shadow-[0_0_20px_rgba(255,0,51,0.2)] cursor-pointer"
+          >
+            Login to Join Rooms
+          </Button>
         </div>
       </div>
     );
