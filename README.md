@@ -2,7 +2,7 @@
 
 Full-stack web app for synchronized music listening and live jam sessions.
 
-Preview
+## Showcase
 <img width="1920" height="1072" alt="screenshot-2025-11-15_15-05-27" src="https://github.com/user-attachments/assets/15be4bec-a71e-4a9b-b6fd-28cbfa1ff16d" />
 
 
@@ -75,5 +75,6 @@ Contributing & license
 Made with ❤️ Priyanshu
 
 </div>
+
 
 
