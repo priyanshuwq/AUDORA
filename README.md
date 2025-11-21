@@ -3,9 +3,20 @@
 Full-stack web app for synchronized music listening and live jam sessions.
 
 Preview
+<img width="1920" height="1072" alt="screenshot-2025-11-15_15-05-27" src="https://github.com/user-attachments/assets/15be4bec-a71e-4a9b-b6fd-28cbfa1ff16d" />
+
+
+https://github.com/user-attachments/assets/2586a463-e945-49ed-8258-d18d9254bd89
+
+
 
 
 Showcasing oneko.js
+
+
+https://github.com/user-attachments/assets/27f7d26f-4e7c-4ba6-a8f1-e576edc04c4d
+
+
 
 Core features
 - Real-time jam sessions (WebRTC audio + Socket.io signaling)
@@ -55,7 +66,14 @@ Where to look in the repo
 Contributing & license
 - Fork, branch, test, PR. See `LICENSE` for terms.
 
-If you found this useful, consider giving it a ⭐
+  ---
 
+<div align="center">
+
+**If you found this useful, consider giving it a ⭐**
+
+Made with ❤️ Priyanshu
+
+</div>
 
 
