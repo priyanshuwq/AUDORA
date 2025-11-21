@@ -1,233 +1,71 @@
-# 🎵 AUDORA - Music Streaming Platform
+# AUDORA
 
-A full-stack music streaming application with real-time jam sessions, collaborative listening, and social features.
+Full-stack web app for synchronized music listening and live jam sessions.
 
-## ✨ Key Features
+Core features
+- Real-time jam sessions (WebRTC audio + Socket.io signaling)
+- Shared queue and host-controlled playback
+- Import local MP3s into the library (backend import scripts)
+- React + Vite frontend with Zustand stores and Tailwind UI
 
-### 🎧 Music Streaming
-- Browse songs, albums, and trending tracks
-- Search functionality with real-time results
-- Personal playlists and favorites
-- High-quality audio playback
+Quick start (dev)
+Prereqs: Node 18+, npm, MongoDB.
 
-### 🎵 Live Jam Sessions
-- **Real-time music synchronization** across multiple devices
-- Host controls playback for all participants
-- Shared queue management
-- Network quality indicators
-- Adaptive sync based on connection quality
+Run backend and frontend in separate shells (fish examples):
 
-### 👥 Social Features
-- Create and join music rooms
-- See what friends are listening to
-- Collaborative playlists
-- User profiles and activity
-
-### 📱 Cross-Platform
-- Responsive web design
-- Desktop and mobile support
-- Fullscreen mobile player
-- Touch-optimized controls
-
-## 🚀 Getting Started
-
-### Prerequisites
-- Node.js 18+ and npm
-- MongoDB database
-- Clerk account (for authentication)
-
-### Installation
-
-1. **Clone the repository**
-```bash
-git clone https://github.com/yourusername/audora.git
-cd audora
-```
-
-2. **Install dependencies**
-```bash
+```fish
+# Backend
+cd backend
 npm install
-```
-
-3. **Set up environment variables**
-
-Create `backend/.env`:
-```env
-PORT=8000
-MONGODB_URI=your_mongodb_connection_string
-FRONTEND_ORIGINS=http://localhost:5173
-ADMIN_EMAILS=admin@example.com
-VITE_CLERK_PUBLISHABLE_KEY=your_clerk_key
-```
-
-Create `frontend/.env`:
-```env
-VITE_CLERK_PUBLISHABLE_KEY=your_clerk_key
-```
-
-4. **Import songs (optional)**
-```bash
-# Place MP3 files in frontend/public/songs
-cd backend
-npm run extract:metadata
-npm run import:songs
-```
-
-5. **Start development servers**
-```bash
-# Terminal 1 - Backend
-cd backend
 npm run dev
 
-# Terminal 2 - Frontend  
+# Frontend
 cd frontend
+npm install
 npm run dev
 ```
 
-Visit `http://localhost:5173` to see the app!
+Import local songs (optional):
 
-## 🛠️ Tech Stack
-
-### Frontend
-- **React 18** with TypeScript
-- **Vite** for fast builds
-- **Tailwind CSS** for styling
-- **Zustand** for state management
-- **Socket.io Client** for real-time features
-- **Clerk** for authentication
-
-### Backend
-- **Node.js** with Express
-- **MongoDB** with Mongoose
-- **Socket.io** for WebSocket communication
-- **Clerk SDK** for auth integration
-- **Cloudinary** for media storage (optional)
-
-## 🎯 Key Features Explained
-
-### Live Jam Sessions 🎉
-
-The standout feature of AUDORA is real-time music synchronization:
-
-1. **Create a Jam Session**: Host creates a room and gets a 4-digit code
-2. **Friends Join**: Others join using the code
-3. **Perfect Sync**: Everyone hears the same song at the same time
-4. **Host Controls**: Host plays, pauses, skips for everyone
-5. **Shared Queue**: Anyone can add songs to the queue
-
-**Sync Accuracy**: 50-300ms depending on connection quality
-
-**Technologies**: Socket.io WebSocket, Adaptive sync algorithms, Network latency compensation
-
-### Music Library Management 📚
-
-Import your own music collection:
-
-```bash
-# 1. Place MP3 files in frontend/public/songs or frontend/public/New songs
-# 2. Extract metadata
+```fish
+# Put MP3s in frontend/public/songs
 cd backend
 npm run extract:metadata
-
-# 3. Import to MongoDB
 npm run import:songs
-
-# 4. Auto-create albums (3+ songs per artist)
-npm run seed:albums
 ```
 
-### Mobile Player 📱
+Environment (important)
+- backend/.env: MONGODB_URI, PORT (8000), FRONTEND_ORIGINS, ADMIN_EMAILS, CLERK keys
+- frontend/.env: VITE_CLERK_PUBLISHABLE_KEY
 
-Full-screen mobile player with:
-- Album artwork display
-- Dynamic theme colors
-- Haptic feedback on interactions
-- Volume controls
-- Queue management
-- Swipe gestures
+Preview video (placeholder)
+Add a short preview video at `frontend/public/preview.mp4` (or `preview.webm`). This README will show it when present.
 
-## 🏗️ Project Structure
+<video src="/preview.mp4" controls style="max-width:720px">Preview not available</video>
 
-```
-AUDORA/
-├── frontend/               # React frontend
-│   ├── src/
-│   │   ├── components/    # Reusable UI components
-│   │   ├── pages/         # Page components
-│   │   ├── stores/        # Zustand state stores
-│   │   ├── lib/           # Utilities and helpers
-│   │   └── types/         # TypeScript types
-│   └── public/
-│       └── songs/         # Music files
-│
-├── backend/               # Node.js backend
-│   └── src/
-│       ├── controllers/   # Route handlers
-│       ├── models/        # MongoDB models
-│       ├── routes/        # API routes
-│       ├── lib/           # Core libraries (socket, db)
-│       ├── scripts/       # Utility scripts
-│       └── seeds/         # Database seeders
-│
-└── docs/                  # Documentation (this file!)
+Showcasing oneko.js
+- Files: `frontend/public/oneko.js` and supporting assets in `frontend/public/oneko/`.
+- To preview the effect, include the script in `frontend/index.html` (served from `/`):
+
+```html
+<!-- in frontend/index.html -->
+<script src="/oneko.js"></script>
+<!-- add a container if required by the script -->
+<div id="oneko-root"></div>
 ```
 
-## 📊 Performance
+Notes: the script is served statically from the frontend public folder. Drop your customized `oneko.js` into `frontend/public/` and assets into `frontend/public/oneko/`.
 
-- **Sync Latency**: 50-300ms depending on network
-- **Server Capacity**: 1000+ concurrent users per instance
-- **Concurrent Rooms**: 100+ per instance
-- **Events/Second**: 10,000+ per instance
+Where to look in the repo
+- Backend boot & routes: `backend/src/index.js`, `backend/src/routes/`, `backend/src/controller/`
+- Socket glue & WebRTC handlers: `backend/src/lib/socket.js`, `backend/src/socket/webrtcHandlers.ts`
+- Frontend stores & sync: `frontend/src/stores/useEnhancedRoomStore.ts`, `frontend/src/stores/usePlayerStore.ts`
+- Audio & sync helpers: `frontend/src/lib/webrtcAudioStream.ts`, `frontend/src/lib/jamSyncUtils.ts`
 
-## 🔒 Security
+Contributing & license
+- Fork, branch, test, PR. See `LICENSE` for terms.
 
-- Clerk authentication for secure user management
-- CORS configured for allowed origins
-- Room codes for privacy
-- Host validation for jam session controls
-- No audio recording or storage
+If you found this useful, consider giving it a ⭐
 
-## 🚧 Roadmap
 
-- [ ] Multi-host jam sessions
-- [ ] Voice chat integration
-- [ ] Voting on next song
-- [ ] Mobile native apps (iOS/Android)
-- [ ] Spotify integration
-- [ ] Social features (comments, reactions)
-- [ ] Advanced queue management
-- [ ] NTP time synchronization for better sync
-
-## 🤝 Contributing
-
-Contributions are welcome! Please:
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
-
-## 📝 License
-
-[LICENSE](./LICENSE)
-
-## 🙏 Acknowledgments
-
-- Socket.io for real-time communication
-- Clerk for authentication
-- MongoDB for database
-- All open-source libraries used
-
-## 📞 Support
-
-- Documentation: Check the `/docs` folder
-- Issues: Open an issue on GitHub
-- Questions: Create a discussion
-
----
-
-**Made with ❤️ for music lovers who want to listen together**
-
-🎵 Start a jam session and sync your music in real-time! 🎵
 
