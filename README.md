@@ -1,6 +1,6 @@
 # AUDORA
 
-Full-stack web app for synchronized music listening and live jam sessions.
+Audora is a music streaming platform designed for real-time collaborative listening. It leverages WebRTC for low-latency audio streaming and Socket.io for precise state synchronization, enabling users to host jam sessions where friends can join instantly via a simple 4-digit room code to share queues and enjoy synchronized playback.
 
 ## Showcase
 <img width="1920" height="1072" alt="screenshot-2025-11-15_15-05-27" src="https://github.com/user-attachments/assets/15be4bec-a71e-4a9b-b6fd-28cbfa1ff16d" />
