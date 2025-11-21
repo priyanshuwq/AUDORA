@@ -2,6 +2,11 @@
 
 Full-stack web app for synchronized music listening and live jam sessions.
 
+Preview
+
+
+Showcasing oneko.js
+
 Core features
 - Real-time jam sessions (WebRTC audio + Socket.io signaling)
 - Shared queue and host-controlled playback
@@ -38,21 +43,6 @@ Environment (important)
 - backend/.env: MONGODB_URI, PORT (8000), FRONTEND_ORIGINS, ADMIN_EMAILS, CLERK keys
 - frontend/.env: VITE_CLERK_PUBLISHABLE_KEY
 
-Preview video (placeholder)
-Add a short preview video at `frontend/public/preview.mp4` (or `preview.webm`). This README will show it when present.
-
-<video src="/preview.mp4" controls style="max-width:720px">Preview not available</video>
-
-Showcasing oneko.js
-- Files: `frontend/public/oneko.js` and supporting assets in `frontend/public/oneko/`.
-- To preview the effect, include the script in `frontend/index.html` (served from `/`):
-
-```html
-<!-- in frontend/index.html -->
-<script src="/oneko.js"></script>
-<!-- add a container if required by the script -->
-<div id="oneko-root"></div>
-```
 
 Notes: the script is served statically from the frontend public folder. Drop your customized `oneko.js` into `frontend/public/` and assets into `frontend/public/oneko/`.
 
