@@ -126,6 +126,7 @@ app.use(
       imgSrc: ["'self'", 'data:', 'https:'],
       styleSrc: ["'self'", "'unsafe-inline'", 'https:'],
       fontSrc: ["'self'", 'https:', 'data:'],
+      mediaSrc: ["'self'", "https://priyanshuwq.github.io"],
     },
   })
 );
