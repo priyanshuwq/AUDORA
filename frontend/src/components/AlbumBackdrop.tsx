@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { usePlayerStore } from "@/stores/usePlayerStore";
+import { getMediaUrl } from "@/lib/mediaUrl";
 
 const AlbumBackdrop = () => {
   const { currentSong } = usePlayerStore();
@@ -8,14 +9,15 @@ const AlbumBackdrop = () => {
   const [isTransitioning, setIsTransitioning] = useState(false);
 
   useEffect(() => {
-    if (currentSong?.imageUrl && currentSong.imageUrl !== currentImage) {
+    const imageUrl = currentSong?.imageUrl ? getMediaUrl(currentSong.imageUrl) : null;
+    if (imageUrl && imageUrl !== currentImage) {
       // Start transition
       setIsTransitioning(true);
       setPreviousImage(currentImage);
       
       // Small delay to ensure transition starts
       setTimeout(() => {
-        setCurrentImage(currentSong.imageUrl);
+        setCurrentImage(imageUrl);
       }, 50);
 
       // Reset transition after animation completes

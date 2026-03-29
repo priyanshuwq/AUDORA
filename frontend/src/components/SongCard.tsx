@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Play, Pause, Music } from "lucide-react";
 import { Song } from "@/types";
 import { cn } from "@/lib/utils";
+import { formatDuration } from "@/lib/formatters";
+import { getMediaUrl } from "@/lib/mediaUrl";
 
 interface SongCardProps {
   song: Song;
@@ -27,12 +29,6 @@ const SongCard = ({
     }
   };
 
-  const formatDuration = (seconds: number) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins}:${secs.toString().padStart(2, "0")}`;
-  };
-
   return (
     <div
       onClick={handlePlay}
@@ -56,7 +52,7 @@ const SongCard = ({
           <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-lg sm:rounded-xl overflow-hidden bg-zinc-800 flex items-center justify-center">
             {!imageError ? (
               <img
-                src={song.imageUrl}
+                src={getMediaUrl(song.imageUrl)}
                 alt={`${song.title} album art`}
                 className={cn(
                   "w-full h-full object-cover transition-opacity duration-200",

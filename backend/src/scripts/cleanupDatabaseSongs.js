@@ -12,16 +12,14 @@ const __dirname = path.dirname(__filename);
 
 async function getAllAudioFiles() {
   const repoRoot = path.resolve(__dirname, "..", "..", "..");
-  const songsDir1 = path.join(repoRoot, "frontend", "public", "songs");
-  const songsDir2 = path.join(repoRoot, "frontend", "public", "New songs");
+  const songsDir = path.join(repoRoot, "frontend", "public", "songs");
 
   const audioExtensions = [".mp3", ".m4a", ".wav", ".flac", ".aac"];
   const allFiles = new Set();
 
-  // Scan first directory
   try {
-    const files1 = await fs.readdir(songsDir1);
-    for (const f of files1) {
+    const files = await fs.readdir(songsDir);
+    for (const f of files) {
       const ext = path.extname(f).toLowerCase();
       if (audioExtensions.includes(ext)) {
         allFiles.add(`/songs/${f}`);
@@ -29,21 +27,7 @@ async function getAllAudioFiles() {
     }
     console.log(`Found ${allFiles.size} audio files in /songs/`);
   } catch (err) {
-    console.warn(`Could not read ${songsDir1}:`, err.message);
-  }
-
-  // Scan second directory
-  try {
-    const files2 = await fs.readdir(songsDir2);
-    for (const f of files2) {
-      const ext = path.extname(f).toLowerCase();
-      if (audioExtensions.includes(ext)) {
-        allFiles.add(`/New songs/${f}`);
-      }
-    }
-    console.log(`Found ${allFiles.size} total audio files (including /New songs/)`);
-  } catch (err) {
-    console.warn(`Could not read ${songsDir2}:`, err.message);
+    console.warn(`Could not read ${songsDir}:`, err.message);
   }
 
   return allFiles;

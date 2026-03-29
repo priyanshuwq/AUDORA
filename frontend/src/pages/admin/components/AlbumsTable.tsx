@@ -7,6 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { getMediaUrl } from "@/lib/mediaUrl";
 import { useMusicStore } from "@/stores/useMusicStore";
 import { Calendar, Music, Trash2 } from "lucide-react";
 import { useEffect } from "react";
@@ -36,7 +37,7 @@ const AlbumsTable = () => {
             <TableRow key={album._id} className="hover:bg-zinc-800/50">
               <TableCell>
                 <img
-                  src={album.imageUrl}
+                  src={getMediaUrl(album.imageUrl)}
                   alt={album.title}
                   className="w-10 h-10 rounded object-cover"
                 />

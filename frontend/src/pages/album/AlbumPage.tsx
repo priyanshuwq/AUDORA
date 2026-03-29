@@ -18,12 +18,8 @@ import toast from "react-hot-toast";
 import GlassCard from "@/components/ui/GlassCard";
 import PlayButton from "@/pages/home/components/PlayButton";
 import BouncingBall from "@/components/BouncingBall";
-
-export const formatDuration = (seconds: number) => {
-  const minutes = Math.floor(seconds / 60);
-  const remainingSeconds = seconds % 60;
-  return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
-};
+import { formatDuration } from "@/lib/formatters";
+import { getMediaUrl } from "@/lib/mediaUrl";
 
 // Helper function to get release year
 const getReleaseYear = (dateString: string) => {
@@ -87,7 +83,7 @@ const AlbumPage = () => {
           <div className="relative z-10">
             <div className="flex flex-col sm:flex-row p-4 sm:p-6 gap-4 sm:gap-6 pb-6 sm:pb-8 items-start">
               <img
-                src={currentAlbum?.imageUrl}
+                src={getMediaUrl(currentAlbum?.imageUrl)}
                 alt={currentAlbum?.title}
                 className="w-40 h-40 sm:w-[240px] sm:h-[240px] shadow-2xl rounded-2xl object-cover"
               />
@@ -162,7 +158,7 @@ const AlbumPage = () => {
                       <div className="relative mb-2 group">
                         <div className="aspect-square rounded-md overflow-hidden bg-zinc-900">
                           <img
-                            src={song.imageUrl}
+                            src={getMediaUrl(song.imageUrl)}
                             alt={song.title}
                             className="w-full h-full object-cover"
                           />
@@ -300,7 +296,7 @@ const AddSongDialog = ({ albumId, onAddSong, onClose }: AddSongDialogProps) => {
                 }`}
               >
                 <img
-                  src={song.imageUrl}
+                  src={getMediaUrl(song.imageUrl)}
                   alt={song.title}
                   className="h-12 w-12 object-cover rounded"
                 />

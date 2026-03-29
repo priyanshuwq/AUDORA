@@ -3404,1043 +3404,1043 @@ const songs = [
     "title": "Renegade",
     "artist": "Aaryan Shah",
     "imageUrl": "/extracted-covers/aaryan_shah___renegade_cover.jpeg",
-    "audioUrl": "/New songs/Aaryan Shah - Renegade.mp3",
+    "audioUrl": "/songs/Aaryan Shah - Renegade.mp3",
     "duration": 223
   },
   {
     "title": "Locked Away",
     "artist": "Adam Lang",
     "imageUrl": "/extracted-covers/adam_lang___locked_away_cover.jpeg",
-    "audioUrl": "/New songs/Adam Lang - Locked Away.mp3",
+    "audioUrl": "/songs/Adam Lang - Locked Away.mp3",
     "duration": 227
   },
   {
     "title": "Paaro",
     "artist": "Aditya Rikhari",
     "imageUrl": "/extracted-covers/aditya_rikhari___paaro_cover.jpeg",
-    "audioUrl": "/New songs/Aditya Rikhari - Paaro.mp3",
+    "audioUrl": "/songs/Aditya Rikhari - Paaro.mp3",
     "duration": 153
   },
   {
     "title": "Lonely",
     "artist": "Akon",
     "imageUrl": "/extracted-covers/akon___lonely_cover.jpeg",
-    "audioUrl": "/New songs/Akon - Lonely.mp3",
+    "audioUrl": "/songs/Akon - Lonely.mp3",
     "duration": 236
   },
   {
     "title": "Best Day Of My Life",
     "artist": "American Authors",
     "imageUrl": "/extracted-covers/american_authors___best_day_of_my_life_cover.jpeg",
-    "audioUrl": "/New songs/American Authors - Best Day Of My Life.mp3",
+    "audioUrl": "/songs/American Authors - Best Day Of My Life.mp3",
     "duration": 194
   },
   {
     "title": "I Wanna Be Yours",
     "artist": "Arctic Monkeys",
     "imageUrl": "/extracted-covers/arctic_monkeys___i_wanna_be_yours_cover.jpeg",
-    "audioUrl": "/New songs/Arctic Monkeys - I Wanna Be Yours.mp3",
+    "audioUrl": "/songs/Arctic Monkeys - I Wanna Be Yours.mp3",
     "duration": 184
   },
   {
     "title": "Why'd You Only Call Me When You're High?",
     "artist": "Arctic Monkeys",
     "imageUrl": "/extracted-covers/arctic_monkeys___why_d_you_only_call_me_when_you_re_high_cover.jpeg",
-    "audioUrl": "/New songs/Arctic Monkeys - Why'd You Only Call Me When You're High.mp3",
+    "audioUrl": "/songs/Arctic Monkeys - Why'd You Only Call Me When You're High.mp3",
     "duration": 161
   },
   {
     "title": "BABYDOLL",
     "artist": "Ari Abdul",
     "imageUrl": "/extracted-covers/ari_abdul___babydoll_cover.jpeg",
-    "audioUrl": "/New songs/Ari Abdul - BABYDOLL.mp3",
+    "audioUrl": "/songs/Ari Abdul - BABYDOLL.mp3",
     "duration": 196
   },
   {
     "title": "Stuck with U (with Justin Bieber)",
     "artist": "Ariana Grande",
     "imageUrl": "/extracted-covers/ariana_grande__justin_bieber___stuck_with_u__with_justin_bieber__cover.jpeg",
-    "audioUrl": "/New songs/Ariana Grande, Justin Bieber - Stuck with U (with Justin Bieber).mp3",
+    "audioUrl": "/songs/Ariana Grande, Justin Bieber - Stuck with U (with Justin Bieber).mp3",
     "duration": 229
   },
   {
     "title": "Palat - Tera Hero Idhar Hai (From \"Main Tera Hero\")",
     "artist": "Arijit Singh",
     "imageUrl": "/extracted-covers/arijit_singh___palat___tera_hero_idhar_hai__from__main_tera_hero___cover.jpeg",
-    "audioUrl": "/New songs/Arijit Singh - Palat - Tera Hero Idhar Hai (From 'Main Tera Hero').mp3",
+    "audioUrl": "/songs/Arijit Singh - Palat - Tera Hero Idhar Hai (From 'Main Tera Hero').mp3",
     "duration": 271
   },
   {
     "title": "Main Tera Boyfriend (From \"Raabta\")",
     "artist": "Arijit Singh",
     "imageUrl": "/extracted-covers/arijit_singh__neha_kakkar__meet_bros____main_tera_boyfriend__from__raabta___cover.jpeg",
-    "audioUrl": "/New songs/Arijit Singh, Neha Kakkar, Meet Bros. - Main Tera Boyfriend (From 'Raabta').mp3",
+    "audioUrl": "/songs/Arijit Singh, Neha Kakkar, Meet Bros. - Main Tera Boyfriend (From 'Raabta').mp3",
     "duration": 276
   },
   {
     "title": "Hurts So Good",
     "artist": "Astrid S",
     "imageUrl": "/extracted-covers/astrid_s___hurts_so_good_cover.jpeg",
-    "audioUrl": "/New songs/Astrid S - Hurts So Good.mp3",
+    "audioUrl": "/songs/Astrid S - Hurts So Good.mp3",
     "duration": 209
   },
   {
     "title": "C.R.E.A.M POSSE",
     "artist": "Baggh-e SMG",
     "imageUrl": "/extracted-covers/baggh_e_smg__farmaan_smg__big_kay_smg___c_r_e_a_m_posse_cover.jpeg",
-    "audioUrl": "/New songs/Baggh-e SMG, Farmaan SMG, BIG KAY SMG - C.R.E.A.M POSSE.mp3",
+    "audioUrl": "/songs/Baggh-e SMG, Farmaan SMG, BIG KAY SMG - C.R.E.A.M POSSE.mp3",
     "duration": 206
   },
   {
     "title": "Cloud 9",
     "artist": "Beach Bunny",
     "imageUrl": "/extracted-covers/beach_bunny___cloud_9_cover.jpeg",
-    "audioUrl": "/New songs/Beach Bunny - Cloud 9.mp3",
+    "audioUrl": "/songs/Beach Bunny - Cloud 9.mp3",
     "duration": 147
   },
   {
     "title": "Sex, Drugs, Etc.",
     "artist": "Beach Weather",
     "imageUrl": "/extracted-covers/beach_weather___sex__drugs__etc__cover.jpeg",
-    "audioUrl": "/New songs/Beach Weather - Sex, Drugs, Etc..mp3",
+    "audioUrl": "/songs/Beach Weather - Sex, Drugs, Etc..mp3",
     "duration": 197
   },
   {
     "title": "Bored",
     "artist": "Billie Eilish",
     "imageUrl": "/extracted-covers/billie_eilish___bored_cover.jpeg",
-    "audioUrl": "/New songs/Billie Eilish - Bored.mp3",
+    "audioUrl": "/songs/Billie Eilish - Bored.mp3",
     "duration": 181
   },
   {
     "title": "It Will Rain",
     "artist": "Bruno Mars",
     "imageUrl": "/extracted-covers/bruno_mars___it_will_rain_cover.jpeg",
-    "audioUrl": "/New songs/Bruno Mars - It Will Rain.mp3",
+    "audioUrl": "/songs/Bruno Mars - It Will Rain.mp3",
     "duration": 258
   },
   {
     "title": "Talking to the Moon",
     "artist": "Bruno Mars",
     "imageUrl": "/extracted-covers/bruno_mars___talking_to_the_moon_cover.jpeg",
-    "audioUrl": "/New songs/Bruno Mars - Talking to the Moon.mp3",
+    "audioUrl": "/songs/Bruno Mars - Talking to the Moon.mp3",
     "duration": 218
   },
   {
     "title": "Shameless",
     "artist": "Camila Cabello",
     "imageUrl": "/extracted-covers/camila_cabello___shameless_cover.jpeg",
-    "audioUrl": "/New songs/Camila Cabello - Shameless.mp3",
+    "audioUrl": "/songs/Camila Cabello - Shameless.mp3",
     "duration": 220
   },
   {
     "title": "Long Way 2 Go",
     "artist": "Cassie",
     "imageUrl": "/extracted-covers/cassie___long_way_2_go_cover.jpeg",
-    "audioUrl": "/New songs/Cassie - Long Way 2 Go.mp3",
+    "audioUrl": "/songs/Cassie - Long Way 2 Go.mp3",
     "duration": 223
   },
   {
     "title": "Friends",
     "artist": "Chase Atlantic",
     "imageUrl": "/extracted-covers/chase_atlantic___friends_cover.jpeg",
-    "audioUrl": "/New songs/Chase Atlantic - Friends.mp3",
+    "audioUrl": "/songs/Chase Atlantic - Friends.mp3",
     "duration": 230
   },
   {
     "title": "Into It",
     "artist": "Chase Atlantic",
     "imageUrl": "/extracted-covers/chase_atlantic___into_it_cover.jpeg",
-    "audioUrl": "/New songs/Chase Atlantic - Into It.mp3",
+    "audioUrl": "/songs/Chase Atlantic - Into It.mp3",
     "duration": 197
   },
   {
     "title": "Swim",
     "artist": "Chase Atlantic",
     "imageUrl": "/extracted-covers/chase_atlantic___swim_cover.jpeg",
-    "audioUrl": "/New songs/Chase Atlantic - Swim.mp3",
+    "audioUrl": "/songs/Chase Atlantic - Swim.mp3",
     "duration": 229
   },
   {
     "title": "Consume (feat. Goon Des Garcons)",
     "artist": "Chase Atlantic",
     "imageUrl": "/extracted-covers/chase_atlantic__goon_des_garcons___consume__feat__goon_des_garcons__cover.jpeg",
-    "audioUrl": "/New songs/Chase Atlantic, GOON DES GARCONS - Consume (feat. Goon Des Garcons).mp3",
+    "audioUrl": "/songs/Chase Atlantic, GOON DES GARCONS - Consume (feat. Goon Des Garcons).mp3",
     "duration": 268
   },
   {
     "title": "Beanie",
     "artist": "Chezile",
     "imageUrl": "/extracted-covers/chezile___beanie_cover.jpeg",
-    "audioUrl": "/New songs/Chezile - Beanie.mp3",
+    "audioUrl": "/songs/Chezile - Beanie.mp3",
     "duration": 132
   },
   {
     "title": "Under The Influence",
     "artist": "Chris Brown",
     "imageUrl": "/extracted-covers/chris_brown___under_the_influence_cover.jpeg",
-    "audioUrl": "/New songs/Chris Brown - Under The Influence.mp3",
+    "audioUrl": "/songs/Chris Brown - Under The Influence.mp3",
     "duration": 185
   },
   {
     "title": "Apocalypse",
     "artist": "Cigarettes After Sex",
     "imageUrl": "/extracted-covers/cigarettes_after_sex___apocalypse_cover.jpeg",
-    "audioUrl": "/New songs/Cigarettes After Sex - Apocalypse.mp3",
+    "audioUrl": "/songs/Cigarettes After Sex - Apocalypse.mp3",
     "duration": 290
   },
   {
     "title": "Sofia",
     "artist": "Clairo",
     "imageUrl": "/extracted-covers/clairo___sofia_cover.jpeg",
-    "audioUrl": "/New songs/Clairo - Sofia.mp3",
+    "audioUrl": "/songs/Clairo - Sofia.mp3",
     "duration": 188
   },
   {
     "title": "Heather",
     "artist": "Conan Gray",
     "imageUrl": "/extracted-covers/conan_gray___heather_cover.jpeg",
-    "audioUrl": "/New songs/Conan Gray - Heather.mp3",
+    "audioUrl": "/songs/Conan Gray - Heather.mp3",
     "duration": 198
   },
   {
     "title": "Wish You Were Sober",
     "artist": "Conan Gray",
     "imageUrl": "/extracted-covers/conan_gray___wish_you_were_sober_cover.jpeg",
-    "audioUrl": "/New songs/Conan Gray - Wish You Were Sober.mp3",
+    "audioUrl": "/songs/Conan Gray - Wish You Were Sober.mp3",
     "duration": 169
   },
   {
     "title": "Baazigar",
     "artist": "DIVINE",
     "imageUrl": "/extracted-covers/divine__armani_white___baazigar_cover.jpeg",
-    "audioUrl": "/New songs/DIVINE, Armani White - Baazigar.mp3",
+    "audioUrl": "/songs/DIVINE, Armani White - Baazigar.mp3",
     "duration": 169
   },
   {
     "title": "Six Days - Remix",
     "artist": "DJ Shadow",
     "imageUrl": "/extracted-covers/dj_shadow__mos_def___six_days___remix_cover.jpeg",
-    "audioUrl": "/New songs/DJ Shadow, Mos Def - Six Days - Remix.mp3",
+    "audioUrl": "/songs/DJ Shadow, Mos Def - Six Days - Remix.mp3",
     "duration": 233
   },
   {
     "title": "moonlight",
     "artist": "Dhruv",
     "imageUrl": "/extracted-covers/dhruv___moonlight_cover.jpeg",
-    "audioUrl": "/New songs/Dhruv - moonlight.mp3",
+    "audioUrl": "/songs/Dhruv - moonlight.mp3",
     "duration": 159
   },
   {
     "title": "So High",
     "artist": "Doja Cat",
     "imageUrl": "/extracted-covers/doja_cat___so_high_cover.jpeg",
-    "audioUrl": "/New songs/Doja Cat - So High.mp3",
+    "audioUrl": "/songs/Doja Cat - So High.mp3",
     "duration": 202
   },
   {
     "title": "NEW DROP",
     "artist": "Don Toliver",
     "imageUrl": "/extracted-covers/don_toliver___new_drop_cover.jpeg",
-    "audioUrl": "/New songs/Don Toliver - NEW DROP.mp3",
+    "audioUrl": "/songs/Don Toliver - NEW DROP.mp3",
     "duration": 217
   },
   {
     "title": "Trust Issues",
     "artist": "Drake",
     "imageUrl": "/extracted-covers/drake___trust_issues_cover.jpeg",
-    "audioUrl": "/New songs/Drake - Trust Issues.mp3",
+    "audioUrl": "/songs/Drake - Trust Issues.mp3",
     "duration": 282
   },
   {
     "title": "Levitating",
     "artist": "Dua Lipa",
     "imageUrl": "/extracted-covers/dua_lipa___levitating_cover.jpeg",
-    "audioUrl": "/New songs/Dua Lipa - Levitating.mp3",
+    "audioUrl": "/songs/Dua Lipa - Levitating.mp3",
     "duration": 204
   },
   {
     "title": "Rap God",
     "artist": "Eminem",
     "imageUrl": "/extracted-covers/eminem___rap_god_cover.jpeg",
-    "audioUrl": "/New songs/Eminem - Rap God.mp3",
+    "audioUrl": "/songs/Eminem - Rap God.mp3",
     "duration": 369
   },
   {
     "title": "Without Me",
     "artist": "Eminem",
     "imageUrl": "/extracted-covers/eminem___without_me_cover.jpeg",
-    "audioUrl": "/New songs/Eminem - Without Me.mp3",
+    "audioUrl": "/songs/Eminem - Without Me.mp3",
     "duration": 290
   },
   {
     "title": "Pink + White",
     "artist": "Frank Ocean",
     "imageUrl": "/extracted-covers/frank_ocean___pink___white_cover.jpeg",
-    "audioUrl": "/New songs/Frank Ocean - Pink + White.mp3",
+    "audioUrl": "/songs/Frank Ocean - Pink + White.mp3",
     "duration": 185
   },
   {
     "title": "Lady Killers II",
     "artist": "G-Eazy",
     "imageUrl": "/extracted-covers/g_eazy___lady_killers_ii_cover.jpeg",
-    "audioUrl": "/New songs/G-Eazy - Lady Killers II.mp3",
+    "audioUrl": "/songs/G-Eazy - Lady Killers II.mp3",
     "duration": 298
   },
   {
     "title": "Tumblr Girls (feat. Christoph Andersson)",
     "artist": "G-Eazy",
-    "imageUrl": "/New songs/covers/G-Eazy - Lady Killers II.jpg",
-    "audioUrl": "/New songs/G-Eazy, Christoph Andersson - Tumblr Girls (feat. Christoph Andersson).mp3",
+    "imageUrl": "/songs/covers/G-Eazy - Lady Killers II.jpg",
+    "audioUrl": "/songs/G-Eazy, Christoph Andersson - Tumblr Girls (feat. Christoph Andersson).mp3",
     "duration": 256
   },
   {
     "title": "Patola (From \"Blackmail\")",
     "artist": "Guru Randhawa",
     "imageUrl": "/extracted-covers/guru_randhawa__preet_hundal___patola__from__blackmail___cover.jpeg",
-    "audioUrl": "/New songs/Guru Randhawa, Preet Hundal - Patola (From 'Blackmail').mp3",
+    "audioUrl": "/songs/Guru Randhawa, Preet Hundal - Patola (From 'Blackmail').mp3",
     "duration": 184
   },
   {
     "title": "Stereo Hearts (feat. Adam Levine)",
     "artist": "Gym Class Heroes",
     "imageUrl": "/extracted-covers/gym_class_heroes__adam_levine___stereo_hearts__feat__adam_levine__cover.jpeg",
-    "audioUrl": "/New songs/Gym Class Heroes, Adam Levine - Stereo Hearts (feat. Adam Levine).mp3",
+    "audioUrl": "/songs/Gym Class Heroes, Adam Levine - Stereo Hearts (feat. Adam Levine).mp3",
     "duration": 211
   },
   {
     "title": "Shree Hanuman Chalisa",
     "artist": "Hariharan",
     "imageUrl": "/extracted-covers/hariharan___shree_hanuman_chalisa_cover.jpeg",
-    "audioUrl": "/New songs/Hariharan - Shree Hanuman Chalisa.mp3",
+    "audioUrl": "/songs/Hariharan - Shree Hanuman Chalisa.mp3",
     "duration": 586
   },
   {
     "title": "DONALI",
     "artist": "Harkirat Sangha",
     "imageUrl": "/extracted-covers/harkirat_sangha__starboy_x___donali_cover.jpeg",
-    "audioUrl": "/New songs/Harkirat Sangha, Starboy X - DONALI.mp3",
+    "audioUrl": "/songs/Harkirat Sangha, Starboy X - DONALI.mp3",
     "duration": 172
   },
   {
     "title": "Adore You",
     "artist": "Harry Styles",
     "imageUrl": "/extracted-covers/harry_styles___adore_you_cover.jpeg",
-    "audioUrl": "/New songs/Harry Styles - Adore You.mp3",
+    "audioUrl": "/songs/Harry Styles - Adore You.mp3",
     "duration": 207
   },
   {
     "title": "As It Was",
     "artist": "Harry Styles",
     "imageUrl": "/extracted-covers/harry_styles___as_it_was_cover.jpeg",
-    "audioUrl": "/New songs/Harry Styles - As It Was.mp3",
+    "audioUrl": "/songs/Harry Styles - As It Was.mp3",
     "duration": 167
   },
   {
     "title": "Falling",
     "artist": "Harry Styles",
     "imageUrl": "/extracted-covers/harry_styles___falling_cover.jpeg",
-    "audioUrl": "/New songs/Harry Styles - Falling.mp3",
+    "audioUrl": "/songs/Harry Styles - Falling.mp3",
     "duration": 240
   },
   {
     "title": "If the World Was Ending (feat. Julia Michaels)",
     "artist": "JP Saxe",
     "imageUrl": "/extracted-covers/jp_saxe__julia_michaels___if_the_world_was_ending__feat__julia_michaels__cover.jpeg",
-    "audioUrl": "/New songs/JP Saxe, Julia Michaels - If the World Was Ending (feat. Julia Michaels).mp3",
+    "audioUrl": "/songs/JP Saxe, Julia Michaels - If the World Was Ending (feat. Julia Michaels).mp3",
     "duration": 209
   },
   {
     "title": "this is what falling in love feels like",
     "artist": "JVKE",
     "imageUrl": "/extracted-covers/jvke___this_is_what_falling_in_love_feels_like_cover.jpeg",
-    "audioUrl": "/New songs/JVKE - this is what falling in love feels like.mp3",
+    "audioUrl": "/songs/JVKE - this is what falling in love feels like.mp3",
     "duration": 120
   },
   {
     "title": "Car's Outside",
     "artist": "James Arthur",
     "imageUrl": "/extracted-covers/james_arthur___car_s_outside_cover.jpeg",
-    "audioUrl": "/New songs/James Arthur - Car's Outside.mp3",
+    "audioUrl": "/songs/James Arthur - Car's Outside.mp3",
     "duration": 248
   },
   {
     "title": "High Heels",
     "artist": "Jaz Dhami",
     "imageUrl": "/extracted-covers/jaz_dhami__yo_yo_honey_singh___high_heels_cover.jpeg",
-    "audioUrl": "/New songs/Jaz Dhami, Yo Yo Honey Singh - High Heels.mp3",
+    "audioUrl": "/songs/Jaz Dhami, Yo Yo Honey Singh - High Heels.mp3",
     "duration": 298
   },
   {
     "title": "comethru",
     "artist": "Jeremy Zucker",
     "imageUrl": "/extracted-covers/jeremy_zucker___comethru_cover.jpeg",
-    "audioUrl": "/New songs/Jeremy Zucker - comethru.mp3",
+    "audioUrl": "/songs/Jeremy Zucker - comethru.mp3",
     "duration": 182
   },
   {
     "title": "Harleys In Hawaii",
     "artist": "Katy Perry",
     "imageUrl": "/extracted-covers/katy_perry___harleys_in_hawaii_cover.jpeg",
-    "audioUrl": "/New songs/Katy Perry - Harleys In Hawaii.mp3",
+    "audioUrl": "/songs/Katy Perry - Harleys In Hawaii.mp3",
     "duration": 186
   },
   {
     "title": "Hero Handa",
     "artist": "Khushi Baliyan",
     "imageUrl": "/extracted-covers/khushi_baliyan__ashu_twinkle__raj_mawar__punit_choudhary___hero_handa_cover.jpeg",
-    "audioUrl": "/New songs/Khushi Baliyan, Ashu Twinkle, Raj Mawar, Punit Choudhary - Hero Handa.mp3",
+    "audioUrl": "/songs/Khushi Baliyan, Ashu Twinkle, Raj Mawar, Punit Choudhary - Hero Handa.mp3",
     "duration": 142
   },
   {
     "title": "SPECIALZ",
     "artist": "King Gnu",
     "imageUrl": "/extracted-covers/king_gnu___specialz_cover.jpeg",
-    "audioUrl": "/New songs/King Gnu - SPECIALZ.mp3",
+    "audioUrl": "/songs/King Gnu - SPECIALZ.mp3",
     "duration": 241
   },
   {
     "title": "Brooklyn Baby",
     "artist": "Lana Del Rey",
     "imageUrl": "/extracted-covers/lana_del_rey___brooklyn_baby_cover.jpeg",
-    "audioUrl": "/New songs/Lana Del Rey - Brooklyn Baby.mp3",
+    "audioUrl": "/songs/Lana Del Rey - Brooklyn Baby.mp3",
     "duration": 352
   },
   {
     "title": "Cinnamon Girl",
     "artist": "Lana Del Rey",
     "imageUrl": "/extracted-covers/lana_del_rey___cinnamon_girl_cover.jpeg",
-    "audioUrl": "/New songs/Lana Del Rey - Cinnamon Girl.mp3",
+    "audioUrl": "/songs/Lana Del Rey - Cinnamon Girl.mp3",
     "duration": 301
   },
   {
     "title": "Diet Mountain Dew",
     "artist": "Lana Del Rey",
     "imageUrl": "/extracted-covers/lana_del_rey___diet_mountain_dew_cover.jpeg",
-    "audioUrl": "/New songs/Lana Del Rey - Diet Mountain Dew.mp3",
+    "audioUrl": "/songs/Lana Del Rey - Diet Mountain Dew.mp3",
     "duration": 223
   },
   {
     "title": "Summertime Sadness",
     "artist": "Lana Del Rey",
     "imageUrl": "/extracted-covers/lana_del_rey___summertime_sadness_cover.jpeg",
-    "audioUrl": "/New songs/Lana Del Rey - Summertime Sadness.mp3",
+    "audioUrl": "/songs/Lana Del Rey - Summertime Sadness.mp3",
     "duration": 265
   },
   {
     "title": "White Mustang",
     "artist": "Lana Del Rey",
     "imageUrl": "/extracted-covers/lana_del_rey___white_mustang_cover.jpeg",
-    "audioUrl": "/New songs/Lana Del Rey - White Mustang.mp3",
+    "audioUrl": "/songs/Lana Del Rey - White Mustang.mp3",
     "duration": 165
   },
   {
     "title": "Young And Beautiful",
     "artist": "Lana Del Rey",
     "imageUrl": "/extracted-covers/lana_del_rey___young_and_beautiful_cover.jpeg",
-    "audioUrl": "/New songs/Lana Del Rey - Young And Beautiful.mp3",
+    "audioUrl": "/songs/Lana Del Rey - Young And Beautiful.mp3",
     "duration": 236
   },
   {
     "title": "Summertime Sadness - Sped Up",
     "artist": "Lana Del Rey",
     "imageUrl": "/extracted-covers/lana_del_rey__speed_radio___summertime_sadness___sped_up_cover.jpeg",
-    "audioUrl": "/New songs/Lana Del Rey, Speed Radio - Summertime Sadness - Sped Up.mp3",
+    "audioUrl": "/songs/Lana Del Rey, Speed Radio - Summertime Sadness - Sped Up.mp3",
     "duration": 197
   },
   {
     "title": "I Like Me Better",
     "artist": "Lauv",
     "imageUrl": "/extracted-covers/lauv___i_like_me_better_cover.jpeg",
-    "audioUrl": "/New songs/Lauv - I Like Me Better.mp3",
+    "audioUrl": "/songs/Lauv - I Like Me Better.mp3",
     "duration": 197
   },
   {
     "title": "Ransom",
     "artist": "Lil Tecca",
     "imageUrl": "/extracted-covers/lil_tecca___ransom_cover.jpeg",
-    "audioUrl": "/New songs/Lil Tecca - Ransom.mp3",
+    "audioUrl": "/songs/Lil Tecca - Ransom.mp3",
     "duration": 130
   },
   {
     "title": "Classic",
     "artist": "MKTO",
     "imageUrl": "/extracted-covers/mkto___classic_cover.jpeg",
-    "audioUrl": "/New songs/MKTO - Classic.mp3",
+    "audioUrl": "/songs/MKTO - Classic.mp3",
     "duration": 175
   },
   {
     "title": "Jhol",
     "artist": "Maanu",
     "imageUrl": "/extracted-covers/maanu__annural_khalid___jhol_cover.jpeg",
-    "audioUrl": "/New songs/Maanu, Annural Khalid - Jhol.mp3",
+    "audioUrl": "/songs/Maanu, Annural Khalid - Jhol.mp3",
     "duration": 278
   },
   {
     "title": "Ram ko dekh kar (Live in London)",
     "artist": "Maithili Thakur",
     "imageUrl": "/extracted-covers/maithili_thakur___ram_ko_dekh_kar__live_in_london__cover.jpeg",
-    "audioUrl": "/New songs/Maithili Thakur - Ram ko dekh kar (Live in London).mp3",
+    "audioUrl": "/songs/Maithili Thakur - Ram ko dekh kar (Live in London).mp3",
     "duration": 300
   },
   {
     "title": "Obsessed",
     "artist": "Mariah Carey",
     "imageUrl": "/extracted-covers/mariah_carey___obsessed_cover.jpeg",
-    "audioUrl": "/New songs/Mariah Carey - Obsessed.mp3",
+    "audioUrl": "/songs/Mariah Carey - Obsessed.mp3",
     "duration": 242
   },
   {
     "title": "Nachange Saari Raat (From \"Junooniyat\")",
     "artist": "Meet Bros.",
     "imageUrl": "/extracted-covers/meet_bros___neeraj_shridhar__tulsi_kumar___nachange_saari_raat__from__junooniyat___cover.jpeg",
-    "audioUrl": "/New songs/Meet Bros., Neeraj Shridhar, Tulsi Kumar - Nachange Saari Raat (From 'Junooniyat').mp3",
+    "audioUrl": "/songs/Meet Bros., Neeraj Shridhar, Tulsi Kumar - Nachange Saari Raat (From 'Junooniyat').mp3",
     "duration": 252
   },
   {
     "title": "Girl With The Tattoo Enter.lewd",
     "artist": "Miguel",
     "imageUrl": "/extracted-covers/miguel___girl_with_the_tattoo_enter_lewd_cover.jpeg",
-    "audioUrl": "/New songs/Miguel - Girl With The Tattoo Enter.lewd.mp3",
+    "audioUrl": "/songs/Miguel - Girl With The Tattoo Enter.lewd.mp3",
     "duration": 103
   },
   {
     "title": "Sure Thing - Sped Up",
     "artist": "Miguel",
     "imageUrl": "/extracted-covers/miguel___sure_thing___sped_up_cover.jpeg",
-    "audioUrl": "/New songs/Miguel - Sure Thing - Sped Up.mp3",
+    "audioUrl": "/songs/Miguel - Sure Thing - Sped Up.mp3",
     "duration": 150
   },
   {
     "title": "Angels Like You",
     "artist": "Miley Cyrus",
     "imageUrl": "/extracted-covers/miley_cyrus___angels_like_you_cover.jpeg",
-    "audioUrl": "/New songs/Miley Cyrus - Angels Like You.mp3",
+    "audioUrl": "/songs/Miley Cyrus - Angels Like You.mp3",
     "duration": 196
   },
   {
     "title": "My Love Mine All Mine",
     "artist": "Mitski",
     "imageUrl": "/extracted-covers/mitski___my_love_mine_all_mine_cover.jpeg",
-    "audioUrl": "/New songs/Mitski - My Love Mine All Mine.mp3",
+    "audioUrl": "/songs/Mitski - My Love Mine All Mine.mp3",
     "duration": 138
   },
   {
     "title": "Matargashti",
     "artist": "Mohit Chauhan",
     "imageUrl": "/extracted-covers/mohit_chauhan___matargashti_cover.jpeg",
-    "audioUrl": "/New songs/Mohit Chauhan - Matargashti.mp3",
+    "audioUrl": "/songs/Mohit Chauhan - Matargashti.mp3",
     "duration": 328
   },
   {
     "title": "I WANNA BE YOUR SLAVE",
     "artist": "Måneskin",
     "imageUrl": "/extracted-covers/m_neskin___i_wanna_be_your_slave_cover.jpeg",
-    "audioUrl": "/New songs/Måneskin - I WANNA BE YOUR SLAVE.mp3",
+    "audioUrl": "/songs/Måneskin - I WANNA BE YOUR SLAVE.mp3",
     "duration": 173
   },
   {
     "title": "The Search",
     "artist": "NF",
     "imageUrl": "/extracted-covers/nf___the_search_cover.jpeg",
-    "audioUrl": "/New songs/NF - The Search.mp3",
+    "audioUrl": "/songs/NF - The Search.mp3",
     "duration": 248
   },
   {
     "title": "Bye Bye Bye",
     "artist": "*NSYNC",
     "imageUrl": "/extracted-covers/nsync___bye_bye_bye_cover.jpeg",
-    "audioUrl": "/New songs/NSYNC - Bye Bye Bye.mp3",
+    "audioUrl": "/songs/NSYNC - Bye Bye Bye.mp3",
     "duration": 200
   },
   {
     "title": "Aankh Marey (From \"Simmba\")",
     "artist": "Neha Kakkar",
     "imageUrl": "/extracted-covers/neha_kakkar__mika_singh__kumar_sanu__tanishk_bagchi___aankh_marey__from__simmba___cover.jpeg",
-    "audioUrl": "/New songs/Neha Kakkar, Mika Singh, Kumar Sanu, Tanishk Bagchi - Aankh Marey (From 'Simmba').mp3",
+    "audioUrl": "/songs/Neha Kakkar, Mika Singh, Kumar Sanu, Tanishk Bagchi - Aankh Marey (From 'Simmba').mp3",
     "duration": 213
   },
   {
     "title": "This Town",
     "artist": "Niall Horan",
     "imageUrl": "/extracted-covers/niall_horan___this_town_cover.jpeg",
-    "audioUrl": "/New songs/Niall Horan - This Town.mp3",
+    "audioUrl": "/songs/Niall Horan - This Town.mp3",
     "duration": 233
   },
   {
     "title": "Not Around",
     "artist": "Nova",
     "imageUrl": "/extracted-covers/nova___not_around_cover.jpeg",
-    "audioUrl": "/New songs/Nova - Not Around.mp3",
+    "audioUrl": "/songs/Nova - Not Around.mp3",
     "duration": 184
   },
   {
     "title": "Let's Nacho",
     "artist": "Nucleya",
     "imageUrl": "/extracted-covers/nucleya__benny_dayal__badshah___let_s_nacho_cover.jpeg",
-    "audioUrl": "/New songs/Nucleya, Benny Dayal, Badshah - Let's Nacho.mp3",
+    "audioUrl": "/songs/Nucleya, Benny Dayal, Badshah - Let's Nacho.mp3",
     "duration": 215
   },
   {
     "title": "Night Changes",
     "artist": "One Direction",
     "imageUrl": "/extracted-covers/one_direction___night_changes_cover.jpeg",
-    "audioUrl": "/New songs/One Direction - Night Changes.mp3",
+    "audioUrl": "/songs/One Direction - Night Changes.mp3",
     "duration": 227
   },
   {
     "title": "Perfect",
     "artist": "One Direction",
     "imageUrl": "/extracted-covers/one_direction___perfect_cover.jpeg",
-    "audioUrl": "/New songs/One Direction - Perfect.mp3",
+    "audioUrl": "/songs/One Direction - Perfect.mp3",
     "duration": 230
   },
   {
     "title": "PAN INDIA",
     "artist": "Guru Randhawa",
     "imageUrl": "/extracted-covers/pan_india___guru_randhawa_cover.jpeg",
-    "audioUrl": "/New songs/PAN INDIA - Guru Randhawa.mp3",
+    "audioUrl": "/songs/PAN INDIA - Guru Randhawa.mp3",
     "duration": 131
   },
   {
     "title": "Make You Mine",
     "artist": "PUBLIC",
     "imageUrl": "/extracted-covers/public___make_you_mine_cover.jpeg",
-    "audioUrl": "/New songs/PUBLIC - Make You Mine.mp3",
+    "audioUrl": "/songs/PUBLIC - Make You Mine.mp3",
     "duration": 233
   },
   {
     "title": "Galti Se Mistake (From \"Jagga Jasoos\")",
     "artist": "Pritam",
     "imageUrl": "/extracted-covers/pritam__arijit_singh__amit_mishra___galti_se_mistake__from__jagga_jasoos___cover.jpeg",
-    "audioUrl": "/New songs/Pritam, Arijit Singh, Amit Mishra - Galti Se Mistake (From 'Jagga Jasoos').mp3",
+    "audioUrl": "/songs/Pritam, Arijit Singh, Amit Mishra - Galti Se Mistake (From 'Jagga Jasoos').mp3",
     "duration": 203
   },
   {
     "title": "The Breakup Song",
     "artist": "Pritam",
     "imageUrl": "/extracted-covers/pritam__arijit_singh__badshah__jonita_gandhi__nakash_aziz___the_breakup_song_cover.jpeg",
-    "audioUrl": "/New songs/Pritam, Arijit Singh, Badshah, Jonita Gandhi, Nakash Aziz - The Breakup Song.mp3",
+    "audioUrl": "/songs/Pritam, Arijit Singh, Badshah, Jonita Gandhi, Nakash Aziz - The Breakup Song.mp3",
     "duration": 253
   },
   {
     "title": "Satyanaas (From \"Chandu Champion\")",
     "artist": "Pritam",
     "imageUrl": "/extracted-covers/pritam__arijit_singh__nakash_aziz__amitabh_bhattacharya__dev_negi___satyanaas__from__chandu_champion___cover.jpeg",
-    "audioUrl": "/New songs/Pritam, Arijit Singh, Nakash Aziz, Amitabh Bhattacharya, Dev Negi - Satyanaas (From 'Chandu Champion').mp3",
+    "audioUrl": "/songs/Pritam, Arijit Singh, Nakash Aziz, Amitabh Bhattacharya, Dev Negi - Satyanaas (From 'Chandu Champion').mp3",
     "duration": 205
   },
   {
     "title": "Make Some Noise For The Desi Boyz",
     "artist": "Pritam",
     "imageUrl": "/extracted-covers/pritam__kk__bob___make_some_noise_for_the_desi_boyz_cover.jpeg",
-    "audioUrl": "/New songs/Pritam, KK, Bob - Make Some Noise For The Desi Boyz.mp3",
+    "audioUrl": "/songs/Pritam, KK, Bob - Make Some Noise For The Desi Boyz.mp3",
     "duration": 244
   },
   {
     "title": "Tu Mera Hero",
     "artist": "Pritam",
     "imageUrl": "/extracted-covers/pritam__mika_singh__shefali_alvares___tu_mera_hero_cover.jpeg",
-    "audioUrl": "/New songs/Pritam, Mika Singh, Shefali Alvares - Tu Mera Hero.mp3",
+    "audioUrl": "/songs/Pritam, Mika Singh, Shefali Alvares - Tu Mera Hero.mp3",
     "duration": 292
   },
   {
     "title": "Jhak Maar Ke",
     "artist": "Pritam",
     "imageUrl": "/extracted-covers/pritam__neeraj_shridhar__harshdeep_kaur___jhak_maar_ke_cover.jpeg",
-    "audioUrl": "/New songs/Pritam, Neeraj Shridhar, Harshdeep Kaur - Jhak Maar Ke.mp3",
+    "audioUrl": "/songs/Pritam, Neeraj Shridhar, Harshdeep Kaur - Jhak Maar Ke.mp3",
     "duration": 233
   },
   {
     "title": "Ghagra",
     "artist": "Pritam",
     "imageUrl": "/extracted-covers/pritam__rekha_bhardwaj__vishal_dadlani___ghagra_cover.jpeg",
-    "audioUrl": "/New songs/Pritam, Rekha Bhardwaj, Vishal Dadlani - Ghagra.mp3",
+    "audioUrl": "/songs/Pritam, Rekha Bhardwaj, Vishal Dadlani - Ghagra.mp3",
     "duration": 304
   },
   {
     "title": "Sparkle - movie ver.",
     "artist": "RADWIMPS",
     "imageUrl": "/extracted-covers/radwimps___sparkle___movie_ver__cover.jpeg",
-    "audioUrl": "/New songs/RADWIMPS - Sparkle - movie ver..mp3",
+    "audioUrl": "/songs/RADWIMPS - Sparkle - movie ver..mp3",
     "duration": 538
   },
   {
     "title": "Suzume",
     "artist": "RADWIMPS",
     "imageUrl": "/extracted-covers/radwimps__toaka___suzume_cover.jpeg",
-    "audioUrl": "/New songs/RADWIMPS, Toaka - Suzume.mp3",
+    "audioUrl": "/songs/RADWIMPS, Toaka - Suzume.mp3",
     "duration": 236
   },
   {
     "title": "Solid Body",
     "artist": "Raju Punjabi",
     "imageUrl": "/extracted-covers/raju_punjabi__sheenam_katholic___solid_body_cover.jpeg",
-    "audioUrl": "/New songs/Raju Punjabi, Sheenam Katholic - Solid Body.mp3",
+    "audioUrl": "/songs/Raju Punjabi, Sheenam Katholic - Solid Body.mp3",
     "duration": 177
   },
   {
     "title": "Shri Ram Jaanki Baithe Hai",
     "artist": "Ram Kumar Lakha",
     "imageUrl": "/extracted-covers/ram_kumar_lakha___shri_ram_jaanki_baithe_hai_cover.jpeg",
-    "audioUrl": "/New songs/Ram Kumar Lakha - Shri Ram Jaanki Baithe Hai.mp3",
+    "audioUrl": "/songs/Ram Kumar Lakha - Shri Ram Jaanki Baithe Hai.mp3",
     "duration": 516
   },
   {
     "title": "THE SHADE",
     "artist": "Rex Orange County",
     "imageUrl": "/extracted-covers/rex_orange_county___the_shade_cover.jpeg",
-    "audioUrl": "/New songs/Rex Orange County - THE SHADE.mp3",
+    "audioUrl": "/songs/Rex Orange County - THE SHADE.mp3",
     "duration": 182
   },
   {
     "title": "Dandelions",
     "artist": "Ruth B.",
     "imageUrl": "/extracted-covers/ruth_b____dandelions_cover.jpeg",
-    "audioUrl": "/New songs/Ruth B. - Dandelions.mp3",
+    "audioUrl": "/songs/Ruth B. - Dandelions.mp3",
     "duration": 234
   },
   {
     "title": "Ram Siya Ram (From \"Adipurush\")",
     "artist": "Sachet-Parampara",
     "imageUrl": "/extracted-covers/sachet_parampara__sachet_tandon__parampara_tandon__manoj_muntashir___ram_siya_ram__from__adipurush___cover.jpeg",
-    "audioUrl": "/New songs/Sachet-Parampara, Sachet Tandon, Parampara Tandon, Manoj Muntashir - Ram Siya Ram (From 'Adipurush').mp3",
+    "audioUrl": "/songs/Sachet-Parampara, Sachet Tandon, Parampara Tandon, Manoj Muntashir - Ram Siya Ram (From 'Adipurush').mp3",
     "duration": 230
   },
   {
     "title": "Dance Basanti",
     "artist": "Sachin-Jigar",
     "imageUrl": "/extracted-covers/sachin_jigar__vishal_dadlani__anushka_manchanda___dance_basanti_cover.jpeg",
-    "audioUrl": "/New songs/Sachin-Jigar, Vishal Dadlani, Anushka Manchanda - Dance Basanti.mp3",
+    "audioUrl": "/songs/Sachin-Jigar, Vishal Dadlani, Anushka Manchanda - Dance Basanti.mp3",
     "duration": 224
   },
   {
     "title": "Atlantis",
     "artist": "Seafret",
     "imageUrl": "/extracted-covers/seafret___atlantis_cover.jpeg",
-    "audioUrl": "/New songs/Seafret - Atlantis.mp3",
+    "audioUrl": "/songs/Seafret - Atlantis.mp3",
     "duration": 229
   },
   {
     "title": "One Love",
     "artist": "Shubh",
     "imageUrl": "/extracted-covers/shubh___one_love_cover.jpeg",
-    "audioUrl": "/New songs/Shubh - One Love.mp3",
+    "audioUrl": "/songs/Shubh - One Love.mp3",
     "duration": 159
   },
   {
     "title": "Mind Games",
     "artist": "Sickick",
     "imageUrl": "/extracted-covers/sickick___mind_games_cover.jpeg",
-    "audioUrl": "/New songs/Sickick - Mind Games.mp3",
+    "audioUrl": "/songs/Sickick - Mind Games.mp3",
     "duration": 258
   },
   {
     "title": "Teenage Dream",
     "artist": "Stephen Dawes",
     "imageUrl": "/extracted-covers/stephen_dawes___teenage_dream_cover.jpeg",
-    "audioUrl": "/New songs/Stephen Dawes - Teenage Dream.mp3",
+    "audioUrl": "/songs/Stephen Dawes - Teenage Dream.mp3",
     "duration": 178
   },
   {
     "title": "Until I Found You (with Em Beihold) - Em Beihold Version",
     "artist": "Stephen Sanchez",
     "imageUrl": "/extracted-covers/stephen_sanchez__em_beihold___until_i_found_you__with_em_beihold____em_beihold_version_cover.jpeg",
-    "audioUrl": "/New songs/Stephen Sanchez, Em Beihold - Until I Found You (with Em Beihold) - Em Beihold Version.mp3",
+    "audioUrl": "/songs/Stephen Sanchez, Em Beihold - Until I Found You (with Em Beihold) - Em Beihold Version.mp3",
     "duration": 176
   },
   {
     "title": "Dark Red",
     "artist": "Steve Lacy",
     "imageUrl": "/extracted-covers/steve_lacy___dark_red_cover.jpeg",
-    "audioUrl": "/New songs/Steve Lacy - Dark Red.mp3",
+    "audioUrl": "/songs/Steve Lacy - Dark Red.mp3",
     "duration": 173
   },
   {
     "title": "Good Looking",
     "artist": "Suki Waterhouse",
     "imageUrl": "/extracted-covers/suki_waterhouse___good_looking_cover.jpeg",
-    "audioUrl": "/New songs/Suki Waterhouse - Good Looking.mp3",
+    "audioUrl": "/songs/Suki Waterhouse - Good Looking.mp3",
     "duration": 215
   },
   {
     "title": "ily (i love you baby) (feat. Emilee)",
     "artist": "Surf Mesa",
     "imageUrl": "/extracted-covers/surf_mesa__emilee___ily__i_love_you_baby___feat__emilee__cover.jpeg",
-    "audioUrl": "/New songs/Surf Mesa, Emilee - ily (i love you baby) (feat. Emilee).mp3",
+    "audioUrl": "/songs/Surf Mesa, Emilee - ily (i love you baby) (feat. Emilee).mp3",
     "duration": 177
   },
   {
     "title": "Lovers Rock",
     "artist": "TV Girl",
     "imageUrl": "/extracted-covers/tv_girl___lovers_rock_cover.jpeg",
-    "audioUrl": "/New songs/TV Girl - Lovers Rock.mp3",
+    "audioUrl": "/songs/TV Girl - Lovers Rock.mp3",
     "duration": 214
   },
   {
     "title": "Borderline",
     "artist": "Tame Impala",
     "imageUrl": "/extracted-covers/tame_impala___borderline_cover.jpeg",
-    "audioUrl": "/New songs/Tame Impala - Borderline.mp3",
+    "audioUrl": "/songs/Tame Impala - Borderline.mp3",
     "duration": 238
   },
   {
     "title": "Cruel Summer",
     "artist": "Taylor Swift",
     "imageUrl": "/extracted-covers/taylor_swift___cruel_summer_cover.jpeg",
-    "audioUrl": "/New songs/Taylor Swift - Cruel Summer.mp3",
+    "audioUrl": "/songs/Taylor Swift - Cruel Summer.mp3",
     "duration": 178
   },
   {
     "title": "Daylight",
     "artist": "Taylor Swift",
     "imageUrl": "/extracted-covers/taylor_swift___daylight_cover.jpeg",
-    "audioUrl": "/New songs/Taylor Swift - Daylight.mp3",
+    "audioUrl": "/songs/Taylor Swift - Daylight.mp3",
     "duration": 293
   },
   {
     "title": "Gorgeous",
     "artist": "Taylor Swift",
     "imageUrl": "/extracted-covers/taylor_swift___gorgeous_cover.jpeg",
-    "audioUrl": "/New songs/Taylor Swift - Gorgeous.mp3",
+    "audioUrl": "/songs/Taylor Swift - Gorgeous.mp3",
     "duration": 210
   },
   {
     "title": "Paper Rings",
     "artist": "Taylor Swift",
     "imageUrl": "/extracted-covers/taylor_swift___paper_rings_cover.jpeg",
-    "audioUrl": "/New songs/Taylor Swift - Paper Rings.mp3",
+    "audioUrl": "/songs/Taylor Swift - Paper Rings.mp3",
     "duration": 222
   },
   {
     "title": "Style",
     "artist": "Taylor Swift",
     "imageUrl": "/extracted-covers/taylor_swift___style_cover.jpeg",
-    "audioUrl": "/New songs/Taylor Swift - Style.mp3",
+    "audioUrl": "/songs/Taylor Swift - Style.mp3",
     "duration": 231
   },
   {
     "title": "The Way I Loved You (Taylor’s Version)",
     "artist": "Taylor Swift",
     "imageUrl": "/extracted-covers/taylor_swift___the_way_i_loved_you__taylor_s_version__cover.jpeg",
-    "audioUrl": "/New songs/Taylor Swift - The Way I Loved You (Taylor’s Version).mp3",
+    "audioUrl": "/songs/Taylor Swift - The Way I Loved You (Taylor’s Version).mp3",
     "duration": 243
   },
   {
     "title": "Wildest Dreams",
     "artist": "Taylor Swift",
     "imageUrl": "/extracted-covers/taylor_swift___wildest_dreams_cover.jpeg",
-    "audioUrl": "/New songs/Taylor Swift - Wildest Dreams.mp3",
+    "audioUrl": "/songs/Taylor Swift - Wildest Dreams.mp3",
     "duration": 220
   },
   {
     "title": "You Belong With Me (Taylor’s Version)",
     "artist": "Taylor Swift",
     "imageUrl": "/extracted-covers/taylor_swift___you_belong_with_me__taylor_s_version__cover.jpeg",
-    "audioUrl": "/New songs/Taylor Swift - You Belong With Me (Taylor’s Version).mp3",
+    "audioUrl": "/songs/Taylor Swift - You Belong With Me (Taylor’s Version).mp3",
     "duration": 231
   },
   {
     "title": "cardigan",
     "artist": "Taylor Swift",
     "imageUrl": "/extracted-covers/taylor_swift___cardigan_cover.jpeg",
-    "audioUrl": "/New songs/Taylor Swift - cardigan.mp3",
+    "audioUrl": "/songs/Taylor Swift - cardigan.mp3",
     "duration": 240
   },
   {
     "title": "willow",
     "artist": "Taylor Swift",
     "imageUrl": "/extracted-covers/taylor_swift___willow_cover.jpeg",
-    "audioUrl": "/New songs/Taylor Swift - willow.mp3",
+    "audioUrl": "/songs/Taylor Swift - willow.mp3",
     "duration": 215
   },
   {
     "title": "Daddy Issues",
     "artist": "The Neighbourhood",
     "imageUrl": "/extracted-covers/the_neighbourhood___daddy_issues_cover.jpeg",
-    "audioUrl": "/New songs/The Neighbourhood - Daddy Issues.mp3",
+    "audioUrl": "/songs/The Neighbourhood - Daddy Issues.mp3",
     "duration": 260
   },
   {
     "title": "Reflections",
     "artist": "The Neighbourhood",
     "imageUrl": "/extracted-covers/the_neighbourhood___reflections_cover.jpeg",
-    "audioUrl": "/New songs/The Neighbourhood - Reflections.mp3",
+    "audioUrl": "/songs/The Neighbourhood - Reflections.mp3",
     "duration": 244
   },
   {
     "title": "Softcore",
     "artist": "The Neighbourhood",
     "imageUrl": "/extracted-covers/the_neighbourhood___softcore_cover.jpeg",
-    "audioUrl": "/New songs/The Neighbourhood - Softcore.mp3",
+    "audioUrl": "/songs/The Neighbourhood - Softcore.mp3",
     "duration": 206
   },
   {
     "title": "Sweater Weather",
     "artist": "The Neighbourhood",
     "imageUrl": "/extracted-covers/the_neighbourhood___sweater_weather_cover.jpeg",
-    "audioUrl": "/New songs/The Neighbourhood - Sweater Weather.mp3",
+    "audioUrl": "/songs/The Neighbourhood - Sweater Weather.mp3",
     "duration": 240
   },
   {
     "title": "You Get Me So High",
     "artist": "The Neighbourhood",
-    "imageUrl": "/New songs/covers/The Neighbourhood - Daddy Issues.jpg",
-    "audioUrl": "/New songs/The Neighbourhood - You Get Me So High.mp3",
+    "imageUrl": "/songs/covers/The Neighbourhood - Daddy Issues.jpg",
+    "audioUrl": "/songs/The Neighbourhood - You Get Me So High.mp3",
     "duration": 153
   },
   {
     "title": "Somebody To You",
     "artist": "The Vamps",
     "imageUrl": "/extracted-covers/the_vamps___somebody_to_you_cover.jpeg",
-    "audioUrl": "/New songs/The Vamps - Somebody To You.mp3",
+    "audioUrl": "/songs/The Vamps - Somebody To You.mp3",
     "duration": 185
   },
   {
     "title": "I Love You So",
     "artist": "The Walters",
     "imageUrl": "/extracted-covers/the_walters___i_love_you_so_cover.jpeg",
-    "audioUrl": "/New songs/The Walters - I Love You So.mp3",
+    "audioUrl": "/songs/The Walters - I Love You So.mp3",
     "duration": 160
   },
   {
     "title": "Die For You",
     "artist": "The Weeknd",
     "imageUrl": "/extracted-covers/the_weeknd___die_for_you_cover.jpeg",
-    "audioUrl": "/New songs/The Weeknd - Die For You.mp3",
+    "audioUrl": "/songs/The Weeknd - Die For You.mp3",
     "duration": 260
   },
   {
     "title": "House Of Balloons / Glass Table Girls",
     "artist": "The Weeknd",
     "imageUrl": "/extracted-covers/the_weeknd___house_of_balloons__glass_table_girls_cover.jpeg",
-    "audioUrl": "/New songs/The Weeknd - House Of Balloons  Glass Table Girls.mp3",
+    "audioUrl": "/songs/The Weeknd - House Of Balloons  Glass Table Girls.mp3",
     "duration": 407
   },
   {
     "title": "Is There Someone Else?",
     "artist": "The Weeknd",
     "imageUrl": "/extracted-covers/the_weeknd___is_there_someone_else_cover.jpeg",
-    "audioUrl": "/New songs/The Weeknd - Is There Someone Else.mp3",
+    "audioUrl": "/songs/The Weeknd - Is There Someone Else.mp3",
     "duration": 199
   },
   {
     "title": "Often",
     "artist": "The Weeknd",
     "imageUrl": "/extracted-covers/the_weeknd___often_cover.jpeg",
-    "audioUrl": "/New songs/The Weeknd - Often.mp3",
+    "audioUrl": "/songs/The Weeknd - Often.mp3",
     "duration": 249
   },
   {
     "title": "Party Monster",
     "artist": "The Weeknd",
     "imageUrl": "/extracted-covers/the_weeknd___party_monster_cover.jpeg",
-    "audioUrl": "/New songs/The Weeknd - Party Monster.mp3",
+    "audioUrl": "/songs/The Weeknd - Party Monster.mp3",
     "duration": 249
   },
   {
     "title": "I Was Never There",
     "artist": "The Weeknd",
     "imageUrl": "/extracted-covers/the_weeknd__gesaffelstein___i_was_never_there_cover.jpeg",
-    "audioUrl": "/New songs/The Weeknd, Gesaffelstein - I Was Never There.mp3",
+    "audioUrl": "/songs/The Weeknd, Gesaffelstein - I Was Never There.mp3",
     "duration": 241
   },
   {
     "title": "One Of The Girls (with JENNIE, Lily Rose Depp)",
     "artist": "The Weeknd",
     "imageUrl": "/extracted-covers/the_weeknd__jennie__lily_rose_depp___one_of_the_girls__with_jennie__lily_rose_depp__cover.jpeg",
-    "audioUrl": "/New songs/The Weeknd, JENNIE, Lily-Rose Depp - One Of The Girls (with JENNIE, Lily Rose Depp).mp3",
+    "audioUrl": "/songs/The Weeknd, JENNIE, Lily-Rose Depp - One Of The Girls (with JENNIE, Lily Rose Depp).mp3",
     "duration": 245
   },
   {
     "title": "Music to Watch Boys To x I Wanna Be Yours",
     "artist": "Treyvik",
     "imageUrl": "/extracted-covers/treyvik___music_to_watch_boys_to_x_i_wanna_be_yours_cover.jpeg",
-    "audioUrl": "/New songs/Treyvik - Music to Watch Boys To x I Wanna Be Yours.mp3",
+    "audioUrl": "/songs/Treyvik - Music to Watch Boys To x I Wanna Be Yours.mp3",
     "duration": 142
   },
   {
     "title": "Love Me Back (Fayahh Beat)",
     "artist": "Trinidad Cardona",
     "imageUrl": "/extracted-covers/trinidad_cardona__robinson___love_me_back__fayahh_beat__cover.jpeg",
-    "audioUrl": "/New songs/Trinidad Cardona, Robinson - Love Me Back (Fayahh Beat).mp3",
+    "audioUrl": "/songs/Trinidad Cardona, Robinson - Love Me Back (Fayahh Beat).mp3",
     "duration": 194
   },
   {
     "title": "Strawberries & Cigarettes",
     "artist": "Troye Sivan",
     "imageUrl": "/extracted-covers/troye_sivan___strawberries___cigarettes_cover.jpeg",
-    "audioUrl": "/New songs/Troye Sivan - Strawberries & Cigarettes.mp3",
+    "audioUrl": "/songs/Troye Sivan - Strawberries & Cigarettes.mp3",
     "duration": 202
   },
   {
     "title": "YOUTH",
     "artist": "Troye Sivan",
     "imageUrl": "/extracted-covers/troye_sivan___youth_cover.jpeg",
-    "audioUrl": "/New songs/Troye Sivan - YOUTH.mp3",
+    "audioUrl": "/songs/Troye Sivan - YOUTH.mp3",
     "duration": 185
   },
   {
     "title": "Jugraafiya - From \"Super 30\"",
     "artist": "Udit Narayan",
     "imageUrl": "/extracted-covers/udit_narayan__shreya_ghoshal___jugraafiya___from__super_30__cover.jpeg",
-    "audioUrl": "/New songs/Udit Narayan, Shreya Ghoshal - Jugraafiya - From 'Super 30'.mp3",
+    "audioUrl": "/songs/Udit Narayan, Shreya Ghoshal - Jugraafiya - From 'Super 30'.mp3",
     "duration": 274
   },
   {
     "title": "Aankhon Aankhon",
     "artist": "Yo Yo Honey Singh",
     "imageUrl": "/extracted-covers/yo_yo_honey_singh___aankhon_aankhon_cover.jpeg",
-    "audioUrl": "/New songs/Yo Yo Honey Singh - Aankhon Aankhon.mp3",
+    "audioUrl": "/songs/Yo Yo Honey Singh - Aankhon Aankhon.mp3",
     "duration": 245
   },
   {
     "title": "Glassy",
     "artist": "Yo Yo Honey Singh",
     "imageUrl": "/extracted-covers/yo_yo_honey_singh__ashok_mastie__channi_rakhala__bonafide__koncept___glassy_cover.jpeg",
-    "audioUrl": "/New songs/Yo Yo Honey Singh, Ashok Mastie, Channi Rakhala, Bonafide, Koncept - Glassy.mp3",
+    "audioUrl": "/songs/Yo Yo Honey Singh, Ashok Mastie, Channi Rakhala, Bonafide, Koncept - Glassy.mp3",
     "duration": 222
   },
   {
     "title": "Mind Over Matter (Reprise)",
     "artist": "Young the Giant",
     "imageUrl": "/extracted-covers/young_the_giant___mind_over_matter__reprise__cover.jpeg",
-    "audioUrl": "/New songs/Young the Giant - Mind Over Matter (Reprise).mp3",
+    "audioUrl": "/songs/Young the Giant - Mind Over Matter (Reprise).mp3",
     "duration": 231
   },
   {
     "title": "Bom Diggy Diggy",
     "artist": "Zack Knight",
     "imageUrl": "/extracted-covers/zack_knight__jasmin_walia___bom_diggy_diggy_cover.jpeg",
-    "audioUrl": "/New songs/Zack Knight, Jasmin Walia - Bom Diggy Diggy.mp3",
+    "audioUrl": "/songs/Zack Knight, Jasmin Walia - Bom Diggy Diggy.mp3",
     "duration": 239
   },
   {
     "title": "Pano",
     "artist": "Zack Tabudlo",
     "imageUrl": "/extracted-covers/zack_tabudlo___pano_cover.jpeg",
-    "audioUrl": "/New songs/Zack Tabudlo - Pano.mp3",
+    "audioUrl": "/songs/Zack Tabudlo - Pano.mp3",
     "duration": 254
   },
   {
     "title": "Romantic Homicide",
     "artist": "d4vd",
     "imageUrl": "/extracted-covers/d4vd___romantic_homicide_cover.jpeg",
-    "audioUrl": "/New songs/d4vd - Romantic Homicide.mp3",
+    "audioUrl": "/songs/d4vd - Romantic Homicide.mp3",
     "duration": 133
   },
   {
     "title": "we fell in love in october",
     "artist": "girl in red",
     "imageUrl": "/extracted-covers/girl_in_red___we_fell_in_love_in_october_cover.jpeg",
-    "audioUrl": "/New songs/girl in red - we fell in love in october.mp3",
+    "audioUrl": "/songs/girl in red - we fell in love in october.mp3",
     "duration": 184
   },
   {
     "title": "blue",
     "artist": "yung kai",
     "imageUrl": "/extracted-covers/yung_kai___blue_cover.jpeg",
-    "audioUrl": "/New songs/yung kai - blue.mp3",
+    "audioUrl": "/songs/yung kai - blue.mp3",
     "duration": 214
   }
 ];

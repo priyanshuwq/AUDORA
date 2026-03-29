@@ -30,3 +30,9 @@ dist-ssr
 *.sln
 *.sw?
 
+# Media files (served from separate audora-media repo in production)
+# Keep these locally for development, but don't commit to main repo
+public/songs/
+public/extracted-covers/
+public/audora-media/
+

@@ -20,16 +20,23 @@ import {
 } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import Topbar from "@/components/Topbar";
-import PlayButton from "@/pages/home/components/PlayButton";
 import AnimatedGrid from "@/components/AnimatedGrid";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import GlassCard from "@/components/ui/GlassCard";
+import PlayButton from "@/pages/home/components/PlayButton";
 import { useSearch } from "@/hooks/useSearch";
 import { useKeyboardNavigation } from "@/hooks/useKeyboardNavigation";
 import { usePlayerStore } from "@/stores/usePlayerStore";
 import { useMusicStore } from "@/stores/useMusicStore";
-import { Album, Song } from "@/types";
+import { Album } from "@/types";
 import BouncingBall from "@/components/BouncingBall";
+import {
+  SongGridSkeleton,
+  EmptyState,
+  SongTabContent,
+  SongGrid,
+} from "./components";
+import { getMediaUrl } from "@/lib/mediaUrl";
 
 const BrowsePage = () => {
   const location = useLocation();
@@ -38,9 +45,8 @@ const BrowsePage = () => {
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
-  // Album dialog state
+  // Album dialog state (currently unused but kept for future implementation)
   const [isAddToAlbumDialogOpen, setIsAddToAlbumDialogOpen] = useState(false);
-  const [selectedSong] = useState<Song | null>(null);
 
   // Handle initial search from navigation
   useEffect(() => {
@@ -52,7 +58,6 @@ const BrowsePage = () => {
   }, [location.state]);
 
   // Stores
-  // Removed unused destructured elements from usePlayerStore
   usePlayerStore();
   const {
     featuredSongs,
@@ -86,7 +91,6 @@ const BrowsePage = () => {
   useEffect(() => {
     if (searchQuery && location.state?.searchQuery) {
       search(searchQuery);
-      // Clear the location state to prevent re-searching on subsequent renders
       window.history.replaceState({}, document.title);
     }
   }, [searchQuery, location.state, search]);
@@ -97,7 +101,7 @@ const BrowsePage = () => {
     fetchTrendingSongs();
     fetchMadeForYouSongs();
     fetchRecentSongs();
-    fetchAlbums(); // Fetch albums for the add to album dialog
+    fetchAlbums();
   }, [
     fetchFeaturedSongs,
     fetchTrendingSongs,
@@ -123,31 +127,26 @@ const BrowsePage = () => {
   // Keyboard navigation
   useKeyboardNavigation({
     onEscape: () => {
-      if (searchQuery) {
-        handleClearSearch();
-      }
+      if (searchQuery) handleClearSearch();
     },
     onSearch: () => {
       setActiveTab("search");
-      setTimeout(() => {
-        searchInputRef.current?.focus();
-      }, 100);
+      setTimeout(() => searchInputRef.current?.focus(), 100);
     },
   });
 
-
-  // Functions for adding songs to albums
-
   const handleAddToAlbum = async (albumId: string) => {
-    if (!selectedSong) return;
-
+    // Note: selectedSong state needs to be implemented for this to work
     try {
-      await addSongToAlbum(albumId, selectedSong._id);
+      await addSongToAlbum(albumId, "");
       setIsAddToAlbumDialogOpen(false);
     } catch (error) {
       console.error("Error adding song to album:", error);
     }
   };
+
+  const tabTriggerClass =
+    "flex flex-col items-center justify-center gap-1.5 py-3 px-2 rounded-lg data-[state=active]:bg-red-600 data-[state=active]:text-white data-[state=inactive]:text-zinc-400 transition-all hover:text-zinc-200";
 
   return (
     <ErrorBoundary>
@@ -171,38 +170,23 @@ const BrowsePage = () => {
           >
             <div className="px-4 sm:px-6 pb-4 flex justify-center">
               <TabsList className="grid grid-cols-5 w-full md:w-3/4 lg:w-2/3 xl:w-1/2 h-auto bg-zinc-900/50 p-1 rounded-xl border border-white/10">
-                <TabsTrigger
-                  value="search"
-                  className="flex flex-col items-center justify-center gap-1.5 py-3 px-2 rounded-lg data-[state=active]:bg-red-600 data-[state=active]:text-white data-[state=inactive]:text-zinc-400 transition-all hover:text-zinc-200"
-                >
+                <TabsTrigger value="search" className={tabTriggerClass}>
                   <Search className="w-5 h-5" />
                   <span className="text-xs font-medium hidden sm:block">Search</span>
                 </TabsTrigger>
-                <TabsTrigger
-                  value="featured"
-                  className="flex flex-col items-center justify-center gap-1.5 py-3 px-2 rounded-lg data-[state=active]:bg-red-600 data-[state=active]:text-white data-[state=inactive]:text-zinc-400 transition-all hover:text-zinc-200"
-                >
+                <TabsTrigger value="featured" className={tabTriggerClass}>
                   <Sparkles className="w-5 h-5" />
                   <span className="text-xs font-medium hidden sm:block">Featured</span>
                 </TabsTrigger>
-                <TabsTrigger
-                  value="trending"
-                  className="flex flex-col items-center justify-center gap-1.5 py-3 px-2 rounded-lg data-[state=active]:bg-red-600 data-[state=active]:text-white data-[state=inactive]:text-zinc-400 transition-all hover:text-zinc-200"
-                >
+                <TabsTrigger value="trending" className={tabTriggerClass}>
                   <TrendingUp className="w-5 h-5" />
                   <span className="text-xs font-medium hidden sm:block">Trending</span>
                 </TabsTrigger>
-                <TabsTrigger
-                  value="for-you"
-                  className="flex flex-col items-center justify-center gap-1.5 py-3 px-2 rounded-lg data-[state=active]:bg-red-600 data-[state=active]:text-white data-[state=inactive]:text-zinc-400 transition-all hover:text-zinc-200"
-                >
+                <TabsTrigger value="for-you" className={tabTriggerClass}>
                   <Music className="w-5 h-5" />
                   <span className="text-xs font-medium hidden sm:block">For You</span>
                 </TabsTrigger>
-                <TabsTrigger
-                  value="recent"
-                  className="flex flex-col items-center justify-center gap-1.5 py-3 px-2 rounded-lg data-[state=active]:bg-red-600 data-[state=active]:text-white data-[state=inactive]:text-zinc-400 transition-all hover:text-zinc-200"
-                >
+                <TabsTrigger value="recent" className={tabTriggerClass}>
                   <Clock className="w-5 h-5" />
                   <span className="text-xs font-medium hidden sm:block">Recent</span>
                 </TabsTrigger>
@@ -211,6 +195,7 @@ const BrowsePage = () => {
 
             <ScrollArea className="flex-1 px-4 sm:px-6 scrollbar-hide">
               <div className="pb-8">
+                {/* Search Tab */}
                 <TabsContent value="search" className="mt-0 space-y-6">
                   {/* Search Input */}
                   <div className="mb-6 flex justify-center">
@@ -259,17 +244,8 @@ const BrowsePage = () => {
 
                   {searchQuery ? (
                     <div className="space-y-8">
-                      {/* Search Results Grid */}
                       {searchLoading ? (
-                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4 md:gap-6">
-                          {[...Array(12)].map((_, i) => (
-                            <GlassCard key={i} className="animate-pulse">
-                              <div className="aspect-square rounded-lg bg-zinc-800 mb-3" />
-                              <div className="h-4 bg-zinc-800 rounded w-3/4 mb-2" />
-                              <div className="h-3 bg-zinc-800 rounded w-1/2" />
-                            </GlassCard>
-                          ))}
-                        </div>
+                        <SongGridSkeleton count={12} />
                       ) : searchResults.length > 0 ? (
                         <div className="space-y-6">
                           <div className="flex items-center justify-between">
@@ -282,39 +258,8 @@ const BrowsePage = () => {
                             </span>
                           </div>
 
-                          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-4 sm:gap-5 md:gap-6">
-                            {searchResults.map((song, index) => (
-                              <GlassCard
-                                key={song._id}
-                                className="search-result-item"
-                                style={{ animationDelay: `${index * 50}ms` }}
-                              >
-                                <div className="relative mb-2 group">
-                                  <div className="aspect-square rounded-md overflow-hidden bg-zinc-900">
-                                    <img
-                                      src={song.imageUrl}
-                                      alt={song.title}
-                                      className="w-full h-full object-cover"
-                                    />
-                                  </div>
-                                  <PlayButton
-                                    song={song}
-                                    className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300"
-                                  />
-                                </div>
-                                <div className="space-y-0.5 px-0.5">
-                                  <h3 className="text-sm font-medium text-white truncate">
-                                    {song.title}
-                                  </h3>
-                                  <p className="text-xs text-zinc-400 truncate">
-                                    {song.artist}
-                                  </p>
-                                </div>
-                              </GlassCard>
-                            ))}
-                          </div>
+                          <SongGrid songs={searchResults} />
 
-                          {/* Load More Button */}
                           {hasMore && (
                             <div className="flex justify-center pt-4">
                               <Button
@@ -338,67 +283,31 @@ const BrowsePage = () => {
                           )}
                         </div>
                       ) : error ? (
-                        <div className="flex flex-col items-center justify-center py-12 space-y-4">
-                          <Search className="w-16 h-16 text-red-500/50" />
-                          <div className="text-center">
-                            <h3 className="text-xl font-semibold text-white mb-2">
-                              Search Error
-                            </h3>
-                            <p className="text-zinc-400">{error}</p>
-                          </div>
-                        </div>
+                        <EmptyState
+                          icon={Search}
+                          title="Search Error"
+                          description={error}
+                          iconClassName="text-red-500/50"
+                        />
                       ) : (
-                        <div className="flex flex-col items-center justify-center py-12 space-y-4">
-                          <Search className="w-16 h-16 text-zinc-600" />
-                          <div className="text-center">
-                            <h3 className="text-xl font-semibold text-white mb-2">
-                              No results found
-                            </h3>
-                            <p className="text-zinc-400">
-                              Try searching with different keywords
-                            </p>
-                          </div>
-                        </div>
+                        <EmptyState
+                          icon={Search}
+                          title="No results found"
+                          description="Try searching with different keywords"
+                        />
                       )}
 
-                      {/* Related/Popular songs when we have results */}
+                      {/* Related songs section */}
                       {searchResults.length > 0 && featuredSongs.length > 0 && (
                         <div className="border-t border-zinc-800 pt-8">
                           <h3 className="text-lg font-semibold text-white mb-6 flex items-center gap-2">
                             <Sparkles className="w-4 h-4 text-red-400" />
                             You might also like
                           </h3>
-                          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-4 sm:gap-5 md:gap-6">
-                            {featuredSongs.slice(0, 6).map((song, index) => (
-                              <GlassCard
-                                key={`related-${song._id}`}
-                                className="search-result-item opacity-80 hover:opacity-100"
-                                style={{ animationDelay: `${index * 100}ms` }}
-                              >
-                                <div className="relative mb-2 group">
-                                  <div className="aspect-square rounded-md overflow-hidden bg-zinc-900">
-                                    <img
-                                      src={song.imageUrl}
-                                      alt={song.title}
-                                      className="w-full h-full object-cover"
-                                    />
-                                  </div>
-                                  <PlayButton
-                                    song={song}
-                                    className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300"
-                                  />
-                                </div>
-                                <div className="space-y-0.5 px-0.5">
-                                  <h3 className="text-sm font-medium text-white truncate">
-                                    {song.title}
-                                  </h3>
-                                  <p className="text-xs text-zinc-400 truncate">
-                                    {song.artist}
-                                  </p>
-                                </div>
-                              </GlassCard>
-                            ))}
-                          </div>
+                          <SongGrid
+                            songs={featuredSongs.slice(0, 6)}
+                            animationDelay={100}
+                          />
                         </div>
                       )}
                     </div>
@@ -415,226 +324,65 @@ const BrowsePage = () => {
                   )}
                 </TabsContent>
 
+                {/* Featured Tab */}
                 <TabsContent value="featured" className="mt-0">
-                  <div className="space-y-6">
-                    <div>
-                      <h2 className="text-2xl font-bold mb-1 text-white">
-                        Featured Songs
-                      </h2>
-                      <p className="text-sm text-zinc-400">Hand-picked tracks just for you</p>
-                    </div>
-
-                    {musicStoreLoading ? (
-                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4 md:gap-6">
-                        {[...Array(12)].map((_, i) => (
-                          <GlassCard key={i} className="animate-pulse">
-                            <div className="aspect-square rounded-lg bg-zinc-800 mb-3" />
-                            <div className="h-4 bg-zinc-800 rounded w-3/4 mb-2" />
-                            <div className="h-3 bg-zinc-800 rounded w-1/2" />
-                          </GlassCard>
-                        ))}
-                      </div>
-                    ) : featuredSongs.length === 0 ? (
-                      <div className="flex flex-col items-center justify-center py-12 space-y-4">
-                        <Music className="w-16 h-16 text-zinc-600" />
-                        <div className="text-center">
-                          <h3 className="text-xl font-semibold text-white mb-2">
-                            No featured songs available
-                          </h3>
-                          <p className="text-zinc-400">
-                            Featured songs will appear here when available
-                          </p>
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-4 sm:gap-5 md:gap-6">
-                        {featuredSongs.map((song) => (
-                          <GlassCard key={song._id}>
-                            <div className="relative mb-2 group">
-                              <div className="aspect-square rounded-md overflow-hidden bg-zinc-900">
-                                <img
-                                  src={song.imageUrl}
-                                  alt={song.title}
-                                  className="w-full h-full object-cover"
-                                />
-                              </div>
-                              <PlayButton
-                                song={song}
-                                className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300"
-                              />
-                            </div>
-                            <div className="space-y-0.5 px-0.5">
-                              <h3 className="text-sm font-medium text-white truncate">
-                                {song.title}
-                              </h3>
-                              <p className="text-xs text-zinc-400 truncate">
-                                {song.artist}
-                              </p>
-                            </div>
-                          </GlassCard>
-                        ))}
-                      </div>
-                    )}
-                  </div>
+                  <SongTabContent
+                    title="Featured Songs"
+                    subtitle="Hand-picked tracks just for you"
+                    songs={featuredSongs}
+                    isLoading={musicStoreLoading}
+                    emptyIcon={Music}
+                    emptyTitle="No featured songs available"
+                    emptyDescription="Featured songs will appear here when available"
+                  />
                 </TabsContent>
 
+                {/* Trending Tab */}
                 <TabsContent value="trending" className="mt-0">
-                  <div className="space-y-6">
-                    <div>
-                      <h2 className="text-2xl font-bold mb-1 text-white">
-                        Trending Now
-                      </h2>
-                      <p className="text-sm text-zinc-400">What everyone's listening to right now</p>
-                    </div>
-
-                    {musicStoreLoading ? (
-                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4 md:gap-6">
-                        {[...Array(12)].map((_, i) => (
-                          <GlassCard key={i} className="animate-pulse">
-                            <div className="aspect-square rounded-lg bg-zinc-800 mb-3" />
-                            <div className="h-4 bg-zinc-800 rounded w-3/4 mb-2" />
-                            <div className="h-3 bg-zinc-800 rounded w-1/2" />
-                          </GlassCard>
-                        ))}
-                      </div>
-                    ) : trendingSongs.length === 0 ? (
-                      <div className="flex flex-col items-center justify-center py-12 space-y-4">
-                        <Music className="w-16 h-16 text-zinc-600" />
-                        <div className="text-center">
-                          <h3 className="text-xl font-semibold text-white mb-2">
-                            No trending songs available
-                          </h3>
-                          <p className="text-zinc-400">
-                            Trending songs will appear here when available
-                          </p>
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-4 sm:gap-5 md:gap-6">
-                        {trendingSongs.map((song) => (
-                          <GlassCard key={song._id}>
-                            <div className="relative mb-2 group">
-                              <div className="aspect-square rounded-md overflow-hidden bg-zinc-900">
-                                <img
-                                  src={song.imageUrl}
-                                  alt={song.title}
-                                  className="w-full h-full object-cover"
-                                />
-                              </div>
-                              <PlayButton
-                                song={song}
-                                className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300"
-                              />
-                            </div>
-                            <div className="space-y-0.5 px-0.5">
-                              <h3 className="text-sm font-medium text-white truncate">
-                                {song.title}
-                              </h3>
-                              <p className="text-xs text-zinc-400 truncate">
-                                {song.artist}
-                              </p>
-                            </div>
-                          </GlassCard>
-                        ))}
-                      </div>
-                    )}
-                  </div>
+                  <SongTabContent
+                    title="Trending Now"
+                    subtitle="What everyone's listening to right now"
+                    songs={trendingSongs}
+                    isLoading={musicStoreLoading}
+                    emptyIcon={Music}
+                    emptyTitle="No trending songs available"
+                    emptyDescription="Trending songs will appear here when available"
+                  />
                 </TabsContent>
 
+                {/* For You Tab */}
                 <TabsContent value="for-you" className="mt-0">
-                  <div className="space-y-6">
-                    <div>
-                      <h2 className="text-2xl font-bold mb-1 text-white">
-                        Made For You
-                      </h2>
-                      <p className="text-sm text-zinc-400">Personalized recommendations</p>
-                    </div>
-
-                    {musicStoreLoading ? (
-                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4 md:gap-6">
-                        {[...Array(12)].map((_, i) => (
-                          <GlassCard key={i} className="animate-pulse">
-                            <div className="aspect-square rounded-lg bg-zinc-800 mb-3" />
-                            <div className="h-4 bg-zinc-800 rounded w-3/4 mb-2" />
-                            <div className="h-3 bg-zinc-800 rounded w-1/2" />
-                          </GlassCard>
-                        ))}
-                      </div>
-                    ) : madeForYouSongs.length === 0 ? (
-                      <div className="flex flex-col items-center justify-center py-12 space-y-4">
-                        <Music className="w-16 h-16 text-zinc-600" />
-                        <div className="text-center">
-                          <h3 className="text-xl font-semibold text-white mb-2">
-                            No personalized songs available
-                          </h3>
-                          <p className="text-zinc-400">
-                            Personalized recommendations will appear here
-                          </p>
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-4 sm:gap-5 md:gap-6">
-                        {madeForYouSongs.map((song) => (
-                          <GlassCard key={song._id}>
-                            <div className="relative mb-2 group">
-                              <div className="aspect-square rounded-md overflow-hidden bg-zinc-900">
-                                <img
-                                  src={song.imageUrl}
-                                  alt={song.title}
-                                  className="w-full h-full object-cover"
-                                />
-                              </div>
-                              <PlayButton
-                                song={song}
-                                className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300"
-                              />
-                            </div>
-                            <div className="space-y-0.5 px-0.5">
-                              <h3 className="text-sm font-medium text-white truncate">
-                                {song.title}
-                              </h3>
-                              <p className="text-xs text-zinc-400 truncate">
-                                {song.artist}
-                              </p>
-                            </div>
-                          </GlassCard>
-                        ))}
-                      </div>
-                    )}
-                  </div>
+                  <SongTabContent
+                    title="Made For You"
+                    subtitle="Personalized recommendations"
+                    songs={madeForYouSongs}
+                    isLoading={musicStoreLoading}
+                    emptyIcon={Music}
+                    emptyTitle="No personalized songs available"
+                    emptyDescription="Personalized recommendations will appear here"
+                  />
                 </TabsContent>
 
+                {/* Recent Tab */}
                 <TabsContent value="recent" className="mt-0">
                   <div className="space-y-6">
                     <div>
                       <h2 className="text-2xl font-bold mb-1 text-white">
                         Recently Added
                       </h2>
-                      <p className="text-sm text-zinc-400">The newest additions to our collection</p>
+                      <p className="text-sm text-zinc-400">
+                        The newest additions to our collection
+                      </p>
                     </div>
 
                     {musicStoreLoading ? (
-                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4 md:gap-6">
-                        {[...Array(12)].map((_, i) => (
-                          <GlassCard key={i} className="animate-pulse">
-                            <div className="aspect-square rounded-lg bg-zinc-800 mb-3" />
-                            <div className="h-4 bg-zinc-800 rounded w-3/4 mb-2" />
-                            <div className="h-3 bg-zinc-800 rounded w-1/2" />
-                          </GlassCard>
-                        ))}
-                      </div>
+                      <SongGridSkeleton count={12} />
                     ) : recentSongs.length === 0 ? (
-                      <div className="flex flex-col items-center justify-center py-12 space-y-4">
-                        <Clock className="w-16 h-16 text-zinc-600" />
-                        <div className="text-center">
-                          <h3 className="text-xl font-semibold text-white mb-2">
-                            No recent songs available
-                          </h3>
-                          <p className="text-zinc-400">
-                            Check back soon for new music
-                          </p>
-                        </div>
-                      </div>
+                      <EmptyState
+                        icon={Clock}
+                        title="No recent songs available"
+                        description="Check back soon for new music"
+                      />
                     ) : (
                       <AnimatedGrid
                         songs={recentSongs}
@@ -643,7 +391,7 @@ const BrowsePage = () => {
                             <div className="relative mb-2 group">
                               <div className="aspect-square rounded-md overflow-hidden bg-zinc-900">
                                 <img
-                                  src={song.imageUrl}
+                                  src={getMediaUrl(song.imageUrl)}
                                   alt={song.title}
                                   className="w-full h-full object-cover"
                                 />
@@ -685,7 +433,7 @@ const BrowsePage = () => {
         <DialogContent className="bg-zinc-900 text-white border-zinc-800">
           <DialogHeader>
             <DialogTitle className="text-xl font-bold text-white">
-              Add "{selectedSong?.title}" to Album
+              Add to Album
             </DialogTitle>
             <DialogDescription className="text-zinc-400">
               Select an album to add this song to your collection
@@ -701,7 +449,7 @@ const BrowsePage = () => {
                   className="flex items-center gap-3 p-2 rounded-md hover:bg-zinc-800 cursor-pointer group transition-all"
                 >
                   <img
-                    src={album.imageUrl}
+                    src={getMediaUrl(album.imageUrl)}
                     alt={album.title}
                     className="h-16 w-16 object-cover rounded shadow-md group-hover:shadow-lg transition-all"
                   />

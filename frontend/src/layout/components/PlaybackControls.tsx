@@ -14,12 +14,8 @@ import {
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useEnhancedRoomStore } from "@/stores/useEnhancedRoomStore";
-
-const formatTime = (seconds: number) => {
-  const minutes = Math.floor(seconds / 60);
-  const remainingSeconds = Math.floor(seconds % 60);
-  return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
-};
+import { formatTime } from "@/lib/formatters";
+import { getMediaUrl } from "@/lib/mediaUrl";
 
 export const PlaybackControls = () => {
   const { currentSong, isPlaying, togglePlay, playNext, playPrevious, isFullscreenPlayer } =
@@ -197,7 +193,7 @@ export const PlaybackControls = () => {
             <>
               <div className="relative">
                 <img
-                  src={currentSong.imageUrl}
+                  src={getMediaUrl(currentSong.imageUrl)}
                   alt={currentSong.title}
                   className="w-14 h-14 object-cover rounded-xl shadow-lg transition-transform duration-300 group-hover:scale-105"
                 />
