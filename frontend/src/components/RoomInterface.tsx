@@ -4,6 +4,7 @@ import { useEnhancedRoomStore } from "@/stores/useEnhancedRoomStore";
 import { useUser } from "@clerk/clerk-react";
 import { Music, Play, Pause, Loader2 } from "lucide-react";
 import ScrollingText from "./ScrollingText";
+import { formatTimeAgo } from "@/lib/formatters";
 
 const RoomInterface = () => {
   const { user } = useUser();
@@ -11,15 +12,6 @@ const RoomInterface = () => {
     useEnhancedRoomStore();
 
   if (!isInRoom || !currentRoom) return null;
-
-  const formatTime = (timestamp: number) => {
-    const now = Date.now();
-    const diff = Math.floor((now - timestamp) / 1000);
-
-    if (diff < 60) return `${diff}s ago`;
-    if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
-    return `${Math.floor(diff / 3600)}h ago`;
-  };
 
   return (
     <div className="bg-black/30 backdrop-blur-sm border border-white/10 rounded-2xl p-4 mb-4 shadow-xl">
@@ -87,7 +79,7 @@ const RoomInterface = () => {
                       </p>
                     </div>
                     <span className="text-xs text-zinc-500 flex-shrink-0">
-                      {formatTime(roomUser.timestamp)}
+                      {formatTimeAgo(roomUser.timestamp)}
                     </span>
                   </div>
                 ) : (

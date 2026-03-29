@@ -1,6 +1,5 @@
 import { usePlayerStore } from "@/stores/usePlayerStore";
 import {
-  X,
   Play,
   Pause,
   SkipBack,
@@ -15,8 +14,13 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
+import { getMediaUrl } from "@/lib/mediaUrl";
+import { useDominantColor } from "@/hooks/useDominantColor";
+import { useAudioProgress } from "@/hooks/useAudioProgress";
+import { useVolumeControl } from "@/hooks/useVolumeControl";
+import { QueueOverlay, PlayerProgressBar } from "./player";
 
 const FullPlayer = () => {
   const {
@@ -32,96 +36,22 @@ const FullPlayer = () => {
     setCurrentSong,
   } = usePlayerStore();
 
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-  const [progress, setProgress] = useState(0);
-  const [duration, setDuration] = useState<number | null>(null);
-  const [volume, setVolume] = useState(75);
-  const [isMuted, setIsMuted] = useState(false);
   const [showQueue, setShowQueue] = useState(false);
-  const [dominantColor, setDominantColor] = useState<string>("#1a1a1a");
   const [isLiked, setIsLiked] = useState(false);
 
-  // Attach to the existing audio element on the page
-  useEffect(() => {
-    audioRef.current = document.querySelector("audio");
-    const audio = audioRef.current;
-    if (!audio) return;
+  // Use shared hooks
+  const dominantColor = useDominantColor(getMediaUrl(currentSong?.imageUrl));
 
-    const onTime = () => setProgress(audio.currentTime);
-    const onDur = () => setDuration(isNaN(audio.duration) ? 0 : audio.duration);
+  const { progress, duration, progressPercent, handleSeek, audioRef } =
+    useAudioProgress(currentSong?._id);
 
-    audio.addEventListener("timeupdate", onTime);
-    audio.addEventListener("loadedmetadata", onDur);
-    audio.addEventListener("canplay", onDur);
-
-    return () => {
-      audio.removeEventListener("timeupdate", onTime);
-      audio.removeEventListener("loadedmetadata", onDur);
-      audio.removeEventListener("canplay", onDur);
-    };
-  }, [currentSong]);
+  const { volume, isMuted, toggleMute, handleVolumeChange, syncWithAudio } =
+    useVolumeControl({ autoHideTimeout: 0 }); // No auto-hide on desktop
 
   // Sync volume with audio element
   useEffect(() => {
-    const audio = audioRef.current;
-    if (audio) {
-      audio.volume = isMuted ? 0 : volume / 100;
-    }
-  }, [volume, isMuted]);
-
-  // Extract dominant color from cover image
-  useEffect(() => {
-    if (!currentSong?.imageUrl) return;
-
-    const img = new Image();
-    img.crossOrigin = "Anonymous";
-    img.src = currentSong.imageUrl;
-
-    img.onload = () => {
-      try {
-        const canvas = document.createElement("canvas");
-        const ctx = canvas.getContext("2d");
-        if (!ctx) return;
-
-        canvas.width = img.width;
-        canvas.height = img.height;
-        ctx.drawImage(img, 0, 0);
-
-        // Sample pixels from the image
-        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-        const pixels = imageData.data;
-        let r = 0,
-          g = 0,
-          b = 0;
-        const pixelCount = pixels.length / 4;
-
-        for (let i = 0; i < pixels.length; i += 4) {
-          r += pixels[i];
-          g += pixels[i + 1];
-          b += pixels[i + 2];
-        }
-
-        r = Math.floor(r / pixelCount);
-        g = Math.floor(g / pixelCount);
-        b = Math.floor(b / pixelCount);
-
-        // Darken the color for better text contrast
-        r = Math.floor(r * 0.4);
-        g = Math.floor(g * 0.4);
-        b = Math.floor(b * 0.4);
-
-        const color = `rgb(${r}, ${g}, ${b})`;
-        setDominantColor(color);
-      } catch (error) {
-        console.warn("Could not extract color:", error);
-        setDominantColor("#1a1a1a");
-      }
-    };
-
-    img.onerror = () => {
-      setDominantColor("#1a1a1a");
-    };
-  }, [currentSong?.imageUrl]);
+    syncWithAudio(audioRef);
+  }, [syncWithAudio, audioRef, volume, isMuted]);
 
   // Lock body scroll when open
   useEffect(() => {
@@ -134,34 +64,6 @@ const FullPlayer = () => {
 
   if (!isFullscreenPlayer || !currentSong) return null;
 
-  const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const val = Number(e.target.value);
-    if (audioRef.current) audioRef.current.currentTime = val;
-    setProgress(val);
-  };
-
-  const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const val = Number(e.target.value);
-    setVolume(val);
-    if (val === 0) {
-      setIsMuted(true);
-    } else {
-      setIsMuted(false);
-    }
-  };
-
-  const toggleMute = () => {
-    setIsMuted(!isMuted);
-  };
-
-  const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = Math.floor(seconds % 60);
-    return `${mins}:${secs.toString().padStart(2, "0")}`;
-  };
-
-  const progressPercent = duration ? (progress / duration) * 100 : 0;
-
   return (
     <div
       className="fixed inset-0 z-[100] text-white transition-all duration-300"
@@ -173,7 +75,7 @@ const FullPlayer = () => {
       <div
         className="absolute inset-0 opacity-20 blur-3xl"
         style={{
-          backgroundImage: `url(${currentSong.imageUrl})`,
+          backgroundImage: `url(${getMediaUrl(currentSong.imageUrl)})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
@@ -196,7 +98,7 @@ const FullPlayer = () => {
               {/* Cover Image */}
               <div className="relative w-full h-full rounded-3xl overflow-hidden shadow-2xl">
                 <img
-                  src={currentSong.imageUrl}
+                  src={getMediaUrl(currentSong.imageUrl)}
                   alt={currentSong.title}
                   className="w-full h-full object-cover"
                 />
@@ -215,9 +117,7 @@ const FullPlayer = () => {
                 <h1 className="text-5xl font-bold mb-3 leading-tight">
                   {currentSong.title}
                 </h1>
-                <p className="text-2xl text-white/70">
-                  {currentSong.artist}
-                </p>
+                <p className="text-2xl text-white/70">{currentSong.artist}</p>
               </div>
               <Button
                 size="icon"
@@ -230,26 +130,13 @@ const FullPlayer = () => {
             </div>
 
             {/* Progress Bar */}
-            <div className="space-y-3">
-              <div className="relative h-2 bg-white/20 rounded-full overflow-hidden group cursor-pointer">
-                <div
-                  className="absolute top-0 left-0 h-full bg-gradient-to-r from-red-500 to-red-400 rounded-full transition-all duration-100 shadow-[0_0_8px_rgba(239,68,68,0.5)]"
-                  style={{ width: `${progressPercent}%` }}
-                />
-                <input
-                  type="range"
-                  min={0}
-                  max={duration || 0}
-                  value={progress}
-                  onChange={handleSeek}
-                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                />
-              </div>
-              <div className="flex justify-between text-sm text-white/60 font-medium">
-                <span>{formatTime(progress)}</span>
-                <span>{duration ? formatTime(duration) : "0:00"}</span>
-              </div>
-            </div>
+            <PlayerProgressBar
+              progress={progress}
+              duration={duration}
+              progressPercent={progressPercent}
+              onSeek={handleSeek}
+              variant="desktop"
+            />
 
             {/* Main Controls */}
             <div className="flex items-center justify-center gap-8 py-4">
@@ -312,9 +199,7 @@ const FullPlayer = () => {
                   isLiked ? "text-red-500" : "text-white/70 hover:text-red-400"
                 )}
               >
-                <Heart
-                  className={cn("w-6 h-6", isLiked && "fill-current")}
-                />
+                <Heart className={cn("w-6 h-6", isLiked && "fill-current")} />
               </Button>
 
               {/* Volume Controls */}
@@ -365,69 +250,17 @@ const FullPlayer = () => {
       </div>
 
       {/* Queue Overlay */}
-      {showQueue && (
-        <div className="fixed inset-0 bg-black/95 z-50 overflow-y-auto">
-          <div className="max-w-4xl mx-auto p-8">
-            <div className="flex items-center justify-between mb-8">
-              <h2 className="text-3xl font-bold">Up Next</h2>
-              <Button
-                size="icon"
-                variant="ghost"
-                onClick={() => setShowQueue(false)}
-                className="text-white hover:bg-white/10"
-              >
-                <X className="w-6 h-6" />
-              </Button>
-            </div>
-
-            <div className="space-y-3">
-              {queue.map((song, idx) => (
-                <div
-                  key={song._id}
-                  onClick={() => {
-                    setCurrentSong(song);
-                    setShowQueue(false);
-                  }}
-                  className={cn(
-                    "flex items-center gap-4 p-4 rounded-xl hover:bg-white/5 transition-colors cursor-pointer",
-                    idx === currentIndex && "bg-red-500/20 border border-red-500/30"
-                  )}
-                >
-                  <img
-                    src={song.imageUrl}
-                    alt={song.title}
-                    className="w-16 h-16 rounded-lg object-cover flex-shrink-0"
-                  />
-                  <div className="flex-1 min-w-0">
-                    <p
-                      className={cn(
-                        "font-medium truncate text-lg",
-                        idx === currentIndex && "text-red-400"
-                      )}
-                    >
-                      {song.title}
-                    </p>
-                    <p className="text-sm text-white/60 truncate">
-                      {song.artist}
-                    </p>
-                  </div>
-                  {idx === currentIndex && (
-                    <div className="flex gap-1">
-                      {[...Array(3)].map((_, i) => (
-                        <div
-                          key={i}
-                          className="w-1 h-5 bg-red-500 rounded-full animate-musicBar"
-                          style={{ animationDelay: `${i * 150}ms` }}
-                        />
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
+      <QueueOverlay
+        isOpen={showQueue}
+        onClose={() => setShowQueue(false)}
+        queue={queue}
+        currentIndex={currentIndex}
+        onSongSelect={(song) => {
+          setCurrentSong(song);
+          setShowQueue(false);
+        }}
+        variant="desktop"
+      />
     </div>
   );
 };

@@ -46,16 +46,8 @@ async function run() {
 
     console.log(`\n📀 "${title}" by ${artist} (${songs.length} copies)`);
 
-    // Prioritize keeping songs from /songs/ over /New songs/
-    // If both exist, prefer the one with extracted cover
+    // Prefer songs with extracted covers
     songs.sort((a, b) => {
-      // Prefer /songs/ over /New songs/
-      const aIsOld = a.audioUrl.startsWith("/songs/");
-      const bIsOld = b.audioUrl.startsWith("/songs/");
-      if (aIsOld && !bIsOld) return -1;
-      if (!aIsOld && bIsOld) return 1;
-
-      // Prefer extracted covers
       const aHasExtracted = a.imageUrl?.includes("/extracted-covers/");
       const bHasExtracted = b.imageUrl?.includes("/extracted-covers/");
       if (aHasExtracted && !bHasExtracted) return -1;
