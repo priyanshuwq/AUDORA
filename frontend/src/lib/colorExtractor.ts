@@ -39,8 +39,6 @@ export const extractColorsFromImage = async (
         ctx.drawImage(img, 0, 0, size, size);
         const imageData = ctx.getImageData(0, 0, size, size);
         const pixels = imageData.data;
-        
-        console.log("🎨 Extracting colors from image:", imageUrl);
 
         // Color buckets
         const colorMap: Map<string, number> = new Map();
@@ -80,10 +78,8 @@ export const extractColorsFromImage = async (
         const secondary = sortedColors[1] || sortedColors[0] || "220, 38, 38";
         const accent = sortedColors[2] || sortedColors[0] || "248, 113, 113";
 
-        console.log("✅ Colors extracted:", { primary, secondary, accent });
         resolve({ primary, secondary, accent });
       } catch (error) {
-        console.error("❌ Error extracting colors:", error);
         resolve({
           primary: "239, 68, 68",
           secondary: "220, 38, 38",
@@ -92,8 +88,7 @@ export const extractColorsFromImage = async (
       }
     };
 
-    img.onerror = (error) => {
-      console.warn("⚠️ Image load error, using default theme:", error);
+    img.onerror = () => {
       // Fallback to red theme on error
       resolve({
         primary: "239, 68, 68",
@@ -103,56 +98,5 @@ export const extractColorsFromImage = async (
     };
 
     img.src = imageUrl;
-    console.log("🔄 Loading image for color extraction:", imageUrl);
   });
-};
-
-/**
- * Convert RGB string to HSL for better color manipulation
- */
-export const rgbToHsl = (rgb: string): { h: number; s: number; l: number } => {
-  const [r, g, b] = rgb.split(",").map((n) => parseInt(n.trim()) / 255);
-
-  const max = Math.max(r, g, b);
-  const min = Math.min(r, g, b);
-  let h = 0;
-  let s = 0;
-  const l = (max + min) / 2;
-
-  if (max !== min) {
-    const d = max - min;
-    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-
-    switch (max) {
-      case r:
-        h = ((g - b) / d + (g < b ? 6 : 0)) / 6;
-        break;
-      case g:
-        h = ((b - r) / d + 2) / 6;
-        break;
-      case b:
-        h = ((r - g) / d + 4) / 6;
-        break;
-    }
-  }
-
-  return {
-    h: Math.round(h * 360),
-    s: Math.round(s * 100),
-    l: Math.round(l * 100),
-  };
-};
-
-/**
- * Lighten or darken a color
- */
-export const adjustLightness = (rgb: string, amount: number): string => {
-  const [r, g, b] = rgb.split(",").map((n) => parseInt(n.trim()));
-  
-  const adjust = (value: number) => {
-    const adjusted = value + amount;
-    return Math.max(0, Math.min(255, adjusted));
-  };
-
-  return `${adjust(r)}, ${adjust(g)}, ${adjust(b)}`;
 };

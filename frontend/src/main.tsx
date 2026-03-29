@@ -63,8 +63,4 @@ async function bootstrap() {
   );
 }
 
-// temporary debug
-console.log('import.meta.env:', import.meta.env);
-console.log('VITE_CLERK_PUBLISHABLE_KEY:', import.meta.env.VITE_CLERK_PUBLISHABLE_KEY);
-
 bootstrap();

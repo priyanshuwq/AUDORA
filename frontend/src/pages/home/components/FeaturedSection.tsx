@@ -2,6 +2,7 @@ import { useMusicStore } from "@/stores/useMusicStore";
 import FeaturedGridSkeleton from "@/components/skeletons/FeaturedGridSkeleton";
 import PlayButton from "./PlayButton";
 import GlassCard from "@/components/ui/GlassCard";
+import { getMediaUrl } from "@/lib/mediaUrl";
 
 const FeaturedSection = () => {
   const { isLoading, featuredSongs, error } = useMusicStore();
@@ -24,7 +25,7 @@ const FeaturedSection = () => {
             <div className="relative mb-2 group">
               <div className="aspect-square rounded-md overflow-hidden bg-zinc-900">
                 <img
-                  src={song.imageUrl}
+                  src={getMediaUrl(song.imageUrl)}
                   alt={song.title}
                   className="w-full h-full object-cover"
                 />

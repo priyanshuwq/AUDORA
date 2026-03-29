@@ -18,6 +18,8 @@ import { useEffect, useState, useRef } from "react";
 import { Slider } from "@/components/ui/slider";
 import { AudioSyncManager, formatLatency } from "../lib/jamSyncUtils";
 import ScrollingText from "./ScrollingText";
+import { formatTime } from "@/lib/formatters";
+import { getMediaUrl } from "@/lib/mediaUrl";
 
 const LiveJamControls = () => {
   const {
@@ -165,12 +167,6 @@ const LiveJamControls = () => {
       );
     };
   }, [currentSong, isPlaying, playAlbum, isJamHost, isDragging, lastSyncLatency]);
-
-  const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = Math.floor(seconds % 60);
-    return `${mins}:${secs.toString().padStart(2, "0")}`;
-  };
 
   const handleSliderChange = (value: number[]) => {
     const newPosition = value[0];
@@ -330,7 +326,7 @@ const LiveJamControls = () => {
         <div className="bg-black/40 rounded-xl p-3 mb-3 border border-white/5">
           <div className="flex items-center gap-3 mb-3">
             <img
-              src={currentSharedSong.imageUrl}
+              src={getMediaUrl(currentSharedSong.imageUrl)}
               alt="Album cover"
               className="w-12 h-12 rounded-lg flex-shrink-0"
             />

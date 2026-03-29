@@ -2,6 +2,7 @@ import { Song } from "@/types";
 import SectionGridSkeleton from "./SectionGridSkeleton";
 import PlayButton from "./PlayButton";
 import GlassCard from "@/components/ui/GlassCard";
+import { getMediaUrl } from "@/lib/mediaUrl";
 
 type SectionGridProps = {
   title: string;
@@ -28,7 +29,7 @@ const SectionGrid = ({ songs, title, isLoading }: SectionGridProps) => {
             <div className="relative mb-2 group">
               <div className="aspect-square rounded-md overflow-hidden bg-zinc-900">
                 <img
-                  src={song.imageUrl}
+                  src={getMediaUrl(song.imageUrl)}
                   alt={song.title}
                   className="w-full h-full object-cover"
                 />
