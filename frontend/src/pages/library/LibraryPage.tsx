@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import PlayButton from "@/pages/home/components/PlayButton";
 import GlassCard from "@/components/ui/GlassCard";
 import { Heart } from "lucide-react";
+import { getMediaUrl } from "@/lib/mediaUrl";
 
 const LibraryPage = () => {
   const { albums, songs, fetchAlbums, fetchSongs } = useMusicStore();
@@ -46,7 +47,7 @@ const LibraryPage = () => {
                     <div className="relative mb-2 group">
                       <div className="aspect-square rounded-md overflow-hidden bg-zinc-900">
                         <img
-                          src={song.imageUrl}
+                          src={getMediaUrl(song.imageUrl)}
                           alt={song.title}
                           className="w-full h-full object-cover"
                         />
@@ -82,7 +83,7 @@ const LibraryPage = () => {
                     <div className="relative mb-2 group">
                       <div className="aspect-square rounded-md overflow-hidden bg-zinc-900">
                         <img
-                          src={album.imageUrl}
+                          src={getMediaUrl(album.imageUrl)}
                           alt={album.title}
                           className="w-full h-full object-cover"
                         />
@@ -113,7 +114,7 @@ const LibraryPage = () => {
                   <div className="relative mb-2 group">
                     <div className="aspect-square rounded-md overflow-hidden bg-zinc-900">
                       <img
-                        src={song.imageUrl}
+                        src={getMediaUrl(song.imageUrl)}
                         alt={song.title}
                         className="w-full h-full object-cover"
                       />

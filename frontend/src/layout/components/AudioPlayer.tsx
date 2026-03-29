@@ -1,6 +1,7 @@
 import { usePlayerStore } from "@/stores/usePlayerStore";
 import { useEnhancedRoomStore } from "@/stores/useEnhancedRoomStore";
 import { useEffect, useRef, useState } from "react";
+import { getMediaUrl } from "@/lib/mediaUrl";
 import { Play, Pause, ChevronLeft, ChevronRight } from "lucide-react";
 
 const AudioPlayer = () => {
@@ -45,13 +46,13 @@ const AudioPlayer = () => {
     const audio = audioRef.current;
 
     // check if this is actually a new song
-    const isSongChange = prevSongRef.current !== currentSong?.audioUrl;
+    const isSongChange = prevSongRef.current !== currentSong?._id;
     if (isSongChange) {
-      audio.src = currentSong?.audioUrl;
+      audio.src = getMediaUrl(currentSong?.audioUrl);
       // reset the playback position
       audio.currentTime = 0;
 
-      prevSongRef.current = currentSong?.audioUrl;
+      prevSongRef.current = currentSong?._id;
 
       if (isPlaying) audio.play();
     }
@@ -66,7 +67,7 @@ const AudioPlayer = () => {
 
     const img = new Image();
     img.crossOrigin = "Anonymous";
-    img.src = currentSong.imageUrl;
+    img.src = getMediaUrl(currentSong.imageUrl);
 
     img.onload = () => {
       const canvas = document.createElement("canvas");
@@ -164,9 +165,9 @@ const AudioPlayer = () => {
         const timeDiff = (Date.now() - timestamp) / 1000;
         const adjustedPosition = Math.max(0, position + timeDiff);
 
-        if (song && song.audioUrl !== audio.src) {
-          audio.src = song.audioUrl;
-          prevSongRef.current = song.audioUrl;
+        if (song && song._id !== prevSongRef.current) {
+          audio.src = getMediaUrl(song.audioUrl);
+          prevSongRef.current = song._id;
         }
 
         // Clear any pending sync timeout
@@ -343,7 +344,7 @@ const AudioPlayer = () => {
                 {currentSong && currentSong.imageUrl ? (
                   // stopPropagation so clicking the image doesn't open the full player
                   <img
-                    src={currentSong.imageUrl}
+                    src={getMediaUrl(currentSong.imageUrl)}
                     alt={currentSong.title}
                     className="w-full h-full object-cover"
                     onClick={(e) => e.stopPropagation()}

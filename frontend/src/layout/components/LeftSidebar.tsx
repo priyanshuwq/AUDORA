@@ -5,6 +5,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { useMusicStore } from "@/stores/useMusicStore";
 import { useEnhancedRoomStore } from "@/stores/useEnhancedRoomStore";
+import { getMediaUrl } from "@/lib/mediaUrl";
 
 import { HomeIcon, Library, Radio, Search } from "lucide-react";
 import { useEffect } from "react";
@@ -100,7 +101,7 @@ const LeftSidebar = () => {
                 >
                   <div className="relative flex-shrink-0">
                     <img
-                      src={album.imageUrl}
+                      src={getMediaUrl(album.imageUrl)}
                       alt="Playlist img"
                       className="size-12 rounded-lg object-cover"
                     />

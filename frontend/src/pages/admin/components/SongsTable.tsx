@@ -7,6 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { getMediaUrl } from "@/lib/mediaUrl";
 import { useMusicStore } from "@/stores/useMusicStore";
 import { Calendar, Trash2 } from "lucide-react";
 
@@ -39,7 +40,7 @@ const SongsTable = () => {
             className="flex items-center gap-3 bg-black/20 rounded-xl p-3"
           >
             <img
-              src={song.imageUrl}
+              src={getMediaUrl(song.imageUrl)}
               alt={song.title}
               className="w-12 h-12 rounded-lg object-cover"
             />
@@ -88,7 +89,7 @@ const SongsTable = () => {
               >
                 <TableCell>
                   <img
-                    src={song.imageUrl}
+                    src={getMediaUrl(song.imageUrl)}
                     alt={song.title}
                     className="size-10 rounded object-cover"
                   />

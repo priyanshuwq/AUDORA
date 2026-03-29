@@ -16,6 +16,8 @@ import { cn } from "@/lib/utils";
 import toast from "react-hot-toast";
 import LiveJamControls from "./LiveJamControls";
 import ScrollingText from "./ScrollingText";
+import { formatTimeAgoShort } from "@/lib/formatters";
+import { getMediaUrl } from "@/lib/mediaUrl";
 
 interface UserActivity {
   id: string;
@@ -66,15 +68,6 @@ const ActivityBar = () => {
       setActivities([]);
     }
   }, [joinedUsers, currentRoom]);
-
-  const formatTimeAgo = (timestamp: number) => {
-    const now = Date.now();
-    const diff = Math.floor((now - timestamp) / 1000);
-
-    if (diff < 60) return "now";
-    if (diff < 3600) return `${Math.floor(diff / 60)}m`;
-    return `${Math.floor(diff / 3600)}h`;
-  };
 
   if (!currentRoom) {
     return (
@@ -351,7 +344,7 @@ const ActivityBar = () => {
                       <span className="text-red-300">In your room</span>
                       <span className="text-zinc-500">•</span>
                       <span className="text-zinc-500">
-                        {formatTimeAgo(activity.timestamp)}
+                        {formatTimeAgoShort(activity.timestamp)}
                       </span>
                     </div>
                   </div>
@@ -365,7 +358,7 @@ const ActivityBar = () => {
                   >
                     <div className="flex items-start gap-3 mb-3">
                       <img
-                        src={activity.currentSong.imageUrl}
+                        src={getMediaUrl(activity.currentSong.imageUrl)}
                         alt="Song cover"
                         className="w-12 h-12 rounded-lg flex-shrink-0"
                       />
