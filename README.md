@@ -24,6 +24,11 @@ Core features
 - Import local MP3s into the library (backend import scripts)
 - React + Vite frontend with Zustand stores and Tailwind UI
 
+Architecture
+- Media files (songs, cover art) are hosted separately on GitHub Pages for reduced repository size
+- Media URL resolution handled via `frontend/src/lib/mediaUrl.ts`
+- Production media served from: `https://priyanshuwq.github.io/audora-media`
+
 Quick start (dev)
 Prereqs: Node 18+, npm, MongoDB.
 
@@ -52,16 +57,24 @@ npm run import:songs
 
 Environment (important)
 - backend/.env: MONGODB_URI, PORT (8000), FRONTEND_ORIGINS, ADMIN_EMAILS, CLERK keys
-- frontend/.env: VITE_CLERK_PUBLISHABLE_KEY
+- frontend/.env: VITE_CLERK_PUBLISHABLE_KEY, VITE_MEDIA_BASE_URL
+
+Media Configuration
+- For local development: Leave VITE_MEDIA_BASE_URL empty (uses local files from public folder)
+- For production: Set VITE_MEDIA_BASE_URL=https://priyanshuwq.github.io/audora-media
+- Media files should be placed in frontend/public/songs/ and frontend/public/extracted-covers/ for local development
+- These folders are gitignored to keep the main repository lightweight
 
 
 Notes: the script is served statically from the frontend public folder. Drop your customized `oneko.js` into `frontend/public/` and assets into `frontend/public/oneko/`.
 
 Where to look in the repo
 - Backend boot & routes: `backend/src/index.js`, `backend/src/routes/`, `backend/src/controller/`
-- Socket glue & WebRTC handlers: `backend/src/lib/socket.js`, `backend/src/socket/webrtcHandlers.ts`
+- Socket handlers: `backend/src/lib/socket.js`, `backend/src/socket/roomHandlers.js`, `backend/src/socket/jamSessionHandlers.js`
 - Frontend stores & sync: `frontend/src/stores/useEnhancedRoomStore.ts`, `frontend/src/stores/usePlayerStore.ts`
 - Audio & sync helpers: `frontend/src/lib/webrtcAudioStream.ts`, `frontend/src/lib/jamSyncUtils.ts`
+- Media URL utility: `frontend/src/lib/mediaUrl.ts`
+- Shared player hooks: `frontend/src/hooks/useDominantColor.ts`, `frontend/src/hooks/useAudioProgress.ts`, `frontend/src/hooks/useVolumeControl.ts`
 
 Contributing & license
 - Fork, branch, test, PR. See `LICENSE` for terms.
