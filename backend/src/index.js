@@ -1,4 +1,5 @@
 import express from "express";
+import { fileURLToPath } from "url";
 import dotenv from "dotenv";
 import { clerkMiddleware } from "@clerk/express";
 import fileUpload from "express-fileupload";
@@ -44,7 +45,8 @@ console.log("- NODE_ENV:", process.env.NODE_ENV);
 console.log("- CLERK_PUBLISHABLE_KEY:", process.env.CLERK_PUBLISHABLE_KEY ? "✓ Loaded" : "⚠ Missing (Clerk auth may fail)");
 console.log("- CLERK_SECRET_KEY:", process.env.CLERK_SECRET_KEY ? "✓ Loaded" : "⚠ Missing (Clerk auth may fail)");
 
-const __dirname = path.resolve();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 8000;
 
