@@ -3690,7 +3690,7 @@ const songs = [
   {
     "title": "Tumblr Girls (feat. Christoph Andersson)",
     "artist": "G-Eazy",
-    "imageUrl": "/songs/covers/G-Eazy - Lady Killers II.jpg",
+    "imageUrl": "/extracted-covers/G-Eazy - Lady Killers II.jpg",
     "audioUrl": "/songs/G-Eazy, Christoph Andersson - Tumblr Girls (feat. Christoph Andersson).mp3",
     "duration": 256
   },
@@ -4285,7 +4285,7 @@ const songs = [
   {
     "title": "You Get Me So High",
     "artist": "The Neighbourhood",
-    "imageUrl": "/songs/covers/The Neighbourhood - Daddy Issues.jpg",
+    "imageUrl": "/extracted-covers/The Neighbourhood - Daddy Issues.jpg",
     "audioUrl": "/songs/The Neighbourhood - You Get Me So High.mp3",
     "duration": 153
   },
