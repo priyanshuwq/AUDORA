@@ -3436,13 +3436,6 @@ const songs = [
     "duration": 194
   },
   {
-    "title": "I Wanna Be Yours",
-    "artist": "Arctic Monkeys",
-    "imageUrl": "/extracted-covers/arctic_monkeys___i_wanna_be_yours_cover.jpeg",
-    "audioUrl": "/songs/Arctic Monkeys - I Wanna Be Yours.mp3",
-    "duration": 184
-  },
-  {
     "title": "Why'd You Only Call Me When You're High?",
     "artist": "Arctic Monkeys",
     "imageUrl": "/extracted-covers/arctic_monkeys___why_d_you_only_call_me_when_you_re_high_cover.jpeg",
@@ -3462,20 +3455,6 @@ const songs = [
     "imageUrl": "/extracted-covers/ariana_grande__justin_bieber___stuck_with_u__with_justin_bieber__cover.jpeg",
     "audioUrl": "/songs/Ariana Grande, Justin Bieber - Stuck with U (with Justin Bieber).mp3",
     "duration": 229
-  },
-  {
-    "title": "Palat - Tera Hero Idhar Hai (From \"Main Tera Hero\")",
-    "artist": "Arijit Singh",
-    "imageUrl": "/extracted-covers/arijit_singh___palat___tera_hero_idhar_hai__from__main_tera_hero___cover.jpeg",
-    "audioUrl": "/songs/Arijit Singh - Palat - Tera Hero Idhar Hai (From 'Main Tera Hero').mp3",
-    "duration": 271
-  },
-  {
-    "title": "Main Tera Boyfriend (From \"Raabta\")",
-    "artist": "Arijit Singh",
-    "imageUrl": "/extracted-covers/arijit_singh__neha_kakkar__meet_bros____main_tera_boyfriend__from__raabta___cover.jpeg",
-    "audioUrl": "/songs/Arijit Singh, Neha Kakkar, Meet Bros. - Main Tera Boyfriend (From 'Raabta').mp3",
-    "duration": 276
   },
   {
     "title": "Hurts So Good",
@@ -3667,13 +3646,6 @@ const songs = [
     "duration": 369
   },
   {
-    "title": "Without Me",
-    "artist": "Eminem",
-    "imageUrl": "/extracted-covers/eminem___without_me_cover.jpeg",
-    "audioUrl": "/songs/Eminem - Without Me.mp3",
-    "duration": 290
-  },
-  {
     "title": "Pink + White",
     "artist": "Frank Ocean",
     "imageUrl": "/extracted-covers/frank_ocean___pink___white_cover.jpeg",
@@ -3765,13 +3737,6 @@ const songs = [
     "duration": 248
   },
   {
-    "title": "High Heels",
-    "artist": "Jaz Dhami",
-    "imageUrl": "/extracted-covers/jaz_dhami__yo_yo_honey_singh___high_heels_cover.jpeg",
-    "audioUrl": "/songs/Jaz Dhami, Yo Yo Honey Singh - High Heels.mp3",
-    "duration": 298
-  },
-  {
     "title": "comethru",
     "artist": "Jeremy Zucker",
     "imageUrl": "/extracted-covers/jeremy_zucker___comethru_cover.jpeg",
@@ -3812,13 +3777,6 @@ const songs = [
     "imageUrl": "/extracted-covers/lana_del_rey___cinnamon_girl_cover.jpeg",
     "audioUrl": "/songs/Lana Del Rey - Cinnamon Girl.mp3",
     "duration": 301
-  },
-  {
-    "title": "Diet Mountain Dew",
-    "artist": "Lana Del Rey",
-    "imageUrl": "/extracted-covers/lana_del_rey___diet_mountain_dew_cover.jpeg",
-    "audioUrl": "/songs/Lana Del Rey - Diet Mountain Dew.mp3",
-    "duration": 223
   },
   {
     "title": "Summertime Sadness",
@@ -3954,13 +3912,6 @@ const songs = [
     "duration": 200
   },
   {
-    "title": "Aankh Marey (From \"Simmba\")",
-    "artist": "Neha Kakkar",
-    "imageUrl": "/extracted-covers/neha_kakkar__mika_singh__kumar_sanu__tanishk_bagchi___aankh_marey__from__simmba___cover.jpeg",
-    "audioUrl": "/songs/Neha Kakkar, Mika Singh, Kumar Sanu, Tanishk Bagchi - Aankh Marey (From 'Simmba').mp3",
-    "duration": 213
-  },
-  {
     "title": "This Town",
     "artist": "Niall Horan",
     "imageUrl": "/extracted-covers/niall_horan___this_town_cover.jpeg",
@@ -4017,13 +3968,6 @@ const songs = [
     "duration": 203
   },
   {
-    "title": "The Breakup Song",
-    "artist": "Pritam",
-    "imageUrl": "/extracted-covers/pritam__arijit_singh__badshah__jonita_gandhi__nakash_aziz___the_breakup_song_cover.jpeg",
-    "audioUrl": "/songs/Pritam, Arijit Singh, Badshah, Jonita Gandhi, Nakash Aziz - The Breakup Song.mp3",
-    "duration": 253
-  },
-  {
     "title": "Satyanaas (From \"Chandu Champion\")",
     "artist": "Pritam",
     "imageUrl": "/extracted-covers/pritam__arijit_singh__nakash_aziz__amitabh_bhattacharya__dev_negi___satyanaas__from__chandu_champion___cover.jpeg",
@@ -4036,13 +3980,6 @@ const songs = [
     "imageUrl": "/extracted-covers/pritam__kk__bob___make_some_noise_for_the_desi_boyz_cover.jpeg",
     "audioUrl": "/songs/Pritam, KK, Bob - Make Some Noise For The Desi Boyz.mp3",
     "duration": 244
-  },
-  {
-    "title": "Tu Mera Hero",
-    "artist": "Pritam",
-    "imageUrl": "/extracted-covers/pritam__mika_singh__shefali_alvares___tu_mera_hero_cover.jpeg",
-    "audioUrl": "/songs/Pritam, Mika Singh, Shefali Alvares - Tu Mera Hero.mp3",
-    "duration": 292
   },
   {
     "title": "Jhak Maar Ke",
@@ -4185,13 +4122,6 @@ const songs = [
     "duration": 238
   },
   {
-    "title": "Cruel Summer",
-    "artist": "Taylor Swift",
-    "imageUrl": "/extracted-covers/taylor_swift___cruel_summer_cover.jpeg",
-    "audioUrl": "/songs/Taylor Swift - Cruel Summer.mp3",
-    "duration": 178
-  },
-  {
     "title": "Daylight",
     "artist": "Taylor Swift",
     "imageUrl": "/extracted-covers/taylor_swift___daylight_cover.jpeg",
@@ -4213,13 +4143,6 @@ const songs = [
     "duration": 222
   },
   {
-    "title": "Style",
-    "artist": "Taylor Swift",
-    "imageUrl": "/extracted-covers/taylor_swift___style_cover.jpeg",
-    "audioUrl": "/songs/Taylor Swift - Style.mp3",
-    "duration": 231
-  },
-  {
     "title": "The Way I Loved You (Taylor’s Version)",
     "artist": "Taylor Swift",
     "imageUrl": "/extracted-covers/taylor_swift___the_way_i_loved_you__taylor_s_version__cover.jpeg",
@@ -4239,13 +4162,6 @@ const songs = [
     "imageUrl": "/extracted-covers/taylor_swift___you_belong_with_me__taylor_s_version__cover.jpeg",
     "audioUrl": "/songs/Taylor Swift - You Belong With Me (Taylor’s Version).mp3",
     "duration": 231
-  },
-  {
-    "title": "cardigan",
-    "artist": "Taylor Swift",
-    "imageUrl": "/extracted-covers/taylor_swift___cardigan_cover.jpeg",
-    "audioUrl": "/songs/Taylor Swift - cardigan.mp3",
-    "duration": 240
   },
   {
     "title": "willow",
@@ -4302,13 +4218,6 @@ const songs = [
     "imageUrl": "/extracted-covers/the_walters___i_love_you_so_cover.jpeg",
     "audioUrl": "/songs/The Walters - I Love You So.mp3",
     "duration": 160
-  },
-  {
-    "title": "Die For You",
-    "artist": "The Weeknd",
-    "imageUrl": "/extracted-covers/the_weeknd___die_for_you_cover.jpeg",
-    "audioUrl": "/songs/The Weeknd - Die For You.mp3",
-    "duration": 260
   },
   {
     "title": "House Of Balloons / Glass Table Girls",
@@ -4379,13 +4288,6 @@ const songs = [
     "imageUrl": "/extracted-covers/troye_sivan___youth_cover.jpeg",
     "audioUrl": "/songs/Troye Sivan - YOUTH.mp3",
     "duration": 185
-  },
-  {
-    "title": "Jugraafiya - From \"Super 30\"",
-    "artist": "Udit Narayan",
-    "imageUrl": "/extracted-covers/udit_narayan__shreya_ghoshal___jugraafiya___from__super_30__cover.jpeg",
-    "audioUrl": "/songs/Udit Narayan, Shreya Ghoshal - Jugraafiya - From 'Super 30'.mp3",
-    "duration": 274
   },
   {
     "title": "Aankhon Aankhon",
